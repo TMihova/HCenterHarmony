@@ -1,0 +1,44 @@
+﻿@model HCH.Web.Models.DeliveryNoteViewModel
+
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<HCH.Models.HCHWebUser> SignInManager
+@inject UserManager<HCH.Models.HCHWebUser> UserManager
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="mt-3">
+    <div class="container w-75 justify-content-center">
+        @if (!Model.Exists)
+        {
+            <h2 class="text-center">Няма издадена фактура за тази поръчка.</h2>
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                <a asp-area="" asp-controller="DeliveryNotes" asp-action="Create" asp-route-id="@Model.OrderId">Създай</a>
+            }
+        }
+        else
+        {
+            <h3 class="text-center">Фактура @Model.Id/@Model.IssueDate</h3>
+            <hr class="hr-4" />
+            <h3 class="text-center">Поръчка @Model.OrderId/@ViewData["OrderDate"]</h3>
+            <hr class="hr-4" />
+            <h3 class="text-center">Клиент @ViewData["ClientName"]</h3>
+            <hr class="hr-4" />
+            <div class="container-fluid">
+                <p>Дата на издаване: @Model.IssueDate</p>
+                <p>Стойност: @Model.Cost лв.</p>
+                <p>Отстъпка: @Model.Discount</p>
+                <p>Дължима сума: @Math.Round((Model.Cost * (1 - Model.Discount)), 2) лв.</p>
+            </div>
+        }
+
+        <hr class="hr-4 mb-0" />
+        <div class="container button-holder mb-3">
+            <button class="btn harmony-bg-color" onclick="history.back()">Обратно</button>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<HCH.Web.Models.TherapistViewModel>
+
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<HCH.Models.HCHWebUser> SignInManager
+@inject UserManager<HCH.Models.HCHWebUser> UserManager
+
+@{
+    ViewData["Title"] = "Therapists";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<main class="mt-3">
+    <div class="container w-75 justify-content-center">
+        <h2 class="text-center">@ViewData["Profile"]</h2>
+        <h2 class="text-center">Терапевти</h2>
+        <hr class="hr-4" />
+        <div class="container-fluid">
+            
+            <table class="table  mx-auto table-hover">
+                <thead>
+                    <tr class="row">
+                        <th class="col-md-2">#</th>
+                        <th class="col-md-5">Име</th>
+                        <th class="col-md-5"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int count = 0;}
+                    @foreach (var item in Model)
+                    {
+                        count++;
+
+                        <tr class="row">
+                            <th class="col-md-1">@count</th>
+                            <td class="col-md-5">@item.FullName</td>
+                            <td class="col-md-5">
+                                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                                {
+                                    <form class="form-inline" asp-controller="Therapists" asp-action="Edit" asp-route-id="@item.Id" method="get">
+                                        <button type="submit" class="btn harmony-bg-color ml-2">Редактирай</button>
+                                    </form>
+                                    <form class="form-inline" asp-controller="Therapists" asp-action="Remove" asp-route-id="@item.Id" method="get">
+                                        <button type="submit" class="btn harmony-bg-color ml-2">Премахни</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <hr class="hr-4 mb-0" />
+    </div>
+</main>

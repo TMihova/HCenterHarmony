@@ -1,0 +1,53 @@
+﻿@model IEnumerable<HCH.Web.Models.OrderViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="mt-3">
+    <div class="container w-75 justify-content-center">
+        <h2 class="text-center">Моите поръчки</h2>
+        <hr class="hr-4" />
+        <div class="container-fluid">
+            <table class="table  mx-auto table-hover">
+                <thead>
+                    <tr class="row">
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-3">Дата на поръчката</th>
+                        <th class="col-md-2">Стойност в лева</th>
+                        <th class="col-md-3">Номер/Дата на фактурата</th>
+                        <th class="col-md-3">Продукти</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    @foreach (var item in Model)
+                    {
+                        
+                    <tr class="row">
+                        <th class="col-md-1">@item.Id</th>
+                        <td class="col-md-3">@item.OrderDate</td>
+                        <td class="col-md-2">@item.Price</td>
+                        <td class="col-md-3">
+                            @if (String.IsNullOrEmpty(item.DeliveryNoteDate))
+                            {
+                                <p>не е налична фактура</p>
+                            }
+                            else
+                            {
+                                @item.DeliveryNoteId<text>/</text>@item.DeliveryNoteDate;
+                                <a asp-area="" asp-controller="DeliveryNotes" asp-action="Details" asp-route-id="@item.Id">Детайли</a>
+                            }
+                        </td>
+                    <td class="col-md-3">
+                        <a asp-area="" asp-controller="Orders" asp-action="OrderProducts" asp-route-id="@item.Id">Виж продуктите</a>
+                    </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <hr class="hr-4 mb-0" />
+    </div>
+</main>

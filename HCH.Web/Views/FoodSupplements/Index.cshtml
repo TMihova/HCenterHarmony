@@ -1,0 +1,63 @@
+﻿@model IEnumerable<HCH.Web.Models.FoodSupplementViewModel>
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="mt-3">
+    <div class="container w-75 justify-content-center">
+        <h2 class="text-center">Здраве от природата</h2>
+        <h2 class="text-center">Хранителни добавки</h2>
+        <hr class="hr-4" />
+        <div class="container-fluid">
+            <table class="table  mx-auto table-hover">
+                <thead>
+                    <tr class="row">
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-2">Наименование</th>
+                        <th class="col-md-3">Описание</th>
+                        <th class="col-md-2">Цена в лв.</th>
+                        <th class="col-md-4"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int count = 0;}
+                    @foreach (var item in Model)
+                    {
+                        count++;
+
+                        <tr class="row">
+                            <th class="col-md-1">@count</th>
+                            <td class="col-md-2">
+                                @item.Name
+
+                            </td>
+                            <td class="col-md-3">@item.Description</td>
+                            <td class="col-md-2">@item.Price лв</td>
+                            <td class="col-md-4">
+
+                                <form class="form-inline" asp-controller="Orders" asp-action="Create" asp-route-id="@item.Id" method="post">
+
+                                    <div class="form-group">
+                                        <label class="font-weight-bold mr-2" for="productCount">Брой:</label>
+                                        <input type="number" name="Count" id="productCount" class="form-control">
+                                    </div>
+
+                                    <button type="submit" class="btn harmony-bg-color ml-2">Поръчай</button>
+
+                                </form>
+                               
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <hr class="hr-4 mb-0" />
+    </div>
+</main>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

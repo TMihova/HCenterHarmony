@@ -1,0 +1,85 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.remove-all-margin-padding {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+
+
+.text-30{
+    font-size: 30px;
+}
+
+.a-black {
+    color: black !important;
+}
+
+.harmony-bg-color {
+    background-color: olivedrab;
+    border-color: olivedrab;
+    color: black;
+}
+
+.nav-link-dark {
+    background-color: olivedrab;
+    color: black !important;
+    font-weight: bold;
+}
+
+.text-black {
+    color: black;
+    font-weight: bold;
+}
+
+.home-background {
+    background: url(../images/water1.jpg) 50% 100px no-repeat fixed;
+    background-size: cover;
+    height: 600px;
+}
+
+.hr-1 {
+    border: none;
+    height: 1px;
+    /* Set the hr color */
+    color: black; /* old IE */
+    background-color: black; /* Modern Browsers */
+}
+
+

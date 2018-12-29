@@ -1,0 +1,48 @@
+﻿@model HCH.Web.Models.AppointmentViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>Appointment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DayOfWeekBg" class="control-label">Ден от седмицата</label>
+                <select asp-for="DayOfWeekBg" asp-items="Html.GetEnumSelectList<HCH.Models.Enums.DayOfWeekBg>()" class="form-control"></select>
+                <span asp-validation-for="DayOfWeekBg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VisitingHour" class="control-label">Приемен час</label>
+                <input asp-for="VisitingHour" class="form-control" />
+                <span asp-validation-for="VisitingHour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Цена</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="Therapist" value="@ViewBag.TherapistName">
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

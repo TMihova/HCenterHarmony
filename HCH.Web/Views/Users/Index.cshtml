@@ -1,0 +1,70 @@
+﻿@model IEnumerable<HCH.Web.Models.UserViewModel>
+
+    @{
+    ViewData["Title"] = "User_Administration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+
+    <main class="mt-3">
+        <div class="container w-75 justify-content-center">
+            <h1 class="text-center">All Users</h1>
+            <hr class="hr-4" />
+            <div class="container-fluid">
+                <table class="table  mx-auto table-hover">
+                    <thead>
+                        <tr class="row">
+                            <th class="col-md-1 text-center">#</th>
+                            <th class="col-md-1 text-center">Потребителско име</th>
+                            <th class="col-md-2 text-center">Роли</th>
+                            <th class="col-md-2 text-center">Профил</th>
+                            <th class="col-md-6 text-center">Добави роля</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int count = 0;}
+                        @foreach (var item in Model)
+                    {
+                        count++;
+
+                        <tr class="row">
+                            <th class="col-md-1 text-center">@count</th>
+                            <td class="col-md-1 text-center">@item.UserName</td>
+                            <td class="col-md-2 text-center">@item.Role</td>
+                            <td class="col-md-2 text-center">@item.Profile</td>
+                            <td class="col-md-6 text-center">
+                                <div class="container-fluid d-flex justify-content-between">
+                                    
+                                    <a asp-controller="Users" asp-action="AddAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color text-center">AdminRole</a>
+                                    <a asp-controller="Users" asp-action="RemoveAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color">RemoveAdminRole</a>
+                                   
+                                   
+                                </div>
+                                    <div class="container-fluid d-flex justify-content-between">
+                                        <form class="form-inline" asp-controller="Users" asp-action="AddTherapistRole" asp-route-id="@item.Id" method="post">
+
+                                            <button type="submit" class="btn harmony-bg-color ml-2">TherapistRole</button>
+
+                                        </form>
+                                        <form class="form-inline" asp-controller="Therapists" asp-action="Add" asp-route-id="@item.Id" method="get">
+
+                                            <button type="submit" class="btn harmony-bg-color ml-2">Добави като терапевт</button>
+
+                                        </form>
+                                        <form class="form-inline" asp-controller="Users" asp-action="RemoveTherapistRole" asp-route-id="@item.Id" method="post">
+
+                                            <button type="submit" class="btn harmony-bg-color ml-2">RemoveTherapistRole</button>
+
+                                        </form>
+                                    </div>
+</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+
+            </div>
+            <hr class="hr-4 mb-0" />
+        </div>
+    </main>
+
