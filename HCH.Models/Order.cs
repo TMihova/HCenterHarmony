@@ -27,6 +27,6 @@ namespace HCH.Models
         public virtual ICollection<OrderFoodSupplement> FoodSupplements { get; set; }
 
         [NotMapped]
-        public decimal Price => this.FoodSupplements.Sum(x => x.FoodSupplement.Price);
+        public decimal Price => this.FoodSupplements.Sum(x => x.FoodSupplement.Price * x.ProductCount);
     }
 }

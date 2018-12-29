@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HCH.Models.DeliveryNote>
+﻿@model IEnumerable<HCH.Web.Models.DeliveryNoteViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -23,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.Discount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order)
+                @Html.DisplayNameFor(model => model.OrderId)
             </th>
             <th></th>
         </tr>
@@ -41,7 +41,7 @@
                 @Html.DisplayFor(modelItem => item.Discount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Order.Id)
+                @Html.DisplayFor(modelItem => item.OrderId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

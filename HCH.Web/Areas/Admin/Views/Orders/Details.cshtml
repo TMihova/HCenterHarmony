@@ -1,4 +1,4 @@
-﻿@model HCH.Models.Order
+﻿@model HCH.Web.Models.OrderViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -18,10 +18,10 @@
             @Html.DisplayFor(model => model.OrderDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Client)
+            @Html.DisplayNameFor(model => model.ClientFullName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Client.Id)
+            @Html.DisplayFor(model => model.ClientId)
         </dd>
     </dl>
 </div>

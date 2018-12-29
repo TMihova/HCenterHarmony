@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using HCH.Web.Models;
 using HCH.Models;
 using HCH.Services;
 using HCH.Data;
@@ -70,6 +68,7 @@ namespace HCH.Web
             services.AddScoped<IProfilesService, ProfilesService>();
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<IDeliveryNotesService, DeliveryNotesService>();
+            services.AddScoped<IFoodSupplementsService, FoodSupplementsService>();
 
             services.AddAutoMapper();
         }

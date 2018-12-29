@@ -34,7 +34,7 @@
                         <td class="col-md-3">
                             @if (String.IsNullOrEmpty(item.DeliveryNoteDate))
                             {
-                            <a asp-area="" asp-controller="DeliveryNotes" asp-action="Create" asp-route-id="@item.Id">Създай фактура</a>
+                            <a asp-area="Admin" asp-controller="DeliveryNotes" asp-action="Create" asp-route-id="@item.Id">Създай фактура</a>
 
                             }
                             else

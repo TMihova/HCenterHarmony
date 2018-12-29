@@ -2,6 +2,7 @@
 using HCH.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,9 +31,21 @@ namespace HCH.Services
             await this.context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<DeliveryNote>> AllAsync()
+        {
+            return await this.context.DeliveryNotes.ToListAsync();
+        }
+
         public async Task<DeliveryNote> GetDeliveryNoteForOrderAsync(int orderId)
         {
             var deliveryNote = await this.context.DeliveryNotes.FirstOrDefaultAsync(x => x.OrderId == orderId);
+
+            return deliveryNote;
+        }
+
+        public async Task<DeliveryNote> GetDeliveryNoteByIdAsync(int deliveryNoteId)
+        {
+            var deliveryNote = await this.context.DeliveryNotes.FirstOrDefaultAsync(x => x.Id == deliveryNoteId);
 
             return deliveryNote;
         }

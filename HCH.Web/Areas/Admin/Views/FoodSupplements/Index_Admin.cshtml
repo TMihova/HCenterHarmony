@@ -41,13 +41,13 @@
                             <td class="col-md-2">
 
                                 
-                                    <form class="form-inline" asp-controller="FoodSupplements" asp-action="Edit" asp-route-id="@item.Id" method="get">
+                                    <form class="form-inline" asp-area="Admin" asp-controller="FoodSupplements" asp-action="Edit" asp-route-id="@item.Id" method="get">
 
                                         <button type="submit" class="btn harmony-bg-color ml-2">Редактирай</button>
 
                                     </form>
 
-                                    <form class="form-inline" asp-controller="FoodSupplements" asp-action="Delete" asp-route-id="@item.Id" method="get">
+                                    <form class="form-inline" asp-area="Admin" asp-controller="FoodSupplements" asp-action="Delete" asp-route-id="@item.Id" method="get">
 
                                         <button type="submit" class="btn harmony-bg-color ml-2">Премахни</button>
 

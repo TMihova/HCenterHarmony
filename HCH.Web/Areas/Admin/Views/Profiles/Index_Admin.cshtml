@@ -14,7 +14,7 @@
             @foreach (var item in Model)
             {
                 <div class="container mt-2">
-                    <a asp-controller="Therapists" asp-action="Index_Admin" asp-route-profile="@item.Name"><h4>@item.Name</h4></a>
+                    <a asp-area="Admin" asp-controller="Therapists" asp-action="Index_Admin" asp-route-profile="@item.Name"><h4>@item.Name</h4></a>
                 </div>
             }
         </div>

@@ -74,5 +74,17 @@ namespace HCH.Services
         {
             return await this.context.Orders.ToListAsync();
         }
+
+        public async Task RemoveOrderAsync(int id)
+        {
+            var order = await this.context.Orders.FirstOrDefaultAsync(x => x.Id == id);
+           this.context.Orders.Remove(order);
+            await this.context.SaveChangesAsync();
+        }
+
+        public bool OrderExists(int id)
+        {
+            return this.context.Orders.Any(e => e.Id == id);
+        }
     }
 }
