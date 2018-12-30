@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Services;
 using System.Globalization;
+using AutoMapper;
 
 namespace HCH.Web.Controllers
 {
@@ -17,19 +18,20 @@ namespace HCH.Web.Controllers
         private readonly IOrdersService ordersService;
         private readonly IDeliveryNotesService deliveryNotesService;
         private readonly SignInManager<HCHWebUser> signInManager;
+        private readonly IMapper mapper;
 
         public OrdersController(
             IOrdersService ordersService,
             IDeliveryNotesService deliveryNotesService,
             SignInManager<HCHWebUser> signInManager,
-            UserManager<HCHWebUser> userManager)
+            UserManager<HCHWebUser> userManager,
+            IMapper mapper)
         {
             this.ordersService = ordersService;
             this.deliveryNotesService = deliveryNotesService;
             this.signInManager = signInManager;
+            this.mapper = mapper;
         }
-
-        
 
         // POST: Orders/Create
         [HttpPost]
@@ -43,7 +45,16 @@ namespace HCH.Web.Controllers
 
                 var date = DateTime.UtcNow;
 
-                var productCount = int.Parse(this.HttpContext.Request.Form["Count"].ToString());
+                var successParse = int.TryParse(this.HttpContext.Request.Form["Count"].ToString(), out var productCount);
+
+                if (!successParse || productCount <= 0)
+                {
+                    this.ModelState.AddModelError("ProductCount", "Невалиден брой продукти.");
+
+                    var errors = ModelState.Values.SelectMany(e => e.Errors).Select(e => e.ErrorMessage).ToList();
+
+                    return this.View("Error", errors);
+                }
 
                 if (!this.ordersService.IsThereAnyOrdersForClientOnGivenDate(date, clientId))
                 {
@@ -54,7 +65,7 @@ namespace HCH.Web.Controllers
 
                 return RedirectToAction("Index", "FoodSupplements");
             }
-            //ViewData["ClientId"] = new SelectList(_context.Users, "Id", "Id", orderViewModel.ClientId);
+
             return RedirectToAction("Index", "FoodSupplements");
         }
 
@@ -78,13 +89,15 @@ namespace HCH.Web.Controllers
                 }
                 else
                 {
-                    var orderProductView = new OrderProductViewModel
-                    {
-                        Id = product.FoodSupplement.Id,                        
-                        Name = productName,
-                        Count = product.ProductCount,
-                        Price = product.FoodSupplement.Price
-                    };
+                    var orderProductView = mapper.Map<OrderProductViewModel>(product);
+
+                    //var orderProductView = new OrderProductViewModel
+                    //{
+                    //    Id = product.FoodSupplement.Id,                        
+                    //    Name = productName,
+                    //    Count = product.ProductCount,
+                    //    Price = product.FoodSupplement.Price
+                    //};
 
                     orderProductsView.Add(orderProductView);
                 }
@@ -109,14 +122,15 @@ namespace HCH.Web.Controllers
 
             foreach (var order in orders)
             {
-                
-                var orderView = new OrderViewModel
-                {
-                    Id = order.Id,
-                    ClientId = clientId,
-                    OrderDate = order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    Price = order.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price)
-                };
+                var orderView = mapper.Map<OrderViewModel>(order);
+
+                //var orderView = new OrderViewModel
+                //{
+                //    Id = order.Id,
+                //    ClientId = order.ClientId,
+                //    OrderDate = order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                //    Price = order.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price)
+                //};
 
                 if (this.deliveryNotesService.IsThereDeliveryNoteForOrder(order.Id))
                 {

@@ -14,10 +14,10 @@
                 <thead>
                     <tr class="row">
                         <th class="col-md-1">#</th>
-                        <th class="col-md-2">Клиент</th>
                         <th class="col-md-2">Дата на поръчката</th>
                         <th class="col-md-2">Стойност в лева</th>
                         <th class="col-md-3">Номер/Дата на фактурата</th>
+                        <th class="col-md-2">Клиент</th>
                         <th class="col-md-2">Продукти</th>
                     </tr>
                 </thead>
@@ -28,21 +28,21 @@
                         
                     <tr class="row">
                         <th class="col-md-1">@item.Id</th>
-                        <td class="col-md-2">@item.ClientFullName</td>
                         <td class="col-md-2">@item.OrderDate</td>
                         <td class="col-md-2">@item.Price</td>
                         <td class="col-md-3">
                             @if (String.IsNullOrEmpty(item.DeliveryNoteDate))
                             {
-                            <a asp-area="Admin" asp-controller="DeliveryNotes" asp-action="Create" asp-route-id="@item.Id">Създай фактура</a>
+                                <a asp-area="Admin" asp-controller="DeliveryNotes" asp-action="Create" asp-route-id="@item.Id">Създай фактура</a>
 
                             }
                             else
                             {
-                            @item.DeliveryNoteId<text>/</text>@item.DeliveryNoteDate
-                            <a asp-area="" asp-controller="DeliveryNotes" asp-action="Details" asp-route-id="@item.Id">Детайли</a>
+                                @item.DeliveryNoteId<text>/</text>@item.DeliveryNoteDate
+                                <a asp-area="" asp-controller="DeliveryNotes" asp-action="Details" asp-route-id="@item.Id">Детайли</a>
                             }
                         </td>
+                        <td class="col-md-2">@item.ClientFullName</td>
                         <td class="col-md-2">
                             <a asp-area="" asp-controller="Orders" asp-action="OrderProducts" asp-route-id="@item.Id">Виж продуктите</a>
                         </td>

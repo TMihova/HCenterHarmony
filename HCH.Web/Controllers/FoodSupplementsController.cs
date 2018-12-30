@@ -1,25 +1,24 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using HCH.Models;
 using HCH.Web.Models;
-using HCH.Data;
-using Microsoft.AspNetCore.Authorization;
 using HCH.Services;
+using HCH.Models;
+using AutoMapper;
 
 namespace HCH.Web.Controllers
 {
     public class FoodSupplementsController : Controller
     {
-        private readonly HCHWebContext _context;
         private readonly IFoodSupplementsService foodSupplementsService;
+        private readonly IMapper mapper;
 
-        public FoodSupplementsController(HCHWebContext context,
-            IFoodSupplementsService foodSupplementsService)
+        public FoodSupplementsController(
+            IFoodSupplementsService foodSupplementsService,
+            IMapper mapper)
         {
-            _context = context;
             this.foodSupplementsService = foodSupplementsService;
+            this.mapper = mapper;
         }
 
         // GET: FoodSupplements
@@ -27,19 +26,10 @@ namespace HCH.Web.Controllers
         {
             var products = await this.foodSupplementsService.AllAsync();
 
-            var productsView = products.Select(x => new FoodSupplementViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                Price = x.Price
-            })
-            .ToList();
+            var productsView = products.Select(x => mapper.Map<FoodSupplementViewModel>(x)).ToList();
 
             return View(productsView);
         }
-
-        
 
         // GET: FoodSupplements/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -49,12 +39,16 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            var foodSupplement = await _context.FoodSupplements
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productId = id.GetValueOrDefault();
+
+            FoodSupplement foodSupplement = await this.foodSupplementsService.GetProductById(productId);
+
             if (foodSupplement == null)
             {
                 return NotFound();
             }
+
+            var productView = mapper.Map<FoodSupplementViewModel>(foodSupplement);
 
             return View(foodSupplement);
         }

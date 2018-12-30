@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Services;
 using System.Globalization;
+using AutoMapper;
 
 namespace HCH.Web.Areas.Admin.Controllers
 {
@@ -18,16 +19,19 @@ namespace HCH.Web.Areas.Admin.Controllers
         private readonly IOrdersService ordersService;
         private readonly IDeliveryNotesService deliveryNotesService;
         private readonly SignInManager<HCHWebUser> signInManager;
+        private readonly IMapper mapper;
 
         public OrdersController(
             IOrdersService ordersService,
             IDeliveryNotesService deliveryNotesService,
             SignInManager<HCHWebUser> signInManager,
-            UserManager<HCHWebUser> userManager)
+            UserManager<HCHWebUser> userManager,
+            IMapper mapper)
         {
             this.ordersService = ordersService;
             this.deliveryNotesService = deliveryNotesService;
             this.signInManager = signInManager;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -39,15 +43,16 @@ namespace HCH.Web.Areas.Admin.Controllers
 
             foreach (var order in orders)
             {
+                var orderView = this.mapper.Map<OrderViewModel>(order);
 
-                var orderView = new OrderViewModel
-                {
-                    Id = order.Id,
-                    ClientId = order.ClientId,
-                    ClientFullName = order.Client.FirstName + " " + order.Client.LastName,
-                    OrderDate = order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    Price = order.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price)
-                };
+                //var orderView = new OrderViewModel
+                //{
+                //    Id = order.Id,
+                //    ClientId = order.ClientId,
+                //    ClientFullName = order.Client.FirstName + " " + order.Client.LastName,
+                //    OrderDate = order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                //    Price = order.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price)
+                //};
 
                 if (this.deliveryNotesService.IsThereDeliveryNoteForOrder(order.Id))
                 {
@@ -74,20 +79,22 @@ namespace HCH.Web.Areas.Admin.Controllers
             var orderId = id.GetValueOrDefault();
 
             var order = await this.ordersService.GetOrderByIdAsync(orderId);
-                //await _context.Orders.Include(o => o.Client).FirstOrDefaultAsync(m => m.Id == id);
+
             if (order == null)
             {
                 return NotFound();
             }
 
-            var orderView = new OrderViewModel
-            {
-                Id = order.Id,
-                OrderDate = order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                Price = order.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price),
-                ClientId = order.ClientId,
-                ClientFullName = order.Client.FirstName + " " + order.Client.LastName
-            };
+            var orderView = this.mapper.Map<OrderViewModel>(order);
+
+            //var orderView = new OrderViewModel
+            //{
+            //    Id = order.Id,
+            //    OrderDate = order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+            //    Price = order.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price),
+            //    ClientId = order.ClientId,
+            //    ClientFullName = order.Client.FirstName + " " + order.Client.LastName
+            //};
 
             return View(orderView);
         }

@@ -7,6 +7,7 @@ using HCH.Web.Models;
 using HCH.Data;
 using Microsoft.AspNetCore.Authorization;
 using HCH.Services;
+using AutoMapper;
 
 namespace HCH.Web.Areas.Admin.Controllers
 {
@@ -16,67 +17,25 @@ namespace HCH.Web.Areas.Admin.Controllers
     {
         private readonly HCHWebContext _context;
         private readonly IFoodSupplementsService foodSupplementsService;
+        private readonly IMapper mapper;
 
         public FoodSupplementsController(HCHWebContext context,
-            IFoodSupplementsService foodSupplementsService)
+            IFoodSupplementsService foodSupplementsService,
+            IMapper mapper)
         {
             _context = context;
             this.foodSupplementsService = foodSupplementsService;
+            this.mapper = mapper;
         }
 
         // GET: FoodSupplements
-        public async Task<IActionResult> Index()
-        {
-            var products = await this.foodSupplementsService.AllAsync();
-                //await _context.FoodSupplements.ToListAsync();
-
-            var productsView = products.Select(x => new FoodSupplementViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                Price = x.Price
-            })
-            .ToList();
-
-            return View(productsView);
-        }
-
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index_Admin()
         {
             var products = await this.foodSupplementsService.AllAsync();
 
-            var productsView = products.Select(x => new FoodSupplementViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                Price = x.Price
-            })
-            .ToList();
+            var productsView = products.Select(x => mapper.Map<FoodSupplementViewModel>(x)).ToList();
 
             return View(productsView);
-        }
-
-        // GET: FoodSupplements/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-
-
-            var foodSupplement = await _context.FoodSupplements
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (foodSupplement == null)
-            {
-                return NotFound();
-            }
-
-            return View(foodSupplement);
         }
 
         // GET: FoodSupplements/Create
@@ -86,19 +45,19 @@ namespace HCH.Web.Areas.Admin.Controllers
         }
 
         // POST: FoodSupplements/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price")] FoodSupplement foodSupplement)
+        public async Task<IActionResult> Create(FoodSupplementViewModel foodSupplementModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(foodSupplement);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                FoodSupplement foodSupplement = mapper.Map<FoodSupplement>(foodSupplementModel);
+
+                await this.foodSupplementsService.AddProductAsync(foodSupplement);
+                
+                return RedirectToAction(nameof(Index_Admin));
             }
-            return View(foodSupplement);
+            return View(foodSupplementModel);
         }
 
         // GET: FoodSupplements/Edit/5
@@ -109,36 +68,41 @@ namespace HCH.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var foodSupplement = await _context.FoodSupplements.FindAsync(id);
+            var productId = id.GetValueOrDefault();
+
+            var foodSupplement = await this.foodSupplementsService.GetProductById(productId);
+
             if (foodSupplement == null)
             {
                 return NotFound();
             }
-            return View(foodSupplement);
+
+            var foodSupplementView = mapper.Map<FoodSupplementViewModel>(foodSupplement);
+
+            return View(foodSupplementView);
         }
 
         // POST: FoodSupplements/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price")] FoodSupplement foodSupplement)
+        public async Task<IActionResult> Edit(int id, FoodSupplementViewModel foodSupplementModel)
         {
-            if (id != foodSupplement.Id)
+            if (id != foodSupplementModel.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+
                 try
                 {
-                    _context.Update(foodSupplement);
-                    await _context.SaveChangesAsync();
+                    await this.foodSupplementsService.UpdateProductAsync(id, foodSupplementModel.Name, foodSupplementModel.Price, foodSupplementModel.Description);
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FoodSupplementExists(foodSupplement.Id))
+                    if (!FoodSupplementExists(foodSupplementModel.Id))
                     {
                         return NotFound();
                     }
@@ -147,9 +111,9 @@ namespace HCH.Web.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index_Admin));
             }
-            return View(foodSupplement);
+            return View(foodSupplementModel);
         }
 
         // GET: FoodSupplements/Delete/5
@@ -160,14 +124,18 @@ namespace HCH.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var foodSupplement = await _context.FoodSupplements
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productId = id.GetValueOrDefault();
+
+            var foodSupplement = await this.foodSupplementsService.GetProductById(productId);
+
             if (foodSupplement == null)
             {
                 return NotFound();
             }
 
-            return View(foodSupplement);
+            var foodSupplementView = mapper.Map<FoodSupplementViewModel>(foodSupplement);
+
+            return View(foodSupplementView);
         }
 
         // POST: FoodSupplements/Delete/5
@@ -178,7 +146,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             var foodSupplement = await _context.FoodSupplements.FindAsync(id);
             _context.FoodSupplements.Remove(foodSupplement);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index_Admin));
         }
 
         private bool FoodSupplementExists(int id)
