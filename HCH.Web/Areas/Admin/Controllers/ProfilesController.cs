@@ -7,6 +7,7 @@ using HCH.Web.Models;
 using HCH.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 
 namespace HCH.Web.Areas.Admin.Controllers
 {
@@ -17,15 +18,18 @@ namespace HCH.Web.Areas.Admin.Controllers
         private readonly IProfilesService profilesService;
         private readonly IUsersService usersService;
         private readonly IOptions<UserRoles> configRoles;
+        private readonly IMapper mapper;
 
         public ProfilesController(
             IProfilesService profilesService,
             IUsersService usersService,
-            IOptions<UserRoles> configRoles)
+            IOptions<UserRoles> configRoles,
+            IMapper mapper)
         {
             this.profilesService = profilesService;
             this.usersService = usersService;
             this.configRoles = configRoles;
+            this.mapper = mapper;
         }
 
         // GET: Profiles
@@ -33,13 +37,15 @@ namespace HCH.Web.Areas.Admin.Controllers
         {
             var profiles = await this.profilesService.All();
 
-            var viewProfiles = profiles.Select(x => new ProfileViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description
-            });
-            
+            var viewProfiles = profiles.Select(x => this.mapper.Map<ProfileViewModel>(x));
+
+            //var viewProfiles = profiles.Select(x => new ProfileViewModel
+            //{
+            //    Id = x.Id,
+            //    Name = x.Name,
+            //    Description = x.Description
+            //});
+
             return View(viewProfiles);
         }
 
@@ -52,13 +58,15 @@ namespace HCH.Web.Areas.Admin.Controllers
             }
 
             var profile = await this.profilesService.GetProfileById(id);
-                //await _context.Profiles.FirstOrDefaultAsync(m => m.Id == id);
+
             if (profile == null)
             {
                 return NotFound();
             }
 
-            return View(profile);
+            var profileView = this.mapper.Map<ProfileViewModel>(profile);
+
+            return View(profileView);
         }
 
         // GET: Profiles/Create
@@ -68,19 +76,19 @@ namespace HCH.Web.Areas.Admin.Controllers
         }
 
         // POST: Profiles/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProfileViewModel profileViewModel)
         {
             if (ModelState.IsValid)
             {
-                var profile = new Profile
-                {
-                    Name = profileViewModel.Name,
-                    Description = profileViewModel.Description
-                };
+                var profile = this.mapper.Map<HCH.Models.Profile>(profileViewModel);
+
+                //var profile = new Profile
+                //{
+                //    Name = profileViewModel.Name,
+                //    Description = profileViewModel.Description
+                //};
 
                 await this.profilesService.AddAsync(profile);
                 return RedirectToAction(nameof(Index_Admin));
@@ -97,17 +105,18 @@ namespace HCH.Web.Areas.Admin.Controllers
             }
 
             var profile = await this.profilesService.GetProfileById(id);
-                //_context.Profiles.FindAsync(id);
+
             if (profile == null)
             {
                 return NotFound();
             }
-            return View(profile);
+
+            var profileView = this.mapper.Map<ProfileViewModel>(profile);
+
+            return View(profileView);
         }
 
         // POST: Profiles/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, ProfileViewModel profile)
@@ -122,8 +131,6 @@ namespace HCH.Web.Areas.Admin.Controllers
                 try
                 {
                     await this.profilesService.UpdateProfileAsync(id, profile.Name, profile.Description);
-                    //_context.Update(profile);
-                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -149,14 +156,16 @@ namespace HCH.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            Profile profile = await this.profilesService.GetProfileById(id);
-                //await _context.Profiles.FirstOrDefaultAsync(m => m.Id == id);
+            HCH.Models.Profile profile = await this.profilesService.GetProfileById(id);
+
             if (profile == null)
             {
                 return NotFound();
             }
 
-            return View(profile);
+            var profileView = this.mapper.Map<ProfileViewModel>(profile);
+
+            return View(profileView);
         }
 
         // POST: Profiles/Delete/5

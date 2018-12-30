@@ -1,12 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using HCH.Models;
 using HCH.Web.Models;
 using HCH.Services;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 
 namespace HCH.Web.Controllers
 {
@@ -15,15 +13,18 @@ namespace HCH.Web.Controllers
         private readonly IProfilesService profilesService;
         private readonly IUsersService usersService;
         private readonly IOptions<UserRoles> configRoles;
+        private readonly IMapper mapper;
 
         public ProfilesController(
             IProfilesService profilesService,
             IUsersService usersService,
-            IOptions<UserRoles> configRoles)
+            IOptions<UserRoles> configRoles,
+            IMapper mapper)
         {
             this.profilesService = profilesService;
             this.usersService = usersService;
             this.configRoles = configRoles;
+            this.mapper = mapper;
         }
 
         // GET: Profiles
@@ -31,14 +32,29 @@ namespace HCH.Web.Controllers
         {
             var profiles = await this.profilesService.All();
 
-            var viewProfiles = profiles.Select(x => new ProfileViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description
-            });
-            
+            var viewProfiles = profiles.Select(x => this.mapper.Map<ProfileViewModel>(x));
+
             return View(viewProfiles);
-        }       
+        }
+
+        // GET: Profiles/Details/5        
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var profile = await this.profilesService.GetProfileById(id);
+
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            var profileView = this.mapper.Map<ProfileViewModel>(profile);
+
+            return View(profileView);
+        }
     }
 }

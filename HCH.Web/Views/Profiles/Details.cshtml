@@ -1,0 +1,15 @@
+﻿@model HCH.Web.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <h4>@Model.Name</h4>
+    <hr />
+    <h4>@Model.Description</h4>
+
+    <a asp-action="Index">Към списъка</a>
+</div>

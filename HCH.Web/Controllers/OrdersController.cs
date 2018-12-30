@@ -91,14 +91,6 @@ namespace HCH.Web.Controllers
                 {
                     var orderProductView = mapper.Map<OrderProductViewModel>(product);
 
-                    //var orderProductView = new OrderProductViewModel
-                    //{
-                    //    Id = product.FoodSupplement.Id,                        
-                    //    Name = productName,
-                    //    Count = product.ProductCount,
-                    //    Price = product.FoodSupplement.Price
-                    //};
-
                     orderProductsView.Add(orderProductView);
                 }
             }
@@ -123,14 +115,6 @@ namespace HCH.Web.Controllers
             foreach (var order in orders)
             {
                 var orderView = mapper.Map<OrderViewModel>(order);
-
-                //var orderView = new OrderViewModel
-                //{
-                //    Id = order.Id,
-                //    ClientId = order.ClientId,
-                //    OrderDate = order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                //    Price = order.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price)
-                //};
 
                 if (this.deliveryNotesService.IsThereDeliveryNoteForOrder(order.Id))
                 {

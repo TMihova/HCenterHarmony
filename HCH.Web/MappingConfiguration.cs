@@ -14,6 +14,8 @@ namespace HCH.Web
 
             CreateMap<FoodSupplement, FoodSupplementViewModel>().ReverseMap();
 
+            CreateMap<Profile, ProfileViewModel>().ReverseMap();
+
             CreateMap<OrderFoodSupplement, OrderProductViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FoodSupplement.Id))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FoodSupplement.Name))

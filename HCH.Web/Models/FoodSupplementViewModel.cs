@@ -12,17 +12,17 @@ namespace HCH.Web.Models
 
         [Required]
         [Display(Name = "Име")]
-        [MinLength(3, ErrorMessage = "The {0} must be at least {1} characters long.")]
+        [MinLength(3, ErrorMessage = "Името трябва да е поне 3 символа.")]
         public string Name { get; set; }
 
         [Required]
         [Display(Name = "Описание")]
-        [MinLength(3, ErrorMessage = "The {0} must be at least {1} characters long.")]
+        [MinLength(3, ErrorMessage = "Описанието трябва да е поне 3 символа.")]
         public string Description { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]
-        [Range(0.01, Double.MaxValue)]
+        [Range(0.01, Double.MaxValue, ErrorMessage = "Цената трябва да е по-голяма от 0.")]
         [Display(Name = "Цена")]
         public decimal Price { get; set; }
     }

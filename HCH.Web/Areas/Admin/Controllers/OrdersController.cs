@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HCH.Models;
@@ -45,15 +44,6 @@ namespace HCH.Web.Areas.Admin.Controllers
             {
                 var orderView = this.mapper.Map<OrderViewModel>(order);
 
-                //var orderView = new OrderViewModel
-                //{
-                //    Id = order.Id,
-                //    ClientId = order.ClientId,
-                //    ClientFullName = order.Client.FirstName + " " + order.Client.LastName,
-                //    OrderDate = order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                //    Price = order.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price)
-                //};
-
                 if (this.deliveryNotesService.IsThereDeliveryNoteForOrder(order.Id))
                 {
                     var deliveryNote = await this.deliveryNotesService.GetDeliveryNoteForOrderAsync(order.Id);
@@ -86,15 +76,6 @@ namespace HCH.Web.Areas.Admin.Controllers
             }
 
             var orderView = this.mapper.Map<OrderViewModel>(order);
-
-            //var orderView = new OrderViewModel
-            //{
-            //    Id = order.Id,
-            //    OrderDate = order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-            //    Price = order.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price),
-            //    ClientId = order.ClientId,
-            //    ClientFullName = order.Client.FirstName + " " + order.Client.LastName
-            //};
 
             return View(orderView);
         }
