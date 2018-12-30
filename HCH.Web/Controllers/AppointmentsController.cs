@@ -5,23 +5,37 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HCH.Models;
 using HCH.Data;
+using HCH.Services;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using HCH.Web.Models;
 
 namespace HCH.Web.Controllers
 {
     public class AppointmentsController : Controller
     {
         private readonly HCHWebContext _context;
+        private readonly IAppointmentsService appointmentsService;
+        private readonly SignInManager<HCHWebUser> signInManager;
 
-        public AppointmentsController(HCHWebContext context)
+        public AppointmentsController(HCHWebContext context,
+            IAppointmentsService appointmentsService,
+            SignInManager<HCHWebUser> signInManager)
         {
             _context = context;
+            this.appointmentsService = appointmentsService;
+            this.signInManager = signInManager;
         }
 
         // GET: Appointments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
-            var hCHWebContext = _context.Appointments.Include(a => a.Patient).Include(a => a.Therapist);
-            return View(await hCHWebContext.ToListAsync());
+            var therapistId = this.signInManager.UserManager.GetUserId(User);
+
+            var appointmentsTherapist = await this.appointmentsService.AppointmentsForTherapistAsync(id);
+
+            return View(appointmentsTherapist);
         }
 
         // GET: Appointments/Details/5
@@ -45,20 +59,21 @@ namespace HCH.Web.Controllers
         }
 
         // GET: Appointments/Create
+        [Authorize(Roles = "Therapist")]
         public IActionResult Create()
         {
-            var therapistName = this.User.Identity.Name;
-            //ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["TherapistName"] = therapistName;
+            var therapistId = this.signInManager.UserManager.GetUserId(User);
+
+            ViewData["TherapistId"] = therapistId;
+
             return View();
         }
 
         // POST: Appointments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DayOfWeekBg,VisitingHour,Price,TherapistId,PatientId")] Appointment appointment)
+        [Authorize(Roles= "Therapist")]
+        public async Task<IActionResult> Create(AppointmentViewModel appointment)
         {
             if (ModelState.IsValid)
             {

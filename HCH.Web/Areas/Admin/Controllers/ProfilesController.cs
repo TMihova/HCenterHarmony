@@ -152,8 +152,7 @@ namespace HCH.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
-            {
-                return NotFound();
+            {return NotFound();
             }
 
             HCH.Models.Profile profile = await this.profilesService.GetProfileById(id);

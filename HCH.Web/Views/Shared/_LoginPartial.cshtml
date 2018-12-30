@@ -28,6 +28,25 @@
         </ul>
     }
 
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Therapist"))
+    {
+        <ul class="nav navbar-nav mr-auto my-2 my-lg-0 mr-sm-2">
+            <li class="nav-item dropdown">
+                <a class="nav-item nav-link nav-link-dark dropdown-toggle mr-md-2" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Администрация
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <div class="container-fluid d-flex justify-content-center mt-3">
+                        <a class="a-black dropdown-item ml-3" asp-area="" asp-controller="Therapies" asp-action="Index">Пациенти/Терапии</a><br />
+                        <a class="a-black dropdown-item ml-3" asp-area="" asp-controller="Appointments" asp-action="Index">Приемни часове</a><br />
+                        <a class="a-black dropdown-item ml-3" asp-area="" asp-controller="Treatments" asp-action="Index">Лечебни средства</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    }
+
     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
 
