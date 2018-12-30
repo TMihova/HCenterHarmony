@@ -1,60 +1,58 @@
-﻿@model IEnumerable<HCH.Models.Appointment>
+﻿@model IEnumerable<HCH.Web.Models.AppointmentViewModel>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DayOfWeekBg)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VisitingHour)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Therapist)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Patient)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DayOfWeekBg)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VisitingHour)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Therapist.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<main class="mt-3">
+    <div class="container w-75 justify-content-center">
+        <h2 class="text-center">График на приемните часове</h2>
+        <h3 class="text-center">Терапевт: @ViewData["TherapistFullName"]</h3>
+        <h3 class="text-center">Профил: @ViewData["ProfileName"]</h3>
+        <hr class="hr-4" />
+        <div class="container-fluid">
+            <table class="table  mx-auto table-hover">
+                <thead>
+                    <tr class="row">
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-2">Ден от седмицата</th>
+                        <th class="col-md-2">Приемен час</th>
+                        <th class="col-md-2">Цена в лв.</th>
+                        <th class="col-md-3">Пациент</th>
+                        <th class="col-md-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int count = 0;}
+                    @foreach (var item in Model)
+                    {
+                        count++;
+
+                        <tr class="row">
+                            <th class="col-md-1">@count</th>
+                            <td class="col-md-2">
+                                @item.DayOfWeekBg.ToString()
+
+                            </td>
+                            <td class="col-md-2">@item.VisitingHour</td>
+                            <td class="col-md-2">@item.Price лв</td>
+                            <td class="col-md-3">@item.PatientFullName</td>
+                            <td class="col-md-2">
+                                <a asp-controller="Appointments" asp-action="Edit" asp-route-id="@item.Id" class="btn harmony-bg-color">Edit</a>
+                                <a asp-controller="Appointments" asp-action="Delete" asp-route-id="@item.Id" class="btn harmony-bg-color">Delete</a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <hr class="hr-4 mb-0" />
+        <a asp-controller="Appointments" asp-action="Create" asp-route-id="@ViewData["TherapistId"]">Добави</a>
+    </div>
+</main>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-    </tbody>
-</table>

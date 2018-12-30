@@ -6,6 +6,8 @@ namespace HCH.Web.Models
 {
     public class AppointmentViewModel
     {
+        public string Id { get; set; }
+
         [Required]
         [Display(Name = "Ден от седмицата")]
         public DayOfWeekBg DayOfWeekBg { get; set; }
@@ -23,14 +25,12 @@ namespace HCH.Web.Models
 
         [Required]
         public string TherapistId { get; set; }
-
-        [Required]
-        [Display(Name = "Име и фамилия")]
-        public string TherapistFullNme { get; set; }
+        
+        [Display(Name = "Терапевт")]
+        public string TherapistFullName { get; set; }
 
         public string PatientId { get; set; }
-
         
-        public string PatientFullNme { get; set; }
+        public string PatientFullName { get; set; }
     }
 }

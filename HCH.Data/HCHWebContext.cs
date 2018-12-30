@@ -1,5 +1,7 @@
 ﻿
+using System;
 using HCH.Models;
+using HCH.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
