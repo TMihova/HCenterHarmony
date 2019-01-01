@@ -45,9 +45,30 @@ namespace HCH.Services
             return this.context.Appointments.Any(x => x.DayOfWeekBg == dayOfWeekBg && x.VisitingHour == visitingHour && x.TherapistId == therapistId);
         }
 
+        public async Task ReleaseAppointmentAsync(string id)
+        {
+            Appointment appointment = await this.context.Appointments.FindAsync(id);
+
+            appointment.PatientId = null;
+
+            this.context.Update(appointment);
+            await this.context.SaveChangesAsync();
+        }
+
         public async Task RemoveAppointmentAsync(Appointment appointment)
         {
             this.context.Appointments.Remove(appointment);
+            await this.context.SaveChangesAsync();
+        }
+
+        public async Task TakeAppointmentForPatientAsync(string id, string patientId)
+        {
+            var appointmentDb = await this.context.Appointments.FindAsync(id);
+
+            appointmentDb.PatientId = patientId;
+
+            this.context.Update(appointmentDb);
+
             await this.context.SaveChangesAsync();
         }
 

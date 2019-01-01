@@ -20,8 +20,8 @@
                         <th class="col-md-2">Ден от седмицата</th>
                         <th class="col-md-2">Приемен час</th>
                         <th class="col-md-2">Цена в лв.</th>
-                        <th class="col-md-3">Пациент</th>
-                        <th class="col-md-2"></th>
+                        <th class="col-md-2">Пациент</th>
+                        <th class="col-md-3"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,11 +38,18 @@
                             </td>
                             <td class="col-md-2">@item.VisitingHour</td>
                             <td class="col-md-2">@item.Price лв</td>
-                            <td class="col-md-3">@item.PatientFullName</td>
-                            <td class="col-md-2">
-                                <a asp-controller="Appointments" asp-action="Edit" asp-route-id="@item.Id" class="btn harmony-bg-color">Edit</a>
-                                <a asp-controller="Appointments" asp-action="Delete" asp-route-id="@item.Id" class="btn harmony-bg-color">Delete</a>
+                            <td class="col-md-2">@item.PatientFullName</td>
+                            <td class="col-md-3">
+                                <form class="form-inline" asp-controller="Appointments" asp-action="Release" asp-route-id="@item.Id" method="post">
 
+                                    <button type="submit" class="btn harmony-bg-color mr-2">Освободи</button>
+
+                                    <a asp-area="" asp-controller="Appointments" asp-action="Edit" asp-route-id="@item.Id" class="btn harmony-bg-color">Промени</a>
+                                    <a asp-area="" asp-controller="Appointments" asp-action="Delete" asp-route-id="@item.Id" class="btn harmony-bg-color">Изтрий</a>
+                                    
+                                </form>
+                               
+                               
                             </td>
                         </tr>
                     }

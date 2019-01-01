@@ -36,9 +36,6 @@
     <Content Update="Areas\Admin\Views\Therapists\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Appointments\Index_Admin.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Areas\Admin\Views\Profiles\Index_Admin.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

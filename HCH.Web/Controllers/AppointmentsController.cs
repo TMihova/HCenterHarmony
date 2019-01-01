@@ -1,17 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HCH.Models;
-using HCH.Data;
 using HCH.Services;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Web.Models;
-using HCH.Models.Enums;
-using System;
 
 namespace HCH.Web.Controllers
 {
@@ -32,6 +27,7 @@ namespace HCH.Web.Controllers
         }
 
         // GET: Appointments
+        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Index(string id)
         {
             var therapistId = this.signInManager.UserManager.GetUserId(User);
@@ -63,15 +59,51 @@ namespace HCH.Web.Controllers
         }
 
         // GET: Appointments
+        [Authorize]
         public async Task<IActionResult> Index_Patient(string id)
         {
-            
+            var patientId = this.signInManager.UserManager.GetUserId(User);
+
             var appointmentsTherapist = await this.appointmentsService.AppointmentsForTherapistAsync(id);
 
-            return View(appointmentsTherapist);
+            var appointmentsTherapistView = appointmentsTherapist.Where(x => x.IsFree == true)
+                .OrderBy(x => x.DayOfWeekBg)
+                .ThenBy(x => x.VisitingHour)
+                .Select(x => new AppointmentViewModel
+                {
+                    Id = x.Id,
+                    DayOfWeekBg = x.DayOfWeekBg,
+                    VisitingHour = x.VisitingHour,
+                    TherapistFullName = x.Therapist.FirstName + " " + x.Therapist.LastName,
+                    Price = x.Price
+                }).ToList();
+
+            HCHWebUser therapist = this.usersService.GetUserById(id);
+
+            ViewData["PatientId"] = patientId;
+            ViewData["TherapistId"] = therapist.Id;
+            ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
+            ViewData["ProfileName"] = therapist.Profile.Name;
+
+            return View(appointmentsTherapistView);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize()]
+        public async Task<IActionResult> Take(string id)
+        {
+            var patientId = this.signInManager.UserManager.GetUserId(User);
+
+            //HCHWebUser patient = this.usersService.GetUserById(patientId);
+
+           await this.appointmentsService.TakeAppointmentForPatientAsync(id, patientId);
+
+            return RedirectToAction("Index", "Profiles");
         }
 
         // GET: Appointments/Details/5
+        [Authorize(Roles ="Therapist")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -141,8 +173,19 @@ namespace HCH.Web.Controllers
             return View(appointmentModel);
         }
 
-        
+        // POST: Appointments/Release/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Therapist")]
+        public async Task<IActionResult> Release(string id)
+        {
+            await this.appointmentsService.ReleaseAppointmentAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Appointments/Edit/5
+        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -183,6 +226,7 @@ namespace HCH.Web.Controllers
         // POST: Appointments/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Edit(string id, AppointmentViewModel appointmentModel)
         {
             if (id != appointmentModel.Id)
@@ -233,6 +277,7 @@ namespace HCH.Web.Controllers
         }
 
         // GET: Appointments/Delete/5
+        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -266,6 +311,7 @@ namespace HCH.Web.Controllers
         // POST: Appointments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var appointment = await this.appointmentsService.GetAppointmentByIdAsync(id);
