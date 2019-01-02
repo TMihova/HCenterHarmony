@@ -1,0 +1,52 @@
+﻿@model HCH.Models.Examination
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Examination</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ExaminationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExaminationDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Therapist)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Therapist.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Patient.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Anamnesis)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Anamnesis)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Therapy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Therapy.Id)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

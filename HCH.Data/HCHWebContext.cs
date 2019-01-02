@@ -33,6 +33,8 @@ namespace HCH.Data
 
         public DbSet<Appointment> Appointments { get; set; }
 
+        public DbSet<Examination> Examinations { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -66,6 +68,16 @@ namespace HCH.Data
                 .HasOne(x => x.Therapist)
                 .WithMany(x => x.Appointments)
                 .HasForeignKey(x => x.TherapistId);
+
+            builder.Entity<Examination>()
+                .HasOne(x => x.Therapist)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Examination>()
+                .HasOne(x => x.Patient)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
