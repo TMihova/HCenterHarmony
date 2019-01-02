@@ -1,0 +1,67 @@
+﻿@model IEnumerable<HCH.Web.Models.TreatmentViewModel>
+
+@{
+    ViewData["Title"] = "Index_Therapist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="mt-3">
+    <div class="container w-75 justify-content-center">
+        <h3 class="text-center">Лечебни средства</h3>
+        <h3 class="text-center">Профил @ViewData["ProfileName"]</h3>
+        <hr class="hr-4" />
+        <div class="container-fluid">
+
+            <div><a asp-area="" asp-controller="Treatments" asp-action="Create">Добави</a></div>
+
+            <table class="table  mx-auto table-hover">
+                <thead>
+                    <tr class="row">
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-2">Наименование</th>
+                        <th class="col-md-5">Описание</th>
+                        <th class="col-md-2">Цена</th>
+                        <th class="col-md-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int count = 0;}
+                    @foreach (var item in Model)
+                    {
+                        count++;
+
+                        <tr class="row">
+                            <th class="col-md-1">@count</th>
+                            <td class="col-md-2">
+                                @item.Name
+
+                            </td>
+                            <td class="col-md-5">@item.Description</td>
+                            <td class="col-md-2">@item.Price лв</td>
+                            <td class="col-md-2">
+
+
+                                <form class="form-inline" asp-area="" asp-controller="Treatments" asp-action="Edit" asp-route-id="@item.Id" method="get">
+
+                                    <button type="submit" class="btn harmony-bg-color ml-2">Редактирай</button>
+
+                                </form>
+
+                                <form class="form-inline" asp-area="" asp-controller="Treatments" asp-action="Delete" asp-route-id="@item.Id" method="get">
+
+                                    <button type="submit" class="btn harmony-bg-color ml-2">Премахни</button>
+
+                                </form>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <hr class="hr-4 mb-0" />
+    </div>
+</main>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

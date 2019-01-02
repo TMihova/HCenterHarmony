@@ -90,7 +90,7 @@ namespace HCH.Web.Areas.Admin.Controllers
                 //    Description = profileViewModel.Description
                 //};
 
-                await this.profilesService.AddAsync(profile);
+                await this.profilesService.AddProfileAsync(profile);
                 return RedirectToAction(nameof(Index_Admin));
             }
             return View(profileViewModel);

@@ -95,8 +95,6 @@ namespace HCH.Web.Controllers
         {
             var patientId = this.signInManager.UserManager.GetUserId(User);
 
-            //HCHWebUser patient = this.usersService.GetUserById(patientId);
-
            await this.appointmentsService.TakeAppointmentForPatientAsync(id, patientId);
 
             return RedirectToAction("Index", "Profiles");
@@ -112,10 +110,7 @@ namespace HCH.Web.Controllers
             }
 
             var appointment = await this.appointmentsService.GetAppointmentByIdAsync(id);
-                //await _context.Appointments
-                //.Include(a => a.Patient)
-                //.Include(a => a.Therapist)
-                //.FirstOrDefaultAsync(m => m.Id == id);
+
             if (appointment == null)
             {
                 return NotFound();
@@ -286,11 +281,7 @@ namespace HCH.Web.Controllers
             }
 
             var appointment = await this.appointmentsService.GetAppointmentByIdAsync(id);
-
-            //var appointment = await _context.Appointments
-            //    .Include(a => a.Patient)
-            //    .Include(a => a.Therapist)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (appointment == null)
             {
                 return NotFound();
@@ -315,7 +306,6 @@ namespace HCH.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var appointment = await this.appointmentsService.GetAppointmentByIdAsync(id);
-            //await _context.Appointments.FindAsync(id);
 
             await this.appointmentsService.RemoveAppointmentAsync(appointment);
             

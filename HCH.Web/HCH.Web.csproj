@@ -42,6 +42,9 @@
     <Content Update="Views\Shared\_LoginPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Treatments\Index_Therapist.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="wwwroot\images\water1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1,43 +1,43 @@
-﻿@model HCH.Models.Treatment
+﻿@model HCH.Web.Models.TreatmentViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Treatment</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Profile)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Profile.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container">
+    <h3>Детайли за лечебно средство</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Профил
+            </dt>
+            <dd>
+                @Model.Profile
+            </dd>
+            <dt>
+                Наименование
+            </dt>
+            <dd>
+                @Model.Name
+            </dd>
+            <dt>
+                Описание
+            </dt>
+            <dd>
+                @Model.Description
+            </dd>
+            <dt>
+                Цена
+            </dt>
+            <dd>
+                @Model.Price лв.
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-area="" asp-controller="Treatments" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-area="" asp-controller="Treatments" asp-action="Index_Therapist">Към списъка</a>
+    </div>
 </div>

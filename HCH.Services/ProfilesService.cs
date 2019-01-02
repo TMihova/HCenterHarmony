@@ -16,6 +16,11 @@ namespace HCH.Services
             this.context = context;
         }
 
+        public async Task<Profile> GetProfileById(string id)
+        {
+            return await this.context.Profiles.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public Profile GetProfileByName(string profile)
         {
             return this.context.Profiles.SingleOrDefault(x => x.Name == profile);
@@ -28,15 +33,10 @@ namespace HCH.Services
             return profiles;
         }
 
-        public async Task AddAsync(Profile profile)
+        public async Task AddProfileAsync(Profile profile)
         {
             this.context.Profiles.Add(profile);
             await this.context.SaveChangesAsync();
-        }
-
-        public async Task<Profile> GetProfileById(string id)
-        {
-            return await this.context.Profiles.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task RemoveProfileAsync(string id)
@@ -44,12 +44,7 @@ namespace HCH.Services
             var profile = await this.context.Profiles.FindAsync(id);
             this.context.Profiles.Remove(profile);
             await this.context.SaveChangesAsync();
-        }
-
-        public bool ProfileExists(string id)
-        {
-            return this.context.Profiles.Any(e => e.Id == id);
-        }
+        }        
 
         public async Task UpdateProfileAsync(string id, string profileName, string profileDescription)
         {
@@ -60,6 +55,11 @@ namespace HCH.Services
 
             this.context.Update(profileDb);
             await this.context.SaveChangesAsync();
+        }
+
+        public bool ProfileExists(string id)
+        {
+            return this.context.Profiles.Any(e => e.Id == id);
         }
     }
 }

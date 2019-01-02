@@ -70,6 +70,7 @@ namespace HCH.Web
             services.AddScoped<IDeliveryNotesService, DeliveryNotesService>();
             services.AddScoped<IFoodSupplementsService, FoodSupplementsService>();
             services.AddScoped<IAppointmentsService, AppointmentsService>();
+            services.AddScoped<ITreatmentsService, TreatmentsService>();
 
             services.AddAutoMapper();
         }

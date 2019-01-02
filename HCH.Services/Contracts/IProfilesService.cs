@@ -9,7 +9,7 @@ namespace HCH.Services
         Profile GetProfileByName(string profile);
 
         Task<ICollection<Profile>> All();
-        Task AddAsync(Profile profile);
+        Task AddProfileAsync(Profile profile);
         Task<Profile> GetProfileById(string id);
         Task RemoveProfileAsync(string id);
         bool ProfileExists(string id);
