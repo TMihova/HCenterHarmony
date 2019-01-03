@@ -7,16 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HCH.Data;
 using HCH.Models;
+using HCH.Web.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using HCH.Services;
 
 namespace HCH.Web.Controllers
 {
     public class ExaminationsController : Controller
     {
         private readonly HCHWebContext _context;
+        private readonly SignInManager<HCHWebUser> signInManager;
+        private readonly ITreatmentsService treatmentsService;
+        private readonly ITherapiesService therapiesService;
+        private readonly IExaminationsService examinationsService;
+        private readonly IUsersService usersService;
 
-        public ExaminationsController(HCHWebContext context)
+        public ExaminationsController(HCHWebContext context,
+            SignInManager<HCHWebUser> signInManager,
+            ITreatmentsService treatmentsService,
+            ITherapiesService therapiesService,
+            IExaminationsService examinationsService,
+            IUsersService usersService)
         {
             _context = context;
+            this.signInManager = signInManager;
+            this.treatmentsService = treatmentsService;
+            this.therapiesService = therapiesService;
+            this.examinationsService = examinationsService;
+            this.usersService = usersService;
         }
 
         // GET: Examinations
@@ -47,13 +66,38 @@ namespace HCH.Web.Controllers
             return View(examination);
         }
 
-        // GET: Examinations/Create
-        public IActionResult Create()
+        // GET: Examinations/Create/patientId
+        [Authorize(Roles = "Therapist")]
+        public async Task<IActionResult> Create(string id)
         {
-            ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["TherapistId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["TherapyId"] = new SelectList(_context.Therapies, "Id", "Id");
-            return View();
+            var therapistId = this.signInManager.UserManager.GetUserId(User);
+
+            HCHWebUser therapist = this.usersService.GetUserById(therapistId);
+
+            HCHWebUser patient = this.usersService.GetUserById(id);
+
+            var treatmentsFromProfile = await this.treatmentsService.AllFromProfileAsync(therapist.ProfileId);
+
+            ExaminationViewModel examinationViewModel = new ExaminationViewModel
+            {
+                ExaminationDate = DateTime.UtcNow,
+                PatientId = id,
+                Patient = patient.FirstName + " " + patient.LastName,
+                TherapistId = therapistId,
+                Therapist = therapist.FirstName + " " + therapist.LastName,
+                Anamnesis = "Обективно състояние: ",
+                Treatments = treatmentsFromProfile.Select(x => new TherapyTreatmentViewModel
+                {
+                    TreatmentId = x.Id,
+                    Name = x.Name,
+                    Price = x.Price
+                }).ToList(),
+                TherapyStartDate = DateTime.UtcNow
+            };
+
+            ViewData["ProfileName"] = therapist.Profile.Name;
+
+            return View(examinationViewModel);
         }
 
         // POST: Examinations/Create
@@ -61,18 +105,60 @@ namespace HCH.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ExaminationDate,TherapistId,PatientId,Anamnesis,TherapyId")] Examination examination)
+        public async Task<IActionResult> Create(ExaminationViewModel examinationViewModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(examination);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (examinationViewModel.TherapyStartDate < examinationViewModel.ExaminationDate)
+                {
+                    this.ModelState.AddModelError("TherapyStartDate", "Невалидна дата за начало на терапията.");
+
+                    var errors = ModelState.Values.SelectMany(e => e.Errors).Select(e => e.ErrorMessage).ToList();
+
+                    return this.View("Error", errors);
+                }
+
+                Therapy therapy = null;
+
+                if (examinationViewModel.Treatments.Any(t => t.Selected == true))
+                {
+                    therapy = new Therapy
+                    {
+                        PatientId = examinationViewModel.PatientId,
+                        TherapistId = examinationViewModel.TherapistId,
+                        Treatments = examinationViewModel
+                                      .Treatments.Where(t => t.Selected == true)
+                                      .Select(t => new TherapyTreatment
+                                      {
+                                          TreatmentId = t.TreatmentId
+                                      }).ToList(),
+                        StartDate = examinationViewModel.TherapyStartDate,
+                        EndDate = examinationViewModel.TherapyStartDate.AddDays(examinationViewModel.TherapyDuration)
+                    };
+
+                    await this.therapiesService.AddTherapyAsync(therapy);
+                }
+
+                var examination = new Examination
+                {
+                    ExaminationDate = examinationViewModel.ExaminationDate,
+                    Anamnesis = examinationViewModel.Anamnesis,
+                    PatientId = examinationViewModel.PatientId,
+                    TherapistId = examinationViewModel.TherapistId,
+                    Therapy = therapy
+                };
+
+                await this.examinationsService.AddExaminationAsync(examination);
+
+                return RedirectToAction("Index", "Examinations");
             }
-            ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id", examination.PatientId);
-            ViewData["TherapistId"] = new SelectList(_context.Users, "Id", "Id", examination.TherapistId);
-            ViewData["TherapyId"] = new SelectList(_context.Therapies, "Id", "Id", examination.TherapyId);
-            return View(examination);
+
+            var therapistId = this.signInManager.UserManager.GetUserId(User);
+            HCHWebUser therapist = this.usersService.GetUserById(therapistId);
+
+            ViewData["ProfileName"] = therapist.Profile.Name;
+
+            return View(examinationViewModel);
         }
 
         // GET: Examinations/Edit/5

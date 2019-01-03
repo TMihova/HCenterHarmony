@@ -1,0 +1,61 @@
+﻿@model IEnumerable<HCH.Web.Models.AppointmentViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<main class="mt-3">
+    <div class="container w-75 justify-content-center">
+        <h2 class="text-center">Предстоящи прегледи</h2>
+        <h3 class="text-center">Терапевт: @ViewData["TherapistFullName"]</h3>
+        <h3 class="text-center">Профил: @ViewData["ProfileName"]</h3>
+        <hr class="hr-4" />
+        <div class="container-fluid">
+            <table class="table  mx-auto table-hover">
+                <thead>
+                    <tr class="row">
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-2">Ден от седмицата</th>
+                        <th class="col-md-2">Приемен час</th>
+                        <th class="col-md-2">Пациент</th>
+                        <th class="col-md-3"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int count = 0;}
+                    @foreach (var item in Model)
+                    {
+                        count++;
+
+                        <tr class="row">
+                            <th class="col-md-1">@count</th>
+                            <td class="col-md-2">
+                                @item.DayOfWeekBg.ToString()
+
+                            </td>
+                            <td class="col-md-2">@item.VisitingHour</td>
+                            <td class="col-md-2">@item.PatientFullName</td>
+                            <td class="col-md-3">
+                                <form class="form-inline" asp-controller="Appointments" asp-action="Release" asp-route-id="@item.Id" method="post">
+
+                                    <button type="submit" class="btn harmony-bg-color mr-2">Освободи</button>
+
+                                    <a asp-area="" asp-controller="Examinations" asp-action="Create" asp-route-id="@item.PatientId" class="btn harmony-bg-color">Преглед</a>
+                                </form>
+                               
+                               
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <hr class="hr-4 mb-0" />
+        <a asp-controller="Appointments" asp-action="Create" asp-route-id="@ViewData["TherapistId"]">Добави</a>
+    </div>
+</main>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

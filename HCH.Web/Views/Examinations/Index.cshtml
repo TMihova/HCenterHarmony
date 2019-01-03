@@ -5,56 +5,51 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="container">
+    <h3>Прегледи</h3>
+    <h3>Профил @ViewData["ProfileName"]</h3>
+    <h3>Терапевт @ViewData["TherapistFullName"]</h3>
+    <div class="">
+        <h3>Извършени прегледи</h3>
+        <hr />
+        <div class="container-fluid">
+            <table class="table  mx-auto table-hover">
+                <thead>
+                    <tr class="row">
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-2">Дата на прегледа</th>
+                        <th class="col-md-3">Пациент</th>
+                        <th class="col-md-2">Анамнеза</th>
+                        <th class="col-md-4">Терапия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="row">
+                            <th class="col-md-1">@item.Id</th>
+                            <td class="col-md-2">@item.ExaminationDate</td>
+                            <td class="col-md-3">@item.Patient</td>
+                            <td class="col-md-2">
+                                <a asp-area="" asp-controller="Examinations" asp-action="Details" asp-route-id="@item.Id">Виж детайли</a>
+                                <a asp-area="" asp-controller="Examinations" asp-action="Edit" asp-route-id="@item.Id">Промени</a>
+                            </td>
+                            <td class="col-md-4">
+                                @if (item.TherapyId == null)
+                                {
+                                    <p>Няма назначена терапия.</p>
+                                }
+                                else
+                                {
+                                    <a asp-area="" asp-controller="Therapies" asp-action="Details" asp-route-id="@item.TherapyId">Виж терапията</a>
+                                    <a asp-area="" asp-controller="Therapies" asp-action="Edit" asp-route-id="@item.TherapyId">Промени терапията</a>
+                                }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ExaminationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Therapist)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Patient)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Anamnesis)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Therapy)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExaminationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Therapist.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Anamnesis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Therapy.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -13,7 +13,9 @@ namespace HCH.Web.Controllers
         private readonly ITherapistsService therapistsService;
         private readonly IProfilesService profilesService;
 
-        public TherapistsController(ITherapistsService therapistsService, IProfilesService profilesService)
+        public TherapistsController(
+            ITherapistsService therapistsService,
+            IProfilesService profilesService)
         {
             this.therapistsService = therapistsService;
             this.profilesService = profilesService;

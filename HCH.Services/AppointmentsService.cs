@@ -45,6 +45,12 @@ namespace HCH.Services
             return this.context.Appointments.Any(x => x.DayOfWeekBg == dayOfWeekBg && x.VisitingHour == visitingHour && x.TherapistId == therapistId);
         }
 
+        public async Task<IEnumerable<Appointment>> OccupiedAppointmentsForTherapistAsync(string therapistId)
+        {
+            return await this.context.Appointments.Where(x => x.TherapistId == therapistId)
+                .Where(x => x.PatientId != null).ToListAsync();
+        }
+
         public async Task ReleaseAppointmentAsync(string id)
         {
             Appointment appointment = await this.context.Appointments.FindAsync(id);

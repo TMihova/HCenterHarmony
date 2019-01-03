@@ -5,16 +5,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HCH.Data;
 using HCH.Models;
+using HCH.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace HCH.Web.Controllers
 {
     public class TherapiesController : Controller
     {
         private readonly HCHWebContext _context;
+        private readonly IProfilesService profilesService;
+        private readonly ITreatmentsService treatmentsService;
+        private readonly ITherapiesService therapiesService;
+        private readonly SignInManager<HCHWebUser> signInManager;
 
-        public TherapiesController(HCHWebContext context)
+        public TherapiesController(HCHWebContext context,
+            IProfilesService profilesService,
+            ITreatmentsService treatmentsService,
+            ITherapiesService therapiesService,
+            SignInManager<HCHWebUser> signInManager)
         {
             _context = context;
+            this.profilesService = profilesService;
+            this.treatmentsService = treatmentsService;
+            this.therapiesService = therapiesService;
+            this.signInManager = signInManager;
         }
 
         // GET: Therapies
@@ -63,7 +78,7 @@ namespace HCH.Web.Controllers
             {
                 _context.Add(therapy);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AddTreatment", "Treatment");
             }
             ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id", therapy.PatientId);
             ViewData["TherapistId"] = new SelectList(_context.Users, "Id", "Id", therapy.TherapistId);

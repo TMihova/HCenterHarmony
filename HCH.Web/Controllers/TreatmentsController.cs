@@ -204,6 +204,8 @@ namespace HCH.Web.Controllers
             return View(treatmentView);
         }
 
+        
+
         // GET: Treatments/Delete/5
         [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Delete(string id)

@@ -28,7 +28,7 @@ namespace HCH.Web.Controllers
 
         // GET: Appointments
         [Authorize(Roles = "Therapist")]
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> Index()
         {
             var therapistId = this.signInManager.UserManager.GetUserId(User);
 
@@ -50,6 +50,38 @@ namespace HCH.Web.Controllers
                 PatientId = x.PatientId,
                 PatientFullName = x.Patient?.FirstName + " " + x.Patient?.LastName
             }).ToList();
+
+            ViewData["TherapistId"] = therapist.Id;
+            ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
+            ViewData["ProfileName"] = therapist.Profile.Name;
+
+            return View(appointmentsView);
+        }
+
+        // GET: Appointments/Index_Occupied
+        [Authorize(Roles = "Therapist")]
+        public async Task<IActionResult> Index_Occupied()
+        {
+            var therapistId = this.signInManager.UserManager.GetUserId(User);
+
+            HCHWebUser therapist = this.usersService.GetUserById(therapistId);
+
+            var appointmentsTherapist = await this.appointmentsService.OccupiedAppointmentsForTherapistAsync(therapistId);
+
+            var appointmentsView = appointmentsTherapist
+                .OrderBy(x => x.DayOfWeekBg)
+                .ThenBy(x => x.VisitingHour)
+                .Select(x => new AppointmentViewModel
+                {
+                    Id = x.Id,
+                    DayOfWeekBg = x.DayOfWeekBg,
+                    Price = x.Price,
+                    TherapistId = x.TherapistId,
+                    VisitingHour = x.VisitingHour,
+                    TherapistFullName = x.Therapist.FirstName + " " + x.Therapist.LastName,
+                    PatientId = x.PatientId,
+                    PatientFullName = x.Patient?.FirstName + " " + x.Patient?.LastName
+                }).ToList();
 
             ViewData["TherapistId"] = therapist.Id;
             ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
