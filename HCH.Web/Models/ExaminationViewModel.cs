@@ -1,43 +1,27 @@
-﻿using System;
+﻿using HCH.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HCH.Web.Models
 {
     public class ExaminationViewModel
     {
-        public ExaminationViewModel()
-        {
-            this.Treatments = new List<TherapyTreatmentViewModel>();
-        }       
-        
-        [Display(Name = "Дата на прегледа")]
+        public int Id { get; set; }
+
+        [DataType(DataType.Date)]
         public DateTime ExaminationDate { get; set; }
-       
-        public string TherapistId { get; set; }        
-        
+
+        public string TherapistId { get; set; }
+
         public string PatientId { get; set; }
 
-        [Display(Name = "Пациент")]
-        public string Patient { get; set; } 
-        
-        public string TherapyId { get; set; }
+        public string Patient { get; set; }
 
-        [Display(Name = "Терапевт")]
-        public string Therapist { get; set; }
-
-        [Display(Name = "Анамнеза")]
         public string Anamnesis { get; set; }
 
-        [Display(Name = "Начална дата")]
-        public DateTime TherapyStartDate { get; set; }
-
-        [Display(Name = "Продължителност в дни")]
-        [Range(0, Double.MaxValue, ErrorMessage ="Невалиден брой дни.")]
-        public int TherapyDuration { get; set; }
-
-        public List<TherapyTreatmentViewModel> Treatments { get; set; }
-
-
+        public string TherapyId { get; set; }
     }
 }

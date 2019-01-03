@@ -1,5 +1,8 @@
 ﻿using HCH.Data;
 using HCH.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HCH.Services
@@ -17,6 +20,11 @@ namespace HCH.Services
         {
             this.context.Examinations.Add(examination);
             await this.context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Examination>> AllExaminationsForTherapist(string therapistId)
+        {
+            return await this.context.Examinations.Where(x => x.TherapistId == therapistId).ToListAsync();
         }
     }
 }

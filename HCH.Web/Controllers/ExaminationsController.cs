@@ -11,6 +11,7 @@ using HCH.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Services;
+using AutoMapper;
 
 namespace HCH.Web.Controllers
 {
@@ -22,13 +23,15 @@ namespace HCH.Web.Controllers
         private readonly ITherapiesService therapiesService;
         private readonly IExaminationsService examinationsService;
         private readonly IUsersService usersService;
+        private readonly IMapper mapper;
 
         public ExaminationsController(HCHWebContext context,
             SignInManager<HCHWebUser> signInManager,
             ITreatmentsService treatmentsService,
             ITherapiesService therapiesService,
             IExaminationsService examinationsService,
-            IUsersService usersService)
+            IUsersService usersService,
+            IMapper mapper)
         {
             _context = context;
             this.signInManager = signInManager;
@@ -36,13 +39,21 @@ namespace HCH.Web.Controllers
             this.therapiesService = therapiesService;
             this.examinationsService = examinationsService;
             this.usersService = usersService;
+            this.mapper = mapper;
         }
 
         // GET: Examinations
         public async Task<IActionResult> Index()
         {
-            var hCHWebContext = _context.Examinations.Include(e => e.Patient).Include(e => e.Therapist).Include(e => e.Therapy);
-            return View(await hCHWebContext.ToListAsync());
+            var therapistId = this.signInManager.UserManager.GetUserId(User);
+
+            HCHWebUser therapist = this.usersService.GetUserById(therapistId);
+
+            var examinations = await this.examinationsService.AllExaminationsForTherapist(therapistId);
+
+            var examinationsView = examinations.Select(x => this.mapper.Map<ExaminationViewModel>(x));
+            
+            return View(examinationsView);
         }
 
         // GET: Examinations/Details/5
@@ -78,7 +89,7 @@ namespace HCH.Web.Controllers
 
             var treatmentsFromProfile = await this.treatmentsService.AllFromProfileAsync(therapist.ProfileId);
 
-            ExaminationViewModel examinationViewModel = new ExaminationViewModel
+            ExaminationInputViewModel examinationViewModel = new ExaminationInputViewModel
             {
                 ExaminationDate = DateTime.UtcNow,
                 PatientId = id,
@@ -105,7 +116,7 @@ namespace HCH.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ExaminationViewModel examinationViewModel)
+        public async Task<IActionResult> Create(ExaminationInputViewModel examinationViewModel)
         {
             if (ModelState.IsValid)
             {
