@@ -16,6 +16,18 @@ namespace HCH.Web
 
             CreateMap<Profile, ProfileViewModel>().ReverseMap();
 
+            CreateMap<Appointment, AppointmentViewModel>()
+                .ForMember(dest => dest.PatientFullName,
+                           opt => opt.MapFrom(src => src.Patient.FirstName + " " + src.Patient.LastName))
+                .ForMember(dest => dest.TherapistFullName,
+                           opt => opt.MapFrom(src => src.Therapist.FirstName + " " + src.Therapist.LastName));
+
+            CreateMap<AppointmentViewModel, Appointment>()
+                .ForMember(dest => dest.Patient,
+                           opt => opt.Ignore())
+                .ForMember(dest => dest.Therapist,
+                           opt => opt.Ignore());
+
             CreateMap<ExaminationInputViewModel, Examination>()
                 .ForMember(dest => dest.Patient,
                            opt => opt.Ignore())

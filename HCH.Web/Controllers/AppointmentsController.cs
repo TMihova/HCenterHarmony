@@ -7,6 +7,7 @@ using HCH.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Web.Models;
+using AutoMapper;
 
 namespace HCH.Web.Controllers
 {
@@ -15,15 +16,18 @@ namespace HCH.Web.Controllers
         private readonly IAppointmentsService appointmentsService;
         private readonly IUsersService usersService;
         private readonly SignInManager<HCHWebUser> signInManager;
+        private readonly IMapper mapper;
 
         public AppointmentsController(
             IAppointmentsService appointmentsService,
             IUsersService usersService,
-            SignInManager<HCHWebUser> signInManager)
+            SignInManager<HCHWebUser> signInManager,
+            IMapper mapper)
         {
             this.appointmentsService = appointmentsService;
             this.usersService = usersService;
             this.signInManager = signInManager;
+            this.mapper = mapper;
         }
 
         // GET: Appointments
@@ -39,17 +43,8 @@ namespace HCH.Web.Controllers
             var appointmentsView = appointmentsTherapist
                 .OrderBy(x => x.DayOfWeekBg)
                 .ThenBy(x => x.VisitingHour)
-                .Select(x => new AppointmentViewModel
-            {
-                Id = x.Id,
-                DayOfWeekBg = x.DayOfWeekBg,
-                Price = x.Price,
-                TherapistId = x.TherapistId,
-                VisitingHour = x.VisitingHour,
-                TherapistFullName = x.Therapist.FirstName + " " + x.Therapist.LastName,
-                PatientId = x.PatientId,
-                PatientFullName = x.Patient?.FirstName + " " + x.Patient?.LastName
-            }).ToList();
+                .Select(x => this.mapper.Map<AppointmentViewModel>(x))            
+            .ToList();
 
             ViewData["TherapistId"] = therapist.Id;
             ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
@@ -71,17 +66,8 @@ namespace HCH.Web.Controllers
             var appointmentsView = appointmentsTherapist
                 .OrderBy(x => x.DayOfWeekBg)
                 .ThenBy(x => x.VisitingHour)
-                .Select(x => new AppointmentViewModel
-                {
-                    Id = x.Id,
-                    DayOfWeekBg = x.DayOfWeekBg,
-                    Price = x.Price,
-                    TherapistId = x.TherapistId,
-                    VisitingHour = x.VisitingHour,
-                    TherapistFullName = x.Therapist.FirstName + " " + x.Therapist.LastName,
-                    PatientId = x.PatientId,
-                    PatientFullName = x.Patient?.FirstName + " " + x.Patient?.LastName
-                }).ToList();
+                .Select(x => this.mapper.Map<AppointmentViewModel>(x))
+                .ToList();
 
             ViewData["TherapistId"] = therapist.Id;
             ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
@@ -101,14 +87,8 @@ namespace HCH.Web.Controllers
             var appointmentsTherapistView = appointmentsTherapist.Where(x => x.IsFree == true)
                 .OrderBy(x => x.DayOfWeekBg)
                 .ThenBy(x => x.VisitingHour)
-                .Select(x => new AppointmentViewModel
-                {
-                    Id = x.Id,
-                    DayOfWeekBg = x.DayOfWeekBg,
-                    VisitingHour = x.VisitingHour,
-                    TherapistFullName = x.Therapist.FirstName + " " + x.Therapist.LastName,
-                    Price = x.Price
-                }).ToList();
+                .Select(x => this.mapper.Map<AppointmentViewModel>(x))
+                .ToList();
 
             HCHWebUser therapist = this.usersService.GetUserById(id);
 
@@ -153,11 +133,11 @@ namespace HCH.Web.Controllers
 
         // GET: Appointments/Create
         [Authorize(Roles = "Therapist")]
-        public IActionResult Create(string id)
+        public IActionResult Create(string therapistId)
         {
-            HCHWebUser therapist = this.usersService.GetUserById(id);
+            HCHWebUser therapist = this.usersService.GetUserById(therapistId);
 
-            ViewData["TherapistId"] = id;
+            ViewData["TherapistId"] = therapistId;
             ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
 
             return View();
@@ -184,13 +164,7 @@ namespace HCH.Web.Controllers
                     return this.View("Error", errors);
                 }
 
-                Appointment appointmentHCH = new Appointment
-                {
-                    DayOfWeekBg = appointmentModel.DayOfWeekBg,
-                    Price = appointmentModel.Price,
-                    TherapistId = appointmentModel.TherapistId,
-                    VisitingHour = appointmentModel.VisitingHour
-                };
+                Appointment appointmentHCH = this.mapper.Map<Appointment>(appointmentModel);
 
                 await this.appointmentsService.AddAppointmentAsync(appointmentHCH);
                 
@@ -238,17 +212,7 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            AppointmentViewModel appointmentView = new AppointmentViewModel
-            {
-                Id = appointment.Id,
-                DayOfWeekBg = appointment.DayOfWeekBg,
-                VisitingHour = appointment.VisitingHour,
-                Price = appointment.Price,
-                TherapistId = appointment.TherapistId,
-                TherapistFullName = appointment.Therapist.FirstName + " " + appointment.Therapist.LastName,
-                PatientId = appointment.PatientId,
-                PatientFullName = appointment.Patient?.FirstName + " " + appointment.Patient?.LastName
-            };
+            AppointmentViewModel appointmentView = this.mapper.Map<AppointmentViewModel>(appointment);
 
             var therapistId = this.signInManager.UserManager.GetUserId(User);
 
@@ -330,14 +294,7 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            var appointmentView = new AppointmentViewModel
-            {
-                Id = appointment.Id,
-                DayOfWeekBg = appointment.DayOfWeekBg,
-                VisitingHour = appointment.VisitingHour,
-                TherapistId = appointment.TherapistId,
-                TherapistFullName = appointment.Therapist.FirstName + " " + appointment.Therapist.LastName
-            };
+            var appointmentView = this.mapper.Map<AppointmentViewModel>(appointment);
 
             return View(appointmentView);
         }
