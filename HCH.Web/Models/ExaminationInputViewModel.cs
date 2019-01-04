@@ -9,8 +9,10 @@ namespace HCH.Web.Models
         public ExaminationInputViewModel()
         {
             this.Treatments = new List<TherapyTreatmentViewModel>();
-        }       
-        
+        }
+
+        public string AppointmentId { get; set; }
+
         [Display(Name = "Дата на прегледа")]
         public DateTime ExaminationDate { get; set; }
        

@@ -1,54 +1,71 @@
-﻿@model HCH.Models.Examination
+﻿@model HCH.Web.Models.ExaminationViewModel
+
+@using System.Globalization
+
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<div class="container d-flex justify-content-center w-75">
 
-<h4>Examination</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    <div class="container-fluid">
+        <h3>Промяна на данни за преглед</h3>
+        <h3>Преглед @Model.Id/@Model.ExaminationDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</h3>
+        <hr />
+
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="ExaminationDate" class="control-label"></label>
-                <input asp-for="ExaminationDate" class="form-control" />
-                <span asp-validation-for="ExaminationDate" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="ExaminationDate" class="control-label"></label>
+                        <input type="text" asp-for="ExaminationDate" value="@Model.ExaminationDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)" readonly class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="ExaminationDate" value="@Model.ExaminationDate" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Therapist" class="control-label"></label>
+                        <input asp-for="Therapist" class="form-control" value="@Model.Therapist" readonly />
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="TherapistId" value="@Model.TherapistId" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Patient" class="control-label"></label>
+                        <input asp-for="Patient" class="form-control" value="@Model.Patient" readonly />
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="TherapyId" value="@Model.TherapyId" />
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="TherapistId" class="control-label"></label>
-                <select asp-for="TherapistId" class="form-control" asp-items="ViewBag.TherapistId"></select>
-                <span asp-validation-for="TherapistId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PatientId" class="control-label"></label>
-                <select asp-for="PatientId" class="form-control" asp-items="ViewBag.PatientId"></select>
-                <span asp-validation-for="PatientId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Anamnesis" class="control-label"></label>
-                <input asp-for="Anamnesis" class="form-control" />
-                <span asp-validation-for="Anamnesis" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TherapyId" class="control-label"></label>
-                <select asp-for="TherapyId" class="form-control" asp-items="ViewBag.TherapyId"></select>
-                <span asp-validation-for="TherapyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Anamnesis" class="control-label"></label>
+                        <textarea asp-for="Anamnesis" rows="5" class="form-control"></textarea>
+                        <span asp-validation-for="Anamnesis" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Потвърди" class="btn harmony-bg-color" />
+                    </div>
+                </div>
             </div>
         </form>
+        <a asp-area="" asp-controller="Therapies" asp-action="Details">Виж терапията</a> | 
+        
+        <a asp-area="" asp-controller="Examinations" asp-action="Index">Към списъка</a>
+       
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</div>       
+  
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

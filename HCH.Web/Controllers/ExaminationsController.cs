@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HCH.Data;
 using HCH.Models;
 using HCH.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -16,28 +13,29 @@ using AutoMapper;
 namespace HCH.Web.Controllers
 {
     public class ExaminationsController : Controller
-    {
-        private readonly HCHWebContext _context;
+    {        
         private readonly SignInManager<HCHWebUser> signInManager;
         private readonly ITreatmentsService treatmentsService;
         private readonly ITherapiesService therapiesService;
         private readonly IExaminationsService examinationsService;
+        private readonly IAppointmentsService appointmentsService;
         private readonly IUsersService usersService;
         private readonly IMapper mapper;
 
-        public ExaminationsController(HCHWebContext context,
+        public ExaminationsController(
             SignInManager<HCHWebUser> signInManager,
             ITreatmentsService treatmentsService,
             ITherapiesService therapiesService,
             IExaminationsService examinationsService,
+            IAppointmentsService appointmentsService,
             IUsersService usersService,
             IMapper mapper)
         {
-            _context = context;
             this.signInManager = signInManager;
             this.treatmentsService = treatmentsService;
             this.therapiesService = therapiesService;
             this.examinationsService = examinationsService;
+            this.appointmentsService = appointmentsService;
             this.usersService = usersService;
             this.mapper = mapper;
         }
@@ -82,6 +80,8 @@ namespace HCH.Web.Controllers
         [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Create(string id)
         {
+            var appointmentId = this.HttpContext.Request.Query["AppointmentId"].ToString();
+
             var therapistId = this.signInManager.UserManager.GetUserId(User);
 
             HCHWebUser therapist = this.usersService.GetUserById(therapistId);
@@ -92,14 +92,15 @@ namespace HCH.Web.Controllers
 
             ExaminationInputViewModel examinationViewModel = new ExaminationInputViewModel
             {
-                ExaminationDate = DateTime.UtcNow,
+                AppointmentId = appointmentId,
+                ExaminationDate = DateTime.Today,
                 PatientId = id,
                 Patient = patient.FirstName + " " + patient.LastName,
                 TherapistId = therapistId,
                 Therapist = therapist.FirstName + " " + therapist.LastName,
                 Anamnesis = "Обективно състояние: ",
                 Treatments = treatmentsFromProfile.Select(x => this.mapper.Map<TherapyTreatmentViewModel>(x)).ToList(),
-                TherapyStartDate = DateTime.UtcNow
+                TherapyStartDate = DateTime.Today
             };
 
             ViewData["ProfileName"] = therapist.Profile.Name;
@@ -110,6 +111,7 @@ namespace HCH.Web.Controllers
         // POST: Examinations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Create(ExaminationInputViewModel examinationViewModel)
         {
             if (ModelState.IsValid)
@@ -144,16 +146,19 @@ namespace HCH.Web.Controllers
                     await this.therapiesService.AddTherapyAsync(therapy);
                 }
 
-                var examination = new Examination
-                    {
-                        ExaminationDate = examinationViewModel.ExaminationDate,
-                        Anamnesis = examinationViewModel.Anamnesis,
-                        PatientId = examinationViewModel.PatientId,
-                        TherapistId = examinationViewModel.TherapistId,
-                        Therapy = therapy
-                    };
+                var examination = this.mapper.Map<Examination>(examinationViewModel);
+                    //new Examination
+                    //{
+                    //    ExaminationDate = examinationViewModel.ExaminationDate,
+                    //    Anamnesis = examinationViewModel.Anamnesis,
+                    //    PatientId = examinationViewModel.PatientId,
+                    //    TherapistId = examinationViewModel.TherapistId,
+                    //    Therapy = therapy
+                    //};
 
-                await this.examinationsService.AddExaminationAsync(examination);
+                await this.examinationsService.AddExaminationAsync(examination);                
+
+                await this.appointmentsService.ReleaseAppointmentAsync(examinationViewModel.AppointmentId);
 
                 return RedirectToAction("Index", "Examinations");
             }
@@ -174,39 +179,36 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            var examination = await _context.Examinations.FindAsync(id);
+            var examinationId = id.GetValueOrDefault();
+
+            var examination = await this.examinationsService.GetExaminationByIdAsync(examinationId);
+
             if (examination == null)
             {
                 return NotFound();
             }
-            ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id", examination.PatientId);
-            ViewData["TherapistId"] = new SelectList(_context.Users, "Id", "Id", examination.TherapistId);
-            ViewData["TherapyId"] = new SelectList(_context.Therapies, "Id", "Id", examination.TherapyId);
-            return View(examination);
+
+            var examinationView = this.mapper.Map<ExaminationViewModel>(examination);
+
+            return View(examinationView);
         }
 
         // POST: Examinations/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ExaminationDate,TherapistId,PatientId,Anamnesis,TherapyId")] Examination examination)
-        {
-            if (id != examination.Id)
-            {
-                return NotFound();
-            }
-
+        public async Task<IActionResult> Edit(ExaminationViewModel examinationView)
+        {            
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(examination);
-                    await _context.SaveChangesAsync();
+                    var examination = this.mapper.Map<Examination>(examinationView);
+
+                    await this.examinationsService.UpdateExaminationAsync(examination);                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ExaminationExists(examination.Id))
+                    if (!this.examinationsService.ExaminationExists(examinationView.Id))
                     {
                         return NotFound();
                     }
@@ -217,47 +219,9 @@ namespace HCH.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id", examination.PatientId);
-            ViewData["TherapistId"] = new SelectList(_context.Users, "Id", "Id", examination.TherapistId);
-            ViewData["TherapyId"] = new SelectList(_context.Therapies, "Id", "Id", examination.TherapyId);
-            return View(examination);
-        }
 
-        // GET: Examinations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return View(examinationView);
+        }        
 
-            var examination = await _context.Examinations
-                .Include(e => e.Patient)
-                .Include(e => e.Therapist)
-                .Include(e => e.Therapy)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (examination == null)
-            {
-                return NotFound();
-            }
-
-            return View(examination);
-        }
-
-        // POST: Examinations/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var examination = await _context.Examinations.FindAsync(id);
-            _context.Examinations.Remove(examination);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ExaminationExists(int id)
-        {
-            return _context.Examinations.Any(e => e.Id == id);
-        }
     }
 }

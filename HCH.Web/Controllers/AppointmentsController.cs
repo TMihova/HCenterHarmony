@@ -211,6 +211,17 @@ namespace HCH.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // POST: Appointments/Release/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Therapist")]
+        public async Task<IActionResult> ReleaseAndExaminate(string id)
+        {
+            await this.appointmentsService.ReleaseAppointmentAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Appointments/Edit/5
         [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Edit(string id)

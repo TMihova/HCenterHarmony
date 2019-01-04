@@ -37,16 +37,14 @@
                             <td class="col-md-3">@item.Description</td>
                             <td class="col-md-2">@item.Price лв</td>
                             <td class="col-md-4">
-
+                               
                                 <form class="form-inline" asp-controller="Orders" asp-action="Create" asp-route-id="@item.Id" method="post">
 
                                     <div class="form-group">
-                                        <label class="font-weight-bold mr-2" for="productCount">Брой:</label>
-                                        <input type="number" name="Count" id="productCount" class="form-control">
+                                        <label class="font-weight-bold" for="productCount">Брой:</label>
+                                        <input type="number" name="Count" id="productCount" class="form-control" style="width:40%;" />
+                                        <button type="submit" class="btn harmony-bg-color ml-2">Поръчай</button>
                                     </div>
-
-                                    <button type="submit" class="btn harmony-bg-color ml-2">Поръчай</button>
-
                                 </form>
                                
                             </td>

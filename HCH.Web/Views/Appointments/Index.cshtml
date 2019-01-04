@@ -40,15 +40,12 @@
                             <td class="col-md-2">@item.Price лв</td>
                             <td class="col-md-2">@item.PatientFullName</td>
                             <td class="col-md-3">
-                                <form class="form-inline" asp-controller="Appointments" asp-action="Release" asp-route-id="@item.Id" method="post">
+                                <div class="container-fluid justify-content-between">
 
-                                    <button type="submit" class="btn harmony-bg-color mr-2">Освободи</button>
+                                  <a asp-area="" asp-controller="Appointments" asp-action="Edit" asp-route-id="@item.Id" class="btn harmony-bg-color">Промени</a>
+                                  <a asp-area="" asp-controller="Appointments" asp-action="Delete" asp-route-id="@item.Id" class="btn harmony-bg-color">Изтрий</a>
 
-                                    <a asp-area="" asp-controller="Appointments" asp-action="Edit" asp-route-id="@item.Id" class="btn harmony-bg-color">Промени</a>
-                                    <a asp-area="" asp-controller="Appointments" asp-action="Delete" asp-route-id="@item.Id" class="btn harmony-bg-color">Изтрий</a>
-                                    
-                                </form>
-                               
+                                </div>
                                
                             </td>
                         </tr>

@@ -8,7 +8,8 @@
 
 <div class="container d-flex justify-content-center w-75">
     <div class="container-fluid">
-        <h4> Детайли за преглед @Model.Id/@Model.ExaminationDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</h4>
+        <h4>Детайли за преглед</h4>
+        <h3>Преглед @Model.Id/@Model.ExaminationDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</h3>
         <hr class="hr-1" />
 
         <dl class="dl-horizontal mt-3">
@@ -47,7 +48,7 @@
 
         <hr />
         <h5 class="mb-1">Анамнеза:</h5>
-        <textarea class="textarea-100" rows="5">@Model.Anamnesis</textarea>
+        <textarea disabled class="textarea-100" rows="5">@Model.Anamnesis</textarea>
         <hr />
         <div class="mt-5">
             <a asp-area="" asp-controller="Examinations" asp-action="Edit" asp-route-id="@Model.Id">Промени</a> |

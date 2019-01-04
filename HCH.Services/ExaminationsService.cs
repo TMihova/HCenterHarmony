@@ -31,5 +31,17 @@ namespace HCH.Services
         {
             return await this.context.Examinations.FindAsync(examinationId);
         }
+
+        public async Task UpdateExaminationAsync(Examination examination)
+        {
+            this.context.Update(examination);
+
+            await this.context.SaveChangesAsync();
+        }
+
+        public bool ExaminationExists(int id)
+        {
+            return this.context.Examinations.Any(e => e.Id == id);
+        }
     }
 }
