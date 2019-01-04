@@ -41,7 +41,20 @@ body {
     }
 }
 
+.w-50{
+    width:50%;
+}
 
+.w-75 {
+    width: 75%;
+}
+
+.textarea-100 {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+}
 
 .text-30{
     font-size: 30px;

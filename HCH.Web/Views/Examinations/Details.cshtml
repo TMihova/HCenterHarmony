@@ -1,49 +1,57 @@
-﻿@model HCH.Models.Examination
+﻿@model HCH.Web.Models.ExaminationViewModel
 
+@using System.Globalization
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="container d-flex justify-content-center w-75">
+    <div class="container-fluid">
+        <h4> Детайли за преглед @Model.Id/@Model.ExaminationDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</h4>
+        <hr class="hr-1" />
 
-<div>
-    <h4>Examination</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ExaminationDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ExaminationDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Therapist)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Therapist.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Patient)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Patient.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Anamnesis)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Anamnesis)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Therapy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Therapy.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+        <dl class="dl-horizontal mt-3">
+            <dt>
+                Дата на провеждане:
+            </dt>
+            <dd>
+                @Model.ExaminationDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)
+            </dd>
+            <dt>
+                Терапевт:
+            </dt>
+            <dd>
+                @Model.Therapist
+            </dd>
+            <dt>
+                Пациент:
+            </dt>
+            <dd>
+                @Model.Patient
+            </dd>
+            <dt>
+                Терапия:
+            </dt>
+            <dd>
+                @if (Model.TherapyId == null)
+                {
+                    <p>Няма назначена терапия при този преглед.</p>
+                }
+                else
+                {
+                    <a asp-area="" asp-controller="Therapies" asp-action="Details" asp-route-id="@Model.TherapyId">Виж детайли за терапията</a>
+                }
+            </dd>
+        </dl>
+
+        <hr />
+        <h5 class="mb-1">Анамнеза:</h5>
+        <textarea class="textarea-100" rows="5">@Model.Anamnesis</textarea>
+        <hr />
+        <div class="mt-5">
+            <a asp-area="" asp-controller="Examinations" asp-action="Edit" asp-route-id="@Model.Id">Промени</a> |
+            <a asp-area="" asp-controller="Examinations" asp-action="Index">Към списъка</a>
+        </div>
+    </div>
 </div>

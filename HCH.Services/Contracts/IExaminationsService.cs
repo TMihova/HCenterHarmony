@@ -9,5 +9,6 @@ namespace HCH.Services
         Task AddExaminationAsync(Examination examination);
 
         Task<IEnumerable<Examination>> AllExaminationsForTherapist(string therapistId);
+        Task<Examination> GetExaminationByIdAsync(int examinationId);
     }
 }

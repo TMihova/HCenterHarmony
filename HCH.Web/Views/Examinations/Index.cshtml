@@ -18,35 +18,34 @@
                     <tr class="row">
                         <th class="col-md-1">#</th>
                         <th class="col-md-2">Дата на прегледа</th>
-                        <th class="col-md-3">Пациент</th>
-                        <th class="col-md-2">Анамнеза</th>
-                        <th class="col-md-4">Терапия</th>
+                        <th class="col-md-2">Пациент</th>
+                        <th class="col-md-3">Терапия</th>
+                        <th class="col-md-4"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr class="row">
-                            <th class="col-md-1">@item.Id</th>
-                            <td class="col-md-2">@item.ExaminationDate</td>
-                            <td class="col-md-3">@item.Patient</td>
-                            <td class="col-md-2">
-                                <a asp-area="" asp-controller="Examinations" asp-action="Details" asp-route-id="@item.Id">Виж детайли</a>
-                                <a asp-area="" asp-controller="Examinations" asp-action="Edit" asp-route-id="@item.Id">Промени</a>
-                            </td>
-                            <td class="col-md-4">
-                                @if (item.TherapyId == null)
-                                {
-                                    <p>Няма назначена терапия.</p>
-                                }
-                                else
-                                {
-                                    <a asp-area="" asp-controller="Therapies" asp-action="Details" asp-route-id="@item.TherapyId">Виж терапията</a>
-                                    <a asp-area="" asp-controller="Therapies" asp-action="Edit" asp-route-id="@item.TherapyId">Промени терапията</a>
-                                }
+                    <tr class="row">
+                        <th class="col-md-1">@item.Id</th>
+                        <td class="col-md-2">@item.ExaminationDate</td>
+                        <td class="col-md-2">@item.Patient</td>
+                        <td class="col-md-3">
+                            @if (item.TherapyId == null)
+                            {
+                                <p>Няма назначена терапия.</p>
+                            }
+                            else
+                            {
+                                <a asp-area="" asp-controller="Therapies" asp-action="Details" asp-route-id="@item.TherapyId">Виж терапията</a>
+                            }
 
-                            </td>
-                        </tr>
+                        </td>
+                        <td class="col-md-4">
+                            <a asp-area="" asp-controller="Examinations" asp-action="Details" asp-route-id="@item.Id">Виж детайли за прегледа</a>
+                        </td>
+
+                    </tr>
                     }
                 </tbody>
             </table>

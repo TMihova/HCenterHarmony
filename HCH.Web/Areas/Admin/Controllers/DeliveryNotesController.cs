@@ -103,8 +103,6 @@ namespace HCH.Web.Areas.Admin.Controllers
 
             var cost = orderDb.FoodSupplements.Sum(x => x.ProductCount*x.FoodSupplement.Price);
 
-            var date = DateTime.UtcNow;
-
             ViewData["OrderId"] = id;
             ViewData["OrderDate"] = orderDb.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
             ViewData["Cost"] = cost;

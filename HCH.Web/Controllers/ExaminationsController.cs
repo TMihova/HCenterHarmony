@@ -64,17 +64,18 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            var examination = await _context.Examinations
-                .Include(e => e.Patient)
-                .Include(e => e.Therapist)
-                .Include(e => e.Therapy)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var examinationId = id.GetValueOrDefault();
+
+            var examination = await this.examinationsService.GetExaminationByIdAsync(examinationId);                
+
             if (examination == null)
             {
                 return NotFound();
             }
 
-            return View(examination);
+            var examinationView = this.mapper.Map<ExaminationViewModel>(examination);
+
+            return View(examinationView);
         }
 
         // GET: Examinations/Create/patientId
@@ -97,12 +98,7 @@ namespace HCH.Web.Controllers
                 TherapistId = therapistId,
                 Therapist = therapist.FirstName + " " + therapist.LastName,
                 Anamnesis = "Обективно състояние: ",
-                Treatments = treatmentsFromProfile.Select(x => new TherapyTreatmentViewModel
-                {
-                    TreatmentId = x.Id,
-                    Name = x.Name,
-                    Price = x.Price
-                }).ToList(),
+                Treatments = treatmentsFromProfile.Select(x => this.mapper.Map<TherapyTreatmentViewModel>(x)).ToList(),
                 TherapyStartDate = DateTime.UtcNow
             };
 
@@ -112,8 +108,6 @@ namespace HCH.Web.Controllers
         }
 
         // POST: Examinations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ExaminationInputViewModel examinationViewModel)
@@ -151,13 +145,13 @@ namespace HCH.Web.Controllers
                 }
 
                 var examination = new Examination
-                {
-                    ExaminationDate = examinationViewModel.ExaminationDate,
-                    Anamnesis = examinationViewModel.Anamnesis,
-                    PatientId = examinationViewModel.PatientId,
-                    TherapistId = examinationViewModel.TherapistId,
-                    Therapy = therapy
-                };
+                    {
+                        ExaminationDate = examinationViewModel.ExaminationDate,
+                        Anamnesis = examinationViewModel.Anamnesis,
+                        PatientId = examinationViewModel.PatientId,
+                        TherapistId = examinationViewModel.TherapistId,
+                        Therapy = therapy
+                    };
 
                 await this.examinationsService.AddExaminationAsync(examination);
 

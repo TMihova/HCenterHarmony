@@ -16,6 +16,8 @@ namespace HCH.Web.Models
 
         public string TherapistId { get; set; }
 
+        public string Therapist { get; set; }
+
         public string PatientId { get; set; }
 
         public string Patient { get; set; }
