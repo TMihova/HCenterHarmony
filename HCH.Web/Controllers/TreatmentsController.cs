@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Services;
 using HCH.Web.Models;
+using AutoMapper;
 
 namespace HCH.Web.Controllers
 {
@@ -15,15 +16,18 @@ namespace HCH.Web.Controllers
         private readonly ITreatmentsService treatmentsService;
         private readonly IProfilesService profilesService;
         private readonly SignInManager<HCHWebUser> signInManager;
+        private readonly IMapper mapper;
 
         public TreatmentsController(
             ITreatmentsService treatmentsService,
             IProfilesService profilesService,
-            SignInManager<HCHWebUser> signInManager)
+            SignInManager<HCHWebUser> signInManager,
+            IMapper mapper)
         {
             this.treatmentsService = treatmentsService;
             this.profilesService = profilesService;
             this.signInManager = signInManager;
+            this.mapper = mapper;
         }
         
         // GET: Treatments/Index_Therapist
@@ -37,13 +41,7 @@ namespace HCH.Web.Controllers
             var treatments = await this.treatmentsService.AllFromProfileAsync(profileId);
 
             var treatmentsView = treatments
-                .Select(x => new TreatmentViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Price = x.Price
-                });
+                .Select(x => this.mapper.Map<TreatmentViewModel>(x));
 
             var profile = await this.profilesService.GetProfileById(profileId);
 
@@ -67,15 +65,7 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            var treatmentView = new TreatmentViewModel
-            {
-                Id = treatment.Id,
-                Name = treatment.Name,
-                Description = treatment.Description,
-                Price = treatment.Price,
-                ProfileId = treatment.ProfileId,
-                Profile = treatment.Profile.Name
-            };
+            var treatmentView = this.mapper.Map<TreatmentViewModel>(treatment);
 
             return View(treatmentView);
         }
@@ -100,13 +90,7 @@ namespace HCH.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Treatment treatment = new Treatment
-                {
-                    Name = treatmentView.Name,
-                    Description = treatmentView.Description,
-                    Price = treatmentView.Price,
-                    ProfileId = treatmentView.ProfileId
-                };
+                Treatment treatment = this.mapper.Map<Treatment>(treatmentView);
 
                 await this.treatmentsService.AddTreatmentAsync(treatment);
                 
@@ -131,21 +115,13 @@ namespace HCH.Web.Controllers
             }
 
             var treatment = await this.treatmentsService.GetTreatmentById(id);
-                //await _context.Treatments.FindAsync(id);
+
             if (treatment == null)
             {
                 return NotFound();
             }
 
-            var treatmentView = new TreatmentViewModel
-            {
-                Id = treatment.Id,
-                Name = treatment.Name,
-                Description = treatment.Description,
-                Price = treatment.Price,
-                ProfileId = treatment.ProfileId,
-                Profile = treatment.Profile.Name
-            };
+            var treatmentView = this.mapper.Map<TreatmentViewModel>(treatment);
 
             ViewData["ProfileId"] = treatment.ProfileId;
 
@@ -169,14 +145,7 @@ namespace HCH.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var treatment = new Treatment
-                {
-                    Id = treatmentView.Id,
-                    Name = treatmentView.Name,
-                    Description = treatmentView.Description,
-                    Price = treatmentView.Price,
-                    ProfileId = treatmentView.ProfileId
-                };
+                var treatment = this.mapper.Map<Treatment>(treatmentView);
 
                 try
                 {
@@ -197,7 +166,7 @@ namespace HCH.Web.Controllers
             }
             ViewData["ProfileId"] = treatmentView.ProfileId;
 
-            var profile = await this.profilesService.GetProfileById(id);
+            var profile = await this.profilesService.GetProfileById(treatmentView.ProfileId);
 
             ViewData["ProfileName"] = profile.Name;
 
@@ -222,15 +191,7 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            var treatmentView = new TreatmentViewModel
-            {
-                Id = treatment.Id,
-                Name = treatment.Name,
-                Description = treatment.Description,
-                Price = treatment.Price,
-                ProfileId = treatment.ProfileId,
-                Profile = treatment.Profile.Name
-            };
+            var treatmentView = this.mapper.Map<TreatmentViewModel>(treatment);
 
             return View(treatmentView);
         }

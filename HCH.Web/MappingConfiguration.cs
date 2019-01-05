@@ -44,6 +44,14 @@ namespace HCH.Web
                 .ForMember(dest => dest.TreatmentId,
                            opt => opt.MapFrom(src => src.Id));
 
+            CreateMap<Treatment, TreatmentViewModel>()
+                .ForMember(dest => dest.Profile,
+                           opt => opt.MapFrom(src => src.Profile.Name));
+
+            CreateMap<TreatmentViewModel, Treatment>()
+                .ForMember(dest => dest.Profile,
+                           opt => opt.Ignore());
+
             CreateMap<TherapyTreatmentViewModel, TherapyTreatment>()
                 .ForMember(dest => dest.Therapy,
                            opt => opt.Ignore())
