@@ -44,6 +44,32 @@ namespace HCH.Web
                 .ForMember(dest => dest.TreatmentId,
                            opt => opt.MapFrom(src => src.Id));
 
+            CreateMap<TherapyTreatmentViewModel, TherapyTreatment>()
+                .ForMember(dest => dest.Therapy,
+                           opt => opt.Ignore())
+                .ForMember(dest => dest.Treatment,
+                           opt => opt.Ignore());
+
+            CreateMap<Therapy, TherapyViewModel>()
+                .ForMember(dest => dest.TherapyId,
+                           opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Patient,
+                           opt => opt.MapFrom(src => src.Patient.FirstName + " " + src.Patient.LastName))
+                .ForMember(dest => dest.Therapist,
+                           opt => opt.MapFrom(src => src.Therapist.FirstName + " " + src.Therapist.LastName))
+                 .ForMember(dest => dest.Treatments,
+                           opt => opt.MapFrom(src => src.Treatments.Select(x => x.Treatment)));
+
+            CreateMap<TherapyViewModel, Therapy>()
+                .ForMember(dest => dest.Id,
+                           opt => opt.MapFrom(src => src.TherapyId))
+                .ForMember(dest => dest.Patient,
+                           opt => opt.Ignore())
+                .ForMember(dest => dest.Therapist,
+                           opt => opt.Ignore())
+                 .ForMember(dest => dest.Treatments,
+                           opt => opt.MapFrom(src => src.Treatments.Where(x => x.Selected == true)));
+
             CreateMap<Examination, ExaminationViewModel>()
                 .ForMember(dest => dest.Patient,
                            opt => opt.MapFrom(src => src.Patient.FirstName + " " + src.Patient.LastName))
@@ -63,6 +89,12 @@ namespace HCH.Web
                            opt => opt.MapFrom(src => src.FoodSupplements.Sum(x => x.ProductCount * x.FoodSupplement.Price)))
                 .ForMember(dest => dest.ClientFullName,
                            opt => opt.MapFrom(src => src.Client.FirstName + " " + src.Client.LastName));
+
+            CreateMap<DeliveryNote, DeliveryNoteViewModel>()
+                .ForMember(dest => dest.OrderDate,
+                           opt => opt.MapFrom(src => src.Order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)))
+                .ForMember(dest => dest.IssueDate,
+                           opt => opt.MapFrom(src => src.IssueDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)));
         }
     }
 }

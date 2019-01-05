@@ -15,5 +15,9 @@ namespace HCH.Services
         Task AddDeliveryNoteForOrder(int orderId, decimal cost, decimal discount);
 
         Task<IEnumerable<DeliveryNote>> AllAsync();
+
+        Task RemoveDeliveryNoteAsync(DeliveryNote deliveryNote);
+
+        bool DeliveryNoteExists(int id);
     }
 }

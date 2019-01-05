@@ -50,9 +50,20 @@ namespace HCH.Services
             return deliveryNote;
         }
 
+        public async Task RemoveDeliveryNoteAsync(DeliveryNote deliveryNote)
+        {
+            this.context.DeliveryNotes.Remove(deliveryNote);
+            await this.context.SaveChangesAsync();
+        }
+
         public bool IsThereDeliveryNoteForOrder(int orderId)
         {
             return this.context.DeliveryNotes.Any(x => x.OrderId == orderId);
+        }
+
+        public bool DeliveryNoteExists(int id)
+        {
+            return this.context.DeliveryNotes.Any(e => e.Id == id);
         }
     }
 }

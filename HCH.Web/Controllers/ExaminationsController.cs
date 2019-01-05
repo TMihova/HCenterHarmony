@@ -41,6 +41,7 @@ namespace HCH.Web.Controllers
         }
 
         // GET: Examinations
+        [Authorize(Roles ="Therapist")]
         public async Task<IActionResult> Index()
         {
             var therapistId = this.signInManager.UserManager.GetUserId(User);
@@ -50,11 +51,15 @@ namespace HCH.Web.Controllers
             var examinations = await this.examinationsService.AllExaminationsForTherapist(therapistId);
 
             var examinationsView = examinations.Select(x => this.mapper.Map<ExaminationViewModel>(x));
-            
+
+            ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
+            ViewData["ProfileName"] = therapist.Profile.Name;
+
             return View(examinationsView);
         }
 
         // GET: Examinations/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -147,14 +152,6 @@ namespace HCH.Web.Controllers
                 }
 
                 var examination = this.mapper.Map<Examination>(examinationViewModel);
-                    //new Examination
-                    //{
-                    //    ExaminationDate = examinationViewModel.ExaminationDate,
-                    //    Anamnesis = examinationViewModel.Anamnesis,
-                    //    PatientId = examinationViewModel.PatientId,
-                    //    TherapistId = examinationViewModel.TherapistId,
-                    //    Therapy = therapy
-                    //};
 
                 await this.examinationsService.AddExaminationAsync(examination);                
 
@@ -172,6 +169,7 @@ namespace HCH.Web.Controllers
         }
 
         // GET: Examinations/Edit/5
+        [Authorize(Roles ="Therapist")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -196,6 +194,7 @@ namespace HCH.Web.Controllers
         // POST: Examinations/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Edit(ExaminationViewModel examinationView)
         {            
             if (ModelState.IsValid)

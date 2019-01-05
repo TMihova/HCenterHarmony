@@ -22,21 +22,53 @@
         }
         else
         {
-            <h3 class="text-center">Фактура @Model.Id/@Model.IssueDate</h3>
-            <hr class="hr-4" />
-            <h3 class="text-center">Поръчка @Model.OrderId/@ViewData["OrderDate"]</h3>
-            <hr class="hr-4" />
-            <h3 class="text-center">Клиент @ViewData["ClientName"]</h3>
-            <hr class="hr-4" />
-            <div class="container-fluid">
-                <p>Дата на издаване: @Model.IssueDate</p>
-                <p>Стойност: @Model.Cost лв.</p>
-                <p>Отстъпка: @Model.Discount</p>
-                <p>Дължима сума: @Math.Round((Model.Cost * (1 - Model.Discount)), 2) лв.</p>
-            </div>
+            <h3 >Фактура @Model.Id/@Model.IssueDate</h3>
+            <hr />
+        <table class="table-no-border  mx-auto">
+                <thead>
+                    <tr class="row">
+                        <th class="col-md-5" style="text-align:right;"></th>
+                        <th class="col-md-1"></th>
+                        <th class="col-md-6"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row spaceUnder">
+                        <td class="col-md-5 text-18 text-bold" style="text-align:right;">Поръчка:</td>
+                        <td class="col-md-1"></td>
+                        <td class="col-md-6 text-18">@Model.OrderId/@Model.OrderDate</td>
+                    </tr>
+                    <tr class="row spaceUnder">
+                        <td class="col-md-5 text-18 text-bold" style="text-align:right;">Клиент:</td>
+                        <td class="col-md-1"></td>
+                        <td class="col-md-6 text-18">@ViewData["ClientName"]</td>
+                    </tr>
+                    <tr class="row spaceUnder">
+                        <td class="col-md-5 text-18 text-bold" style="text-align:right;">Дата на издаване:</td>
+                        <td class="col-md-1"></td>
+                        <td class="col-md-6 text-18">@Model.IssueDate г.</td>
+                    </tr>
+                    <tr class="row spaceUnder">
+                        <td class="col-md-5 text-18 text-bold" style="text-align:right;">Стойност:</td>
+                        <td class="col-md-1"></td>
+                        <td class="col-md-6 text-18">@Model.Cost лв.</td>
+                    </tr>
+                    <tr class="row spaceUnder">
+                        <td class="col-md-5 text-18 text-bold" style="text-align:right;">Отстъпка:</td>
+                        <td class="col-md-1"></td>
+                        <td class="col-md-6 text-18">@Model.Discount</td>
+                    </tr>
+                    <tr class="row spaceUnder">
+                        <td class="col-md-5 text-18 text-bold" style="text-align:right;">Дължима сума:</td>
+                        <td class="col-md-1"></td>
+                        <td class="col-md-6 text-18">@Math.Round((Model.Cost * (1 - Model.Discount)), 2) лв.</td>
+                    </tr>
+
+                </tbody>
+            </table>           
         }
 
-        <hr class="hr-4 mb-0" />
+        <hr class=" mb-0" />
         <div class="container button-holder mb-3">
             <button class="btn harmony-bg-color" onclick="history.back()">Обратно</button>
         </div>

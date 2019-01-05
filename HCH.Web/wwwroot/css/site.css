@@ -41,6 +41,19 @@ body {
     }
 }
 
+.table-no-border > thead > tr > th,
+.table-no-border > tbody > tr > th,
+.table-no-border > tfoot > tr > th,
+.table-no-border > thead > tr > td,
+.table-no-border > tbody > tr > td,
+.table-no-border > tfoot > tr > td {
+    border-top: none;
+}
+
+tr.spaceUnder > td {
+    padding-bottom: 1em;
+}
+
 .w-50{
     width:50%;
 }
@@ -54,6 +67,22 @@ body {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     width: 100%;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-15 {
+    font-size: 15px;
+}
+
+.text-18 {
+    font-size: 18px;
+}
+
+.text-20 {
+    font-size: 20px;
 }
 
 .text-30{

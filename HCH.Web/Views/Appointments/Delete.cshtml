@@ -12,9 +12,21 @@
     <div>
         <hr />
 
-        <h4>Ден от седмицата: @Model.DayOfWeekBg</h4>
-        <h4>Приемен час: @Model.VisitingHour</h4>
-
+        <dl class="dl-horizontal mt-3">
+            <dt class="text-bold">
+                Ден от седмицата:
+            </dt>
+            <dd>
+                @Model.DayOfWeekBg
+            </dd>
+            <dt class="text-bold">
+                Приемен час:
+            </dt>
+            <dd>
+                @Model.VisitingHour
+            </dd>
+        </dl>
+                
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
             <input type="submit" value="Изтрий" class="btn harmony-bg-color" /> |

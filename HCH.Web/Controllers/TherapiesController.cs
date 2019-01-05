@@ -1,44 +1,41 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HCH.Data;
 using HCH.Models;
 using HCH.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using AutoMapper;
+using HCH.Web.Models;
 
 namespace HCH.Web.Controllers
 {
     public class TherapiesController : Controller
     {
-        private readonly HCHWebContext _context;
         private readonly IProfilesService profilesService;
         private readonly ITreatmentsService treatmentsService;
         private readonly ITherapiesService therapiesService;
+        private readonly IUsersService usersService;
         private readonly SignInManager<HCHWebUser> signInManager;
+        private readonly IMapper mapper;
 
-        public TherapiesController(HCHWebContext context,
+        public TherapiesController(
             IProfilesService profilesService,
             ITreatmentsService treatmentsService,
             ITherapiesService therapiesService,
-            SignInManager<HCHWebUser> signInManager)
+            IUsersService usersService,
+            SignInManager<HCHWebUser> signInManager,
+            IMapper mapper)
         {
-            _context = context;
             this.profilesService = profilesService;
             this.treatmentsService = treatmentsService;
             this.therapiesService = therapiesService;
+            this.usersService = usersService;
             this.signInManager = signInManager;
+            this.mapper = mapper;
         }
-
-        // GET: Therapies
-        public async Task<IActionResult> Index()
-        {
-            var hCHWebContext = _context.Therapies.Include(t => t.Patient).Include(t => t.Therapist);
-            return View(await hCHWebContext.ToListAsync());
-        }
-
+        
         // GET: Therapies/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -47,45 +44,20 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            var therapy = await _context.Therapies
-                .Include(t => t.Patient)
-                .Include(t => t.Therapist)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var therapy = await this.therapiesService.GetTherapyByIdAsync(id);
+                
             if (therapy == null)
             {
                 return NotFound();
             }
 
-            return View(therapy);
-        }
+            var therapyModel = this.mapper.Map<TherapyViewModel>(therapy);
 
-        // GET: Therapies/Create
-        public IActionResult Create()
-        {
-            ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["TherapistId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
-        }
-
-        // POST: Therapies/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,PatientId,TherapistId")] Therapy therapy)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(therapy);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("AddTreatment", "Treatment");
-            }
-            ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id", therapy.PatientId);
-            ViewData["TherapistId"] = new SelectList(_context.Users, "Id", "Id", therapy.TherapistId);
-            return View(therapy);
+            return View(therapyModel);
         }
 
         // GET: Therapies/Edit/5
+        [Authorize(Roles ="Therapist")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -93,24 +65,42 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            var therapy = await _context.Therapies.FindAsync(id);
+            var therapy = await this.therapiesService.GetTherapyByIdAsync(id);
+
             if (therapy == null)
             {
                 return NotFound();
             }
-            ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id", therapy.PatientId);
-            ViewData["TherapistId"] = new SelectList(_context.Users, "Id", "Id", therapy.TherapistId);
-            return View(therapy);
+
+            var therapyModel = this.mapper.Map<TherapyViewModel>(therapy);
+
+            var therapistId = therapyModel.TherapistId;
+
+            HCHWebUser therapist = this.usersService.GetUserById(therapistId);
+
+            var treatmentsFromProfile = await this.treatmentsService.AllFromProfileAsync(therapist.ProfileId);
+
+            var treatmentsView = treatmentsFromProfile.Select(x => this.mapper.Map<TherapyTreatmentViewModel>(x)).ToList();
+
+            foreach (var item in treatmentsView)
+            {
+                if (therapyModel.Treatments.Contains(item))
+                {
+                    item.Selected = true;
+                }
+            }
+
+            therapyModel.Treatments = treatmentsView;
+
+            return View(therapyModel);
         }
 
         // POST: Therapies/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,StartDate,EndDate,PatientId,TherapistId")] Therapy therapy)
+        public async Task<IActionResult> Edit(string id,TherapyViewModel therapyView)
         {
-            if (id != therapy.Id)
+            if (id != therapyView.TherapyId)
             {
                 return NotFound();
             }
@@ -119,12 +109,14 @@ namespace HCH.Web.Controllers
             {
                 try
                 {
-                    _context.Update(therapy);
-                    await _context.SaveChangesAsync();
+                    var therapy = this.mapper.Map<Therapy>(therapyView);
+
+                    await this.therapiesService.UpdateTherapy(therapy);
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TherapyExists(therapy.Id))
+                    if (!this.therapiesService.TherapyExists(therapyView.TherapyId))
                     {
                         return NotFound();
                     }
@@ -133,47 +125,10 @@ namespace HCH.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PatientId"] = new SelectList(_context.Users, "Id", "Id", therapy.PatientId);
-            ViewData["TherapistId"] = new SelectList(_context.Users, "Id", "Id", therapy.TherapistId);
-            return View(therapy);
-        }
-
-        // GET: Therapies/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return RedirectToAction("Index", "Examinations");
             }
 
-            var therapy = await _context.Therapies
-                .Include(t => t.Patient)
-                .Include(t => t.Therapist)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (therapy == null)
-            {
-                return NotFound();
-            }
-
-            return View(therapy);
-        }
-
-        // POST: Therapies/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var therapy = await _context.Therapies.FindAsync(id);
-            _context.Therapies.Remove(therapy);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool TherapyExists(string id)
-        {
-            return _context.Therapies.Any(e => e.Id == id);
+            return View(therapyView);
         }
     }
 }

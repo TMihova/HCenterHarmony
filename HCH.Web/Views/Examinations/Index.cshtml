@@ -6,9 +6,8 @@
 }
 
 <div class="container">
-    <h3>Прегледи</h3>
-    <h3>Профил @ViewData["ProfileName"]</h3>
-    <h3>Терапевт @ViewData["TherapistFullName"]</h3>
+    <h3>Профил: @ViewData["ProfileName"]</h3>
+    <h3>Терапевт: @ViewData["TherapistFullName"]</h3>
     <div class="">
         <h3>Извършени прегледи</h3>
         <hr />
@@ -26,26 +25,26 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr class="row">
-                        <th class="col-md-1">@item.Id</th>
-                        <td class="col-md-2">@item.ExaminationDate</td>
-                        <td class="col-md-2">@item.Patient</td>
-                        <td class="col-md-3">
-                            @if (item.TherapyId == null)
-                            {
-                                <p>Няма назначена терапия.</p>
-                            }
-                            else
-                            {
-                                <a asp-area="" asp-controller="Therapies" asp-action="Details" asp-route-id="@item.TherapyId">Виж терапията</a>
-                            }
+                        <tr class="row">
+                            <th class="col-md-1">@item.Id</th>
+                            <td class="col-md-2">@item.ExaminationDate</td>
+                            <td class="col-md-2">@item.Patient</td>
+                            <td class="col-md-3">
+                                @if (item.TherapyId == null)
+                                {
+                                    <p>Няма назначена терапия.</p>
+                                }
+                                else
+                                {
+                                    <a asp-area="" asp-controller="Therapies" asp-action="Details" asp-route-id="@item.TherapyId">Виж терапията</a>
+                                }
 
-                        </td>
-                        <td class="col-md-4">
-                            <a asp-area="" asp-controller="Examinations" asp-action="Details" asp-route-id="@item.Id">Виж детайли за прегледа</a>
-                        </td>
+                            </td>
+                            <td class="col-md-4">
+                                <a asp-area="" asp-controller="Examinations" asp-action="Details" asp-route-id="@item.Id">Виж детайли за прегледа</a>
+                            </td>
 
-                    </tr>
+                        </tr>
                     }
                 </tbody>
             </table>

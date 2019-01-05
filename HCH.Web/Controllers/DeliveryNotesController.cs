@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using HCH.Services;
 using HCH.Web.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Globalization;
+using AutoMapper;
 
 namespace HCH.Web.Controllers
 {
@@ -11,13 +11,16 @@ namespace HCH.Web.Controllers
     {
         private readonly IOrdersService orderService;
         private readonly IDeliveryNotesService deliveryNotesService;
+        private readonly IMapper mapper;
 
         public DeliveryNotesController(
             IOrdersService orderService,
-            IDeliveryNotesService deliveryNotesService)
+            IDeliveryNotesService deliveryNotesService,
+            IMapper mapper)
         {
             this.orderService = orderService;
             this.deliveryNotesService = deliveryNotesService;
+            this.mapper = mapper;
         }
 
         // GET: DeliveryNotes/Details/5
@@ -32,26 +35,23 @@ namespace HCH.Web.Controllers
             var orderId = id.GetValueOrDefault();
 
             var deliveryNoteViewModel = new DeliveryNoteViewModel();
-            deliveryNoteViewModel.OrderId = orderId;
 
             if (!this.deliveryNotesService.IsThereDeliveryNoteForOrder(orderId))
-            {
+            {                
+                deliveryNoteViewModel.OrderId = orderId;
+
                 deliveryNoteViewModel.Exists = false;
 
                 return this.View(deliveryNoteViewModel);
             }
 
             var deliveryNoteForOrderDb = await this.deliveryNotesService.GetDeliveryNoteForOrderAsync(orderId);
-
-            ViewData["OrderDate"] = deliveryNoteForOrderDb.Order.OrderDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
+            
             ViewData["ClientName"] = deliveryNoteForOrderDb.Order.Client.FirstName + " " + deliveryNoteForOrderDb.Order.Client.LastName;
 
-            deliveryNoteViewModel.Exists = true;
+            deliveryNoteViewModel = this.mapper.Map<DeliveryNoteViewModel>(deliveryNoteForOrderDb);
 
-            deliveryNoteViewModel.Id = deliveryNoteForOrderDb.Id;
-            deliveryNoteViewModel.Cost = deliveryNoteForOrderDb.Cost;
-            deliveryNoteViewModel.IssueDate = deliveryNoteForOrderDb.IssueDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
-            deliveryNoteViewModel.Discount = deliveryNoteForOrderDb.Discount;
+            deliveryNoteViewModel.Exists = true;
 
             return View(deliveryNoteViewModel);
         }

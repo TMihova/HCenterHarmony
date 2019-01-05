@@ -1,43 +1,58 @@
-﻿@model HCH.Models.Therapy
+﻿@model HCH.Web.Models.TherapyViewModel
 
-@{
-    ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+@using System.Globalization;
 
-<h2>Details</h2>
+    @{
+        ViewData["Title"] = "Details";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
-<div>
-    <h4>Therapy</h4>
+<div class="container">
+
+    <h4>Детайли за терапия</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Patient)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Patient.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Therapist)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Therapist.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="row">
+        <div class="col-md-3">
+            <p class="text-bold mb-0" style="text-align:right;">Пациент:</p>
+            <p class="text-bold mb-0" style="text-align:right;">Терапевт:</p>
+            <p class="text-bold mb-0" style="text-align:right;">Начална дата:</p>
+            <p class="text-bold mb-0" style="text-align:right;">Крайна дата:</p>
+        </div>
+        <div class="col-md-9">
+            <p>@Model.Patient</p>
+            <p>@Model.Therapist</p>
+            <p>@Model.StartDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</p>
+            <p>@Model.EndDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</p>
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <p class="text-bold mb-0" style="text-align:right;">Предписани лечебни средства:</p>
+        </div>
+        <div class="col-md-9">
+
+            @foreach (var item in Model.Treatments)
+            {
+                <p>@item.Name - цена @item.Price лв.</p>
+            }
+
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+
+        <div class="col-md-3">
+            <p class="text-bold mb-0" style="text-align:right;">Обща цена:</p>
+        </div>
+        <div class="col-md-9">
+            <p>@Model.Treatments.Sum(x => x.Price) лв.</p>
+        </div>
+    </div>
+    <div>
+        <hr />
+        <a asp-action="Edit" asp-route-id="@Model.TherapyId">Промени</a> |
+        <a asp-area="" asp-controller="Examinations" asp-action="Index">Към списъка</a>
+    </div>
 </div>
