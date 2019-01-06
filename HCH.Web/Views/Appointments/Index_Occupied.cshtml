@@ -8,8 +8,7 @@
 <main class="mt-3">
     <div class="container w-75 justify-content-center">
         <h2 class="text-center">Предстоящи прегледи</h2>
-        <h3 class="text-center">Терапевт: @ViewData["TherapistFullName"]</h3>
-        <h3 class="text-center">Профил: @ViewData["ProfileName"]</h3>
+        <h3 class="text-center">Пациент: @ViewData["PatientFullName"]</h3>
         <hr class="hr-4" />
         <div class="container-fluid">
             <table class="table  mx-auto table-hover">
@@ -18,7 +17,7 @@
                         <th class="col-md-1">#</th>
                         <th class="col-md-2">Ден от седмицата</th>
                         <th class="col-md-2">Приемен час</th>
-                        <th class="col-md-2">Пациент</th>
+                        <th class="col-md-4">Терапевт/Профил</th>
                         <th class="col-md-3"></th>
                     </tr>
                 </thead>
@@ -28,36 +27,22 @@
                     {
                         count++;
 
-                        <tr class="row">
-                            <th class="col-md-1">@count</th>
-                            <td class="col-md-2">
-                                @item.DayOfWeekBg.ToString()
+                    <tr class="row">
+                        <th class="col-md-1">@count</th>
+                        <td class="col-md-2">
+                            @item.DayOfWeekBg.ToString()
 
-                            </td>
-                            <td class="col-md-2">@item.VisitingHour</td>
-                            <td class="col-md-2">@item.PatientFullName</td>
-                            <td class="col-md-3">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <form class="form-inline" asp-controller="Appointments" asp-action="Release" asp-route-id="@item.Id" method="post">
+                        </td>
+                        <td class="col-md-2">@item.VisitingHour</td>
+                        <th class="col-md-4">@item.TherapistFullName/@item.Profile</th>
+                        <td class="col-md-3">
+                            <form class="form-inline" asp-controller="Appointments" asp-action="Release" asp-route-id="@item.Id" method="post">
 
-                                            <button type="submit" class="btn harmony-bg-color mr-2">Освободи</button>
+                                <button type="submit" class="btn harmony-bg-color mr-2">Освободи</button>
 
-                                        </form>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <form class="form-inline" asp-controller="Examinations" asp-action="Create" asp-route-id="@item.PatientId" method="get">
-
-                                            <input type="hidden" name="AppointmentId" value="@item.Id" />
-
-                                            <button type="submit" class="btn harmony-bg-color mr-2">Преглед</button>
-
-                                        </form>
-                                    </div>
-                                    </div>
-
-</td>
-                        </tr>
+                            </form>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

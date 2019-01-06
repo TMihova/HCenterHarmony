@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using HCH.Models;
 using HCH.Web.Models;
 using HCH.Services;
 using Microsoft.Extensions.Options;
@@ -32,24 +31,17 @@ namespace HCH.Web.Areas.Admin.Controllers
             this.mapper = mapper;
         }
 
-        // GET: Profiles
+        // GET: Admin/Profiles/Index_Admin
         public async Task<IActionResult> Index_Admin()
         {
             var profiles = await this.profilesService.All();
 
             var viewProfiles = profiles.Select(x => this.mapper.Map<ProfileViewModel>(x));
 
-            //var viewProfiles = profiles.Select(x => new ProfileViewModel
-            //{
-            //    Id = x.Id,
-            //    Name = x.Name,
-            //    Description = x.Description
-            //});
-
             return View(viewProfiles);
         }
 
-        // GET: Profiles/Details/5        
+        // GET: Admin/Profiles/Details/5        
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -57,7 +49,7 @@ namespace HCH.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var profile = await this.profilesService.GetProfileById(id);
+            HCH.Models.Profile profile = await this.profilesService.GetProfileById(id);
 
             if (profile == null)
             {
@@ -69,7 +61,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(profileView);
         }
 
-        // GET: Profiles/Create
+        // GET: Admin/Profiles/Create
         public IActionResult Create()
         {
             return View();
@@ -83,20 +75,14 @@ namespace HCH.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var profile = this.mapper.Map<HCH.Models.Profile>(profileViewModel);
-
-                //var profile = new Profile
-                //{
-                //    Name = profileViewModel.Name,
-                //    Description = profileViewModel.Description
-                //};
-
+                
                 await this.profilesService.AddProfileAsync(profile);
                 return RedirectToAction(nameof(Index_Admin));
             }
             return View(profileViewModel);
         }
 
-        // GET: Profiles/Edit/5
+        // GET: Admin/Profiles/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -116,7 +102,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(profileView);
         }
 
-        // POST: Profiles/Edit/5
+        // POST: Admin/Profiles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, ProfileViewModel profile)
@@ -148,7 +134,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(profile);
         }
 
-        // GET: Profiles/Delete/5
+        // GET: Admin/Profiles/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -167,7 +153,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(profileView);
         }
 
-        // POST: Profiles/Delete/5
+        // POST: Admin/Profiles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

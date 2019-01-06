@@ -17,6 +17,8 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Identity\Services\" />
+    <Folder Include="Areas\Therapist\Data\" />
+    <Folder Include="Areas\Therapist\Models\" />
     <Folder Include="Middlewares\MiddlewareExtensions\" />
   </ItemGroup>
 
@@ -39,10 +41,10 @@
     <Content Update="Areas\Admin\Views\Profiles\Index_Admin.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Shared\_LoginPartial.cshtml">
+    <Content Update="Areas\Therapist\Views\Treatments\Index_Therapist.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Treatments\Index_Therapist.cshtml">
+    <Content Update="Views\Shared\_LoginPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="wwwroot\images\water1.jpg">

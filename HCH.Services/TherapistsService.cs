@@ -2,7 +2,6 @@
 using HCH.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,25 +20,23 @@ namespace HCH.Services
             this.userManager = userManager;
         }
 
-        public async Task<ICollection<HCHWebUser>> GetTherapistsByProfile(string profile)
+        public async Task<IEnumerable<HCHWebUser>> GetTherapistsByProfile(string profile)
         {
             return await this.context.Users
-                .Include(x => x.Profile)
                 .Where(x => x.Profile.Name == profile)
                 .ToListAsync();
         }
 
-        public async Task<ICollection<HCHWebUser>> GetAllUsersWithoutProfile()
+        public async Task<IEnumerable<HCHWebUser>> GetAllUsersWithoutProfile()
         {
             return await this.context.Users
-                .Include(x => x.Profile)
                 .Where(x => x.Profile.Id == null)
                 .ToListAsync();
         }
 
-        public HCHWebUser GetUserById(string id)
+        public async Task<HCHWebUser> GetUserByIdAsync(string id)
         {
-            return this.context.Users.Include(x => x.Profile).FirstOrDefault(x => x.Id == id);
+            return await this.context.Users.FindAsync(id);
         }
 
         public void AddProfileToUser(HCHWebUser user, string profile)
@@ -60,10 +57,9 @@ namespace HCH.Services
             return this.context.Users.FirstOrDefault(x => (x.FirstName + " " + x.LastName) == fullName);
         }
 
-        public async Task<ICollection<HCHWebUser>> GetTherapistsByProfileId(string profileId)
+        public async Task<IEnumerable<HCHWebUser>> GetTherapistsByProfileId(string profileId)
         {
             return await this.context.Users
-                .Include(x => x.Profile)
                 .Where(x => x.Profile.Id == profileId)
                 .ToListAsync();
         }

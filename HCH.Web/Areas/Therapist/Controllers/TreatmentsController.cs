@@ -9,8 +9,10 @@ using HCH.Services;
 using HCH.Web.Models;
 using AutoMapper;
 
-namespace HCH.Web.Controllers
+namespace HCH.Web.Areas.Therapist.Controllers
 {
+    [Area("Therapist")]
+    [Authorize(Roles = "Therapist")]
     public class TreatmentsController : Controller
     {
         private readonly ITreatmentsService treatmentsService;
@@ -30,8 +32,7 @@ namespace HCH.Web.Controllers
             this.mapper = mapper;
         }
         
-        // GET: Treatments/Index_Therapist
-        [Authorize(Roles="Therapist")]
+        // GET: Therapist/Treatments/Index_Therapist
         public async Task<IActionResult> Index_Therapist()
         {
             var therapist = await this.signInManager.UserManager.GetUserAsync(User);
@@ -50,7 +51,7 @@ namespace HCH.Web.Controllers
             return View(treatmentsView);
         }
 
-        // GET: Treatments/Details/5
+        // GET: Therapist/Treatments/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -70,7 +71,7 @@ namespace HCH.Web.Controllers
             return View(treatmentView);
         }
 
-        // GET: Treatments/Create
+        // GET: Therapist/Treatments/Create
         [Authorize(Roles = "Therapist")]
         public IActionResult Create()
         {
@@ -82,10 +83,9 @@ namespace HCH.Web.Controllers
             return View();
         }
 
-        // POST: Treatments/Create
+        // POST: Therapist/Treatments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Create(TreatmentViewModel treatmentView)
         {
             if (ModelState.IsValid)
@@ -105,8 +105,7 @@ namespace HCH.Web.Controllers
             return View(treatmentView);
         }
 
-        // GET: Treatments/Edit/5
-        [Authorize(Roles = "Therapist")]
+        // GET: Therapist/Treatments/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -132,10 +131,9 @@ namespace HCH.Web.Controllers
             return View(treatmentView);
         }
 
-        // POST: Treatments/Edit/5
+        // POST: Therapist/Treatments/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> Edit(string id, TreatmentViewModel treatmentView)
         {
             if (id != treatmentView.Id)
@@ -175,8 +173,7 @@ namespace HCH.Web.Controllers
 
         
 
-        // GET: Treatments/Delete/5
-        [Authorize(Roles = "Therapist")]
+        // GET: Therapist/Treatments/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -196,10 +193,9 @@ namespace HCH.Web.Controllers
             return View(treatmentView);
         }
 
-        // POST: Treatments/Delete/5
+        // POST: Therapist/Treatments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Therapist")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var treatment = await this.treatmentsService.GetTreatmentById(id);

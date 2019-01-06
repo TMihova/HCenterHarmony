@@ -1,0 +1,63 @@
+﻿@model HCH.Web.Models.TherapyViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h3>Промяна на терапия</h3>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-area="Therapist" asp-controller="Therapies" asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="TherapyId" />
+                <div class="form-group">
+                    <label asp-for="Patient" class="control-label"></label>
+                    <input asp-for="Patient" class="form-control" value="@Model.Patient" readonly />
+                    <input type="hidden" asp-for="PatientId" value="@Model.PatientId" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Therapist" class="control-label"></label>
+                    <input asp-for="Therapist" class="form-control" value="@Model.Therapist" readonly />
+                    <input type="hidden" asp-for="TherapistId" value="@Model.TherapistId" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="StartDate" class="control-label"></label>
+                    <input asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndDate" class="control-label"></label>
+                    <input asp-for="EndDate" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+
+                <ul>
+                    @for (Int32 i = 0; i < this.Model.Treatments.Count; i++)
+                    {
+                        <li>
+                            <div class="form-check form-check-inline">
+                                <input asp-for="@Model.Treatments[i].Selected" type="checkbox" class="form-check-input" />
+                                <label asp-for="@Model.Treatments[i].Selected" class="form-check-label">@Model.Treatments[i].Name</label>
+                                <input type="hidden" asp-for="@Model.Treatments[i].TreatmentId" />
+                                <input type="hidden" asp-for="@Model.Treatments[i].Name" />
+                            </div>
+                        </li>
+                    }
+                </ul>
+
+                <div class="form-group">
+                    <input type="submit" value="Потвърди" class="btn harmony-bg-color" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a asp-area="Therapist" asp-controller="Examinations" asp-action="Index">Към списъка</a>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -6,13 +6,13 @@
 }
 
 <div class="container">
-    <h3>Промяна на терапия</h3>
+    <h3>Добавяне на терапия за преглед @ViewData["ExaminationId"]/@ViewData["ExaminationDate"]</h3>
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Edit">
+            <form asp-area="Therapist" asp-controller="Therapies" asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="TherapyId" />
+
                 <div class="form-group">
                     <label asp-for="Patient" class="control-label"></label>
                     <input asp-for="Patient" class="form-control" value="@Model.Patient" readonly />
@@ -37,14 +37,14 @@
                 <ul>
                     @for (Int32 i = 0; i < this.Model.Treatments.Count; i++)
                     {
-                        <li>
-                            <div class="form-check form-check-inline">
-                                <input asp-for="@Model.Treatments[i].Selected" type="checkbox" class="form-check-input" required />
-                                <label asp-for="@Model.Treatments[i].Selected" class="form-check-label">@Model.Treatments[i].Name</label>
-                                <input type="hidden" asp-for="@Model.Treatments[i].TreatmentId" />
-                                <input type="hidden" asp-for="@Model.Treatments[i].Name" />
-                            </div>
-                        </li>
+                    <li>
+                        <div class="form-check form-check-inline">
+                            <input asp-for="@Model.Treatments[i].Selected" type="checkbox" class="form-check-input" />
+                            <label asp-for="@Model.Treatments[i].Selected" class="form-check-label">@Model.Treatments[i].Name</label>
+                            <input type="hidden" asp-for="@Model.Treatments[i].TreatmentId" />
+                            <input type="hidden" asp-for="@Model.Treatments[i].Name" />
+                        </div>
+                    </li>
                     }
                 </ul>
 
@@ -55,7 +55,7 @@
         </div>
     </div>
     <div>
-        <a asp-area="" asp-controller="Examinations" asp-action="Index">Към списъка</a>
+        <a asp-area="Therapist" asp-controller="Examinations" asp-action="Index">Към списъка</a>
     </div>
 </div>
 @section Scripts {

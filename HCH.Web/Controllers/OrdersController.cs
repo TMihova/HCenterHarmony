@@ -17,18 +17,20 @@ namespace HCH.Web.Controllers
     {
         private readonly IOrdersService ordersService;
         private readonly IDeliveryNotesService deliveryNotesService;
+        private readonly IUsersService usersService;
         private readonly SignInManager<HCHWebUser> signInManager;
         private readonly IMapper mapper;
 
         public OrdersController(
             IOrdersService ordersService,
             IDeliveryNotesService deliveryNotesService,
+            IUsersService usersService,
             SignInManager<HCHWebUser> signInManager,
-            UserManager<HCHWebUser> userManager,
             IMapper mapper)
         {
             this.ordersService = ordersService;
             this.deliveryNotesService = deliveryNotesService;
+            this.usersService = usersService;
             this.signInManager = signInManager;
             this.mapper = mapper;
         }
@@ -67,6 +69,29 @@ namespace HCH.Web.Controllers
             }
 
             return RedirectToAction("Index", "FoodSupplements");
+        }
+
+        // GET: Orders/Details/5
+        [Authorize]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var orderId = id.GetValueOrDefault();
+
+            var order = await this.ordersService.GetOrderByIdAsync(orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var orderView = this.mapper.Map<OrderViewModel>(order);
+
+            return View(orderView);
         }
 
         [HttpGet]
@@ -108,6 +133,8 @@ namespace HCH.Web.Controllers
         {
             var clientId = this.signInManager.UserManager.GetUserId(User);
 
+            var client = this.usersService.GetUserById(clientId);
+
             var orders = await this.ordersService.AllClientOrdersAsync(clientId);
 
             var ordersView = new List<OrderViewModel>();
@@ -126,6 +153,8 @@ namespace HCH.Web.Controllers
 
                 ordersView.Add(orderView);
             }
+
+            ViewData["ClientFullName"] = client.FirstName + " " + client.LastName;
 
             return View(ordersView);
         }

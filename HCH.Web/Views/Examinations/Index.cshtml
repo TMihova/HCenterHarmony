@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<HCH.Web.Models.ExaminationViewModel>
 
+@using System.Globalization
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container">
-    <h3>Профил: @ViewData["ProfileName"]</h3>
-    <h3>Терапевт: @ViewData["TherapistFullName"]</h3>
+    <h3>Пациент: @ViewData["PatientFullName"]</h3>
     <div class="">
         <h3>Извършени прегледи</h3>
         <hr />
@@ -15,10 +16,9 @@
             <table class="table  mx-auto table-hover">
                 <thead>
                     <tr class="row">
-                        <th class="col-md-1">#</th>
+                        <th class="col-md-2">#</th>
                         <th class="col-md-2">Дата на прегледа</th>
-                        <th class="col-md-2">Пациент</th>
-                        <th class="col-md-3">Терапия</th>
+                        <th class="col-md-4">Терапевт/Профил</th>
                         <th class="col-md-4"></th>
                     </tr>
                 </thead>
@@ -26,20 +26,9 @@
                     @foreach (var item in Model)
                     {
                         <tr class="row">
-                            <th class="col-md-1">@item.Id</th>
-                            <td class="col-md-2">@item.ExaminationDate</td>
-                            <td class="col-md-2">@item.Patient</td>
-                            <td class="col-md-3">
-                                @if (item.TherapyId == null)
-                                {
-                                    <p>Няма назначена терапия.</p>
-                                }
-                                else
-                                {
-                                    <a asp-area="" asp-controller="Therapies" asp-action="Details" asp-route-id="@item.TherapyId">Виж терапията</a>
-                                }
-
-                            </td>
+                            <td class="col-md-2">@item.Id</td>
+                            <td class="col-md-2">@item.ExaminationDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</td>
+                            <td class="col-md-4">@item.Therapist/@item.Profile</td>
                             <td class="col-md-4">
                                 <a asp-area="" asp-controller="Examinations" asp-action="Details" asp-route-id="@item.Id">Виж детайли за прегледа</a>
                             </td>

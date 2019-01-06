@@ -13,17 +13,18 @@
 
 <main class="mt-3">
     <div class="container w-75 justify-content-center">
-        <h2 class="text-center">@ViewData["Profile"]</h2>
+        <h2 class="text-center">Профил @ViewData["Profile"]</h2>
         <h2 class="text-center">Терапевти</h2>
-        <hr class="hr-4" />
+        <hr  />
         <div class="container-fluid">
-            
+
             <table class="table  mx-auto table-hover">
                 <thead>
                     <tr class="row">
-                        <th class="col-md-2">#</th>
-                        <th class="col-md-5">Име</th>
-                        <th class="col-md-5"></th>
+                        <th class="col-md-1 text-center">#</th>
+                        <th class="col-md-3 text-center">Потребителско име</th>
+                        <th class="col-md-3 text-center">Име и фамилия</th>
+                        <th class="col-md-5 text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,24 +34,28 @@
                         count++;
 
                         <tr class="row">
-                            <th class="col-md-1">@count</th>
-                            <td class="col-md-5">@item.FullName</td>
-                            <td class="col-md-5">
+                            <td class="col-md-1 text-center">@count</td>
+                            <td class="col-md-3 text-center">@item.UserName</td>
+                            <td class="col-md-3 text-center">@item.FullName</td>
+                            <td class="col-md-5 text-center">
                                 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                                {
-                                    <form class="form-inline" asp-controller="Therapists" asp-action="Edit" asp-route-id="@item.Id" method="get">
-                                        <button type="submit" class="btn harmony-bg-color ml-2">Редактирай</button>
-                                    </form>
-                                    <form class="form-inline" asp-controller="Therapists" asp-action="Remove" asp-route-id="@item.Id" method="get">
-                                        <button type="submit" class="btn harmony-bg-color ml-2">Премахни</button>
-                                    </form>
-                                }
+                                {                                
+                                   <form class="form-inline" asp-controller="Therapists" asp-action="Remove" asp-route-id="@item.Id" method="get">
+                                       <a asp-area="Admin" asp-controller="Therapists" asp-action="Edit" asp-route-id="@item.Id" class="btn harmony-bg-color">Редактирай</a>
+                                       <button type="submit" class="btn harmony-bg-color ml-2">Премахни</button>
+                                   </form>
+                                  }
                             </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                         </tr>
+                      }
+                    </tbody>
+                    </table>
+                </div>
+        <hr class="mb-0" />
+        <div class="container button-holder mb-3">
+            <a asp-area="Admin" asp-controller="Users" asp-action="Index">Към списъка с потребители</a> | 
+            <a asp-area="Admin" asp-controller="Profiles" asp-action="Index_Admin">Към списъка с профили</a>
         </div>
-        <hr class="hr-4 mb-0" />
+        
     </div>
 </main>

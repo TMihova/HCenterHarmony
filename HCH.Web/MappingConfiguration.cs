@@ -20,7 +20,9 @@ namespace HCH.Web
                 .ForMember(dest => dest.PatientFullName,
                            opt => opt.MapFrom(src => src.Patient.FirstName + " " + src.Patient.LastName))
                 .ForMember(dest => dest.TherapistFullName,
-                           opt => opt.MapFrom(src => src.Therapist.FirstName + " " + src.Therapist.LastName));
+                           opt => opt.MapFrom(src => src.Therapist.FirstName + " " + src.Therapist.LastName))
+                .ForMember(dest => dest.Profile,
+                           opt => opt.MapFrom(src => src.Therapist.Profile.Name));
 
             CreateMap<AppointmentViewModel, Appointment>()
                 .ForMember(dest => dest.Patient,
@@ -40,6 +42,14 @@ namespace HCH.Web
                 .ForMember(dest => dest.Therapist,
                            opt => opt.Ignore());
 
+            CreateMap<Examination, ExaminationViewModel>()
+                .ForMember(dest => dest.Patient,
+                           opt => opt.MapFrom(src => src.Patient.FirstName + " " + src.Patient.LastName))
+                .ForMember(dest => dest.Therapist,
+                           opt => opt.MapFrom(src => src.Therapist.FirstName + " " + src.Therapist.LastName))
+                .ForMember(dest => dest.Profile,
+                           opt => opt.MapFrom(src => src.Therapist.Profile.Name));
+
             CreateMap<Treatment, TherapyTreatmentViewModel>()
                 .ForMember(dest => dest.TreatmentId,
                            opt => opt.MapFrom(src => src.Id));
@@ -51,6 +61,12 @@ namespace HCH.Web
             CreateMap<TreatmentViewModel, Treatment>()
                 .ForMember(dest => dest.Profile,
                            opt => opt.Ignore());
+
+            CreateMap<HCHWebUser, TherapistViewModel>()
+                .ForMember(dest => dest.FullName,
+                           opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(dest => dest.Profile,
+                           opt => opt.MapFrom(src => src.Profile.Name));
 
             CreateMap<TherapyTreatmentViewModel, TherapyTreatment>()
                 .ForMember(dest => dest.Therapy,
@@ -68,6 +84,12 @@ namespace HCH.Web
                  .ForMember(dest => dest.Treatments,
                            opt => opt.MapFrom(src => src.Treatments.Select(x => x.Treatment)));
 
+            CreateMap<Examination, TherapyViewModel>()
+                .ForMember(dest => dest.Patient,
+                           opt => opt.MapFrom(src => src.Patient.FirstName + " " + src.Patient.LastName))
+                .ForMember(dest => dest.Therapist,
+                           opt => opt.MapFrom(src => src.Therapist.FirstName + " " + src.Therapist.LastName));
+
             CreateMap<TherapyViewModel, Therapy>()
                 .ForMember(dest => dest.Id,
                            opt => opt.MapFrom(src => src.TherapyId))
@@ -78,11 +100,7 @@ namespace HCH.Web
                  .ForMember(dest => dest.Treatments,
                            opt => opt.MapFrom(src => src.Treatments.Where(x => x.Selected == true)));
 
-            CreateMap<Examination, ExaminationViewModel>()
-                .ForMember(dest => dest.Patient,
-                           opt => opt.MapFrom(src => src.Patient.FirstName + " " + src.Patient.LastName))
-                .ForMember(dest => dest.Therapist,
-                           opt => opt.MapFrom(src => src.Therapist.FirstName + " " + src.Therapist.LastName));
+            
 
             CreateMap<OrderFoodSupplement, OrderProductViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FoodSupplement.Id))

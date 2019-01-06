@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HCH.Models;
 using HCH.Web.Models;
-using HCH.Data;
 using Microsoft.AspNetCore.Authorization;
 using HCH.Services;
 using AutoMapper;
@@ -15,20 +14,18 @@ namespace HCH.Web.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class FoodSupplementsController : Controller
     {
-        private readonly HCHWebContext _context;
         private readonly IFoodSupplementsService foodSupplementsService;
         private readonly IMapper mapper;
 
-        public FoodSupplementsController(HCHWebContext context,
+        public FoodSupplementsController(
             IFoodSupplementsService foodSupplementsService,
             IMapper mapper)
         {
-            _context = context;
             this.foodSupplementsService = foodSupplementsService;
             this.mapper = mapper;
         }
 
-        // GET: FoodSupplements
+        // GET: Admin/FoodSupplements/Index_Admin
         public async Task<IActionResult> Index_Admin()
         {
             var products = await this.foodSupplementsService.AllAsync();
@@ -38,7 +35,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(productsView);
         }
 
-        // GET: FoodSupplements/Create
+        // GET: Admin/FoodSupplements/Create
         public IActionResult Create()
         {
             return View();
@@ -60,7 +57,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(foodSupplementModel);
         }
 
-        // GET: FoodSupplements/Edit/5
+        // GET: Admin/FoodSupplements/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,7 +79,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(foodSupplementView);
         }
 
-        // POST: FoodSupplements/Edit/5
+        // POST: Admin/FoodSupplements/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, FoodSupplementViewModel foodSupplementModel)
@@ -102,7 +99,7 @@ namespace HCH.Web.Areas.Admin.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FoodSupplementExists(foodSupplementModel.Id))
+                    if (!this.foodSupplementsService.FoodSupplementExists(foodSupplementModel.Id))
                     {
                         return NotFound();
                     }
@@ -116,7 +113,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(foodSupplementModel);
         }
 
-        // GET: FoodSupplements/Delete/5
+        // GET: Admin/FoodSupplements/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,20 +135,16 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(foodSupplementView);
         }
 
-        // POST: FoodSupplements/Delete/5
+        // POST: Admin/FoodSupplements/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var foodSupplement = await _context.FoodSupplements.FindAsync(id);
-            _context.FoodSupplements.Remove(foodSupplement);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index_Admin));
-        }
+            var foodSupplement = await this.foodSupplementsService.GetProductById(id);
 
-        private bool FoodSupplementExists(int id)
-        {
-            return _context.FoodSupplements.Any(e => e.Id == id);
+            await this.foodSupplementsService.RemoveProductAsync(foodSupplement);
+            
+            return RedirectToAction(nameof(Index_Admin));
         }
     }
 }

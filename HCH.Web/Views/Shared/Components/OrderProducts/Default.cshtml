@@ -1,0 +1,41 @@
+﻿@model IEnumerable<HCH.Web.Models.OrderProductViewModel>
+
+<div class="container-fluid">
+    <h4 class="text-center">Продукти към поръчка No @ViewData["OrderId"]/@ViewData["OrderDate"]:</h4>
+    <div class="container-fluid">
+        <hr class="hr-1" />
+        <table class="table  mx-auto table-hover">
+            <thead>
+                <tr class="row">
+                    <th class="col-md-1">#</th>
+                    <th class="col-md-4">Име</th>
+                    <th class="col-md-2" style="text-align:right;">Ед. цена в лв.</th>
+                    <th class="col-md-2" style="text-align:right;">Количество</th>
+                    <th class="col-md-1"></th>
+                    <th class="col-md-2" style="text-align:right;">Цена в лв.</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="row">
+                        <th class="col-md-1">@item.Id</th>
+                        <td class="col-md-4">@item.Name</td>
+                        <td class="col-md-2" style="text-align:right;">@item.Price</td>
+                        <td class="col-md-2" style="text-align:right;">@item.Count</td>
+                        <th class="col-md-1"></th>
+                        <td class="col-md-2" style="text-align:right;">@(item.Price * item.Count)</td>
+                    </tr>
+                }
+                <tr class="row">
+                    <th class="col-md-1"></th>
+                    <td class="col-md-4"></td>
+                    <td class="col-md-2"></td>
+                    <td class="col-md-2"></td>
+                    <td class="col-md-1" style="text-align:right;">Общо:</td>
+                    <td class="col-md-2" style="text-align:right;">@ViewData["TotalPrice"]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

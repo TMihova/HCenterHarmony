@@ -7,13 +7,11 @@
 
 
 <div class="container">
-    <h3>Редактиране на продукт</h3>
-
-    <h4>Хранителна добавка: @Model.Id</h4>
+    <h3>Редактиране на продукт No @Model.Id</h3>
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Edit">
+            <form asp-area="Admin" asp-controller="FoodSupplements" asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group">
@@ -32,14 +30,14 @@
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Запази" class="btn btn-default" />
+                    <input type="submit" value="Запази" class="btn harmony-bg-color" />
                 </div>
             </form>
         </div>
     </div>
 
     <div>
-        <a asp-action="Index_Admin">Обратно към списъка</a>
+        <a asp-area="Admin" asp-controller="FoodSupplements" asp-action="Index_Admin">Обратно към списъка</a>
     </div>
 </div>
 

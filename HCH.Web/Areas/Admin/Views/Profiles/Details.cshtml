@@ -5,13 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="container">
+<div class="container">
 
 
-        <h4>@Model.Name</h4>
-        <hr />
-        <h4>@Model.Description</h4>
-
-        <a asp-action="Edit" asp-route-id="@Model.Id">Редактарай</a> |
-        <a asp-action="Index_Admin">Към Списъка</a>
-    </div>
+    <h4>Име: @Model.Name</h4>
+    <hr />
+    <h4>Описание: @Model.Description</h4>
+    <hr />
+    <a asp-area="Admin" asp-controller="Profiles" asp-action="Edit" asp-route-id="@Model.Id">Редактарай</a> |
+    <a asp-area="Admin" asp-controller="Profiles" asp-action="Index_Admin">Към Списъка</a>
+</div>

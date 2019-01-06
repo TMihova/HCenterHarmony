@@ -13,7 +13,7 @@
     <h3 class="text-center">Профил @ViewData["ProfileName"]</h3>
     <hr class="hr-1" />
     <div class="row">        
-            <form asp-area="" asp-controller="Examinations" asp-action="Create">
+            <form asp-area="Therapist" asp-controller="Examinations" asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
                     <div class="col-md-4">
@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="ExaminationDate" class="control-label"></label>
-                            <input type="date" asp-for="ExaminationDate" class="form-control" />
+                            <input type="date" asp-for="ExaminationDate" class="form-control" readonly/>
                         </div>
                         <div class="form-group">
                             <input type="hidden" asp-for="TherapistId" value="@Model.TherapistId">
@@ -43,7 +43,7 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="Anamnesis" class="control-label"></label>
-                            <textarea asp-for="Anamnesis" rows="10" placeholder="Анамнеза..." class="form-control">@Model.Anamnesis</textarea>
+                            <textarea asp-for="Anamnesis" rows="5" placeholder="Анамнеза..." class="form-control">@Model.Anamnesis</textarea>
 
                             <span asp-validation-for="Anamnesis" class="text-danger"></span>
                         </div>
@@ -86,7 +86,7 @@
                     <input type="submit" value="Потвърди" class="btn harmony-bg-color" /> | 
                 </div>
                 <div>
-                    <a asp-area="" asp-controller="Appointments" asp-action="Index_Occupied">Към списъка с предстоящи прегледи</a>
+                    <a asp-area="Therapist" asp-controller="Appointments" asp-action="Index_Occupied">Към списъка с предстоящи прегледи</a>
                 </div>
             </form>       
     </div>

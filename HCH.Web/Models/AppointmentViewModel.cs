@@ -32,5 +32,7 @@ namespace HCH.Web.Models
         public string PatientId { get; set; }
         
         public string PatientFullName { get; set; }
+
+        public string Profile { get; set; }
     }
 }

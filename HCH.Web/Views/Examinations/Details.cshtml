@@ -8,7 +8,7 @@
 
 <div class="container d-flex justify-content-center w-75">
     <div class="container-fluid">
-        <h4>Детайли за преглед</h4>
+        <h3>Детайли за преглед</h3>
         <h3>Преглед @Model.Id/@Model.ExaminationDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</h3>
         <hr class="hr-1" />
 
@@ -32,26 +32,29 @@
                 @Model.Patient
             </dd>
             <dt>
-                Терапия:
+                Цена на прегледа:
             </dt>
             <dd>
-                @if (Model.TherapyId == null)
-                {
-                    <p>Няма назначена терапия при този преглед.</p>
-                }
-                else
-                {
-                    <a asp-area="" asp-controller="Therapies" asp-action="Details" asp-route-id="@Model.TherapyId">Виж детайли за терапията</a>
-                }
+                @Model.Price  лв.
             </dd>
         </dl>
+        @if (Model.TherapyId == null)
+        {
+            <p>Няма назначена терапия за този преглед.</p>
+            
+        }
+        else
+        {
+            <div>
+                @await Component.InvokeAsync("Therapy", new { id = Model.TherapyId })
+            </div>
+        }
 
         <hr />
         <h5 class="mb-1">Анамнеза:</h5>
         <textarea disabled class="textarea-100" rows="5">@Model.Anamnesis</textarea>
         <hr />
         <div class="mt-5">
-            <a asp-area="" asp-controller="Examinations" asp-action="Edit" asp-route-id="@Model.Id">Промени</a> |
             <a asp-area="" asp-controller="Examinations" asp-action="Index">Към списъка</a>
         </div>
     </div>

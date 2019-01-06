@@ -30,5 +30,11 @@ namespace HCH.Models
         public string TherapyId { get; set; }
 
         public virtual Therapy Therapy { get; set; }
+
+        [Required]
+        [Range(0, Double.MaxValue)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Price { get; set; }
     }
 }

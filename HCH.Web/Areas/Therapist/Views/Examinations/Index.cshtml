@@ -1,0 +1,43 @@
+﻿@model IEnumerable<HCH.Web.Models.ExaminationViewModel>
+
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h3>Профил: @ViewData["ProfileName"]</h3>
+    <h3>Терапевт: @ViewData["TherapistFullName"]</h3>
+    <div class="">
+        <h3>Извършени прегледи</h3>
+        <hr />
+        <div class="container-fluid">
+            <table class="table  mx-auto table-hover">
+                <thead>
+                    <tr class="row">
+                        <th class="col-md-2">#</th>
+                        <th class="col-md-3">Дата на прегледа</th>
+                        <th class="col-md-3">Пациент</th>
+                        <th class="col-md-4"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="row">
+                            <td class="col-md-2">@item.Id</td>
+                            <td class="col-md-3">@item.ExaminationDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</td>
+                            <td class="col-md-3">@item.Patient</td>
+                            <td class="col-md-4">
+                                <a asp-area="Therapist" asp-controller="Examinations" asp-action="Details" asp-route-id="@item.Id">Виж детайли за прегледа</a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

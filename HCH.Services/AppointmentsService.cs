@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using HCH.Data;
 using HCH.Models;
@@ -43,6 +42,11 @@ namespace HCH.Services
         public bool IsThereSuchAppointment(string therapistId, DayOfWeekBg dayOfWeekBg, string visitingHour)
         {
             return this.context.Appointments.Any(x => x.DayOfWeekBg == dayOfWeekBg && x.VisitingHour == visitingHour && x.TherapistId == therapistId);
+        }
+
+        public async Task<IEnumerable<Appointment>> OccupiedAppointmentsForPatientAsync(string userId)
+        {
+            return await this.context.Appointments.Where(x => x.PatientId == userId).ToListAsync();
         }
 
         public async Task<IEnumerable<Appointment>> OccupiedAppointmentsForTherapistAsync(string therapistId)

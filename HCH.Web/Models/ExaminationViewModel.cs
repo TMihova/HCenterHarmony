@@ -24,5 +24,10 @@ namespace HCH.Web.Models
         public string Anamnesis { get; set; }
 
         public string TherapyId { get; set; }
+
+        public string Profile { get; set; }
+
+        [Display(Name = "Цена")]
+        public decimal Price { get; set; }
     }
 }

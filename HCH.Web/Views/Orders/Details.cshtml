@@ -1,0 +1,34 @@
+﻿@model HCH.Web.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container w-75 justify-content-center">
+    <div>
+        <h3 class="text-center">Детайли за поръчка No @Model.Id/@Model.OrderDate</h3>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Дата на поръчката:
+            </dt>
+            <dd>
+                @Model.OrderDate
+            </dd>
+            <dt>
+                Клиент:
+            </dt>
+            <dd>
+                @Model.ClientFullName
+            </dd>
+        </dl>
+    </div>
+    <div>
+        @await Component.InvokeAsync("OrderProducts", new { id = Model.Id })
+    </div>
+    <hr />
+    <div class="container button-holder mb-3">
+        <button class="btn harmony-bg-color" onclick="history.back()">Обратно</button>
+    </div>
+</div>

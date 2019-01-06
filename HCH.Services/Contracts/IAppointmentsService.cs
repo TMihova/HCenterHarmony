@@ -26,5 +26,7 @@ namespace HCH.Services
         Task ReleaseAppointmentAsync(string id);
 
         Task<IEnumerable<Appointment>> OccupiedAppointmentsForTherapistAsync(string therapistId);
+
+        Task<IEnumerable<Appointment>> OccupiedAppointmentsForPatientAsync(string userId);
     }
 }

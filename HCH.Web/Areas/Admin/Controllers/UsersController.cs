@@ -50,7 +50,7 @@ namespace HCH.Web.Areas.Admin.Controllers
 
             viewUsers.Remove(currentUser);
 
-            return View(viewUsers);
+            return View(viewUsers.OrderByDescending(x => x.Role.Length));
         }
 
         public async Task<IActionResult> AddAdminRole(string id)

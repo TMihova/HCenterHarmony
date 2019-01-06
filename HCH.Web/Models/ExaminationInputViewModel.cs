@@ -38,6 +38,10 @@ namespace HCH.Web.Models
         [Range(0, Double.MaxValue, ErrorMessage ="Невалиден брой дни.")]
         public int TherapyDuration { get; set; }
 
+        [Display(Name = "Цена")]
+        [Range(0, Double.MaxValue, ErrorMessage = "Невалидна цена.")]
+        public decimal Price { get; set; }
+
         public List<TherapyTreatmentViewModel> Treatments { get; set; }
 
 

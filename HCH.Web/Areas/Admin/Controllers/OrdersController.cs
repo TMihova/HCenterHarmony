@@ -33,6 +33,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             this.mapper = mapper;
         }
 
+        // GET: Admin/Orders/AllOrders
         [HttpGet]
         public async Task<IActionResult> AllOrders()
         {
@@ -58,29 +59,9 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(ordersView);
         }
 
-        // GET: Orders/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        
 
-            var orderId = id.GetValueOrDefault();
-
-            var order = await this.ordersService.GetOrderByIdAsync(orderId);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            var orderView = this.mapper.Map<OrderViewModel>(order);
-
-            return View(orderView);
-        }
-
-        // GET: Orders/Delete/5
+        // GET: Admin/Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -100,7 +81,7 @@ namespace HCH.Web.Areas.Admin.Controllers
             return View(order);
         }
 
-        // POST: Orders/Delete/5
+        // POST: Admin/Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

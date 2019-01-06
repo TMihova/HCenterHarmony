@@ -12,10 +12,10 @@
 
     <h4>Наименование: @Model.Name</h4>
     <h4>Описание: @Model.Description</h4>
-
+    <hr />
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Изтрий" class="btn btn-default" /> |
-        <a asp-action="Index_Admin">Към списъка</a>
+        <input type="submit" value="Изтрий" class="btn harmony-bg-color" /> |
+        <a asp-area="Admin" asp-controller="Profiles" asp-action="Index_Admin">Към списъка</a>
     </form>
 </div>

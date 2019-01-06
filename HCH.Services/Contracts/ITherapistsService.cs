@@ -6,15 +6,20 @@ namespace HCH.Services
 {
     public interface ITherapistsService
     {
-        Task<ICollection<HCHWebUser>> GetTherapistsByProfile(string profile);
+        Task<IEnumerable<HCHWebUser>> GetTherapistsByProfile(string profile);
 
-        Task<ICollection<HCHWebUser>> GetAllUsersWithoutProfile();
+        Task<IEnumerable<HCHWebUser>> GetAllUsersWithoutProfile();
 
-        HCHWebUser GetUserById(string id);
-        void AddProfileToUser(HCHWebUser user, string profile);
+        Task<IEnumerable<HCHWebUser>> GetTherapistsByProfileId(string profileId);
+
+        Task<HCHWebUser> GetUserByIdAsync(string id);
+
         HCHWebUser GetUserByFullName(string fullName);
-        Task<ICollection<HCHWebUser>> GetTherapistsByProfileId(string profileId);
+
+        void AddProfileToUser(HCHWebUser user, string profile);                
+
         string GetProfileNameByProfileId(string profileId);
+
         void RemoveProfileFromUser(HCHWebUser user);
     }
 }

@@ -52,8 +52,8 @@
                                     <a class="a-black dropdown-item ml-3" asp-area="" asp-controller="Profiles" asp-action="Index">Терапевти</a><br />
                                     @if (SignInManager.IsSignedIn(User))
                                     {
-                                        <a class="a-black dropdown-item ml-3" asp-area="" asp-controller="Appointments" asp-action="Index_Patient">Моите часове</a><br />
-                                        <a class="a-black dropdown-item ml-3" asp-area="" asp-controller="Examinations" asp-action="Index_Patient">Моите прегледи</a><br />
+                                        <a class="a-black dropdown-item ml-3" asp-area="" asp-controller="Appointments" asp-action="Index_Occupied">Моите часове</a><br />
+                                        <a class="a-black dropdown-item ml-3" asp-area="" asp-controller="Examinations" asp-action="Index">Моите прегледи</a><br />
                                     }
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
     </div>
     <div class="container mt-3">
         <hr class="hr-1 " />
-        <footer>
+        <footer class="text-center">
             <p>&copy; 2018 - Хармония</p>
         </footer>
     </div>

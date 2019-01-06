@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HCH.Data;
@@ -33,6 +34,12 @@ namespace HCH.Services
             return this.context.FoodSupplements.FirstOrDefaultAsync(x => x.Id == productId);
         }
 
+        public async Task RemoveProductAsync(FoodSupplement foodSupplement)
+        {
+            this.context.FoodSupplements.Remove(foodSupplement);
+            await this.context.SaveChangesAsync();
+        }
+
         public async Task UpdateProductAsync(int id, string name, decimal price, string description)
         {
             var foodSupplement = await this.context.FoodSupplements.FindAsync(id);
@@ -43,6 +50,11 @@ namespace HCH.Services
 
             this.context.Update(foodSupplement);
             await this.context.SaveChangesAsync();
+        }
+
+        public bool FoodSupplementExists(int id)
+        {
+            return this.context.FoodSupplements.Any(e => e.Id == id);
         }
     }
 }

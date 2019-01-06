@@ -12,7 +12,7 @@
         <hr class="hr-4" />
         <div class="container-fluid">
 
-            <div><a asp-area="" asp-controller="Treatments" asp-action="Create">Добави</a></div>
+            <div><a asp-area="Therapist" asp-controller="Treatments" asp-action="Create">Добави ново средство</a></div>
 
             <table class="table  mx-auto table-hover">
                 <thead>
@@ -40,14 +40,13 @@
                             <td class="col-md-2">@item.Price лв</td>
                             <td class="col-md-2">
 
-
-                                <form class="form-inline" asp-area="" asp-controller="Treatments" asp-action="Edit" asp-route-id="@item.Id" method="get">
+                                <form class="form-inline" asp-area="Therapist" asp-controller="Treatments" asp-action="Edit" asp-route-id="@item.Id" method="get">
 
                                     <button type="submit" class="btn harmony-bg-color ml-2">Редактирай</button>
 
                                 </form>
 
-                                <form class="form-inline" asp-area="" asp-controller="Treatments" asp-action="Delete" asp-route-id="@item.Id" method="get">
+                                <form class="form-inline" asp-area="Therapist" asp-controller="Treatments" asp-action="Delete" asp-route-id="@item.Id" method="get">
 
                                     <button type="submit" class="btn harmony-bg-color ml-2">Премахни</button>
 

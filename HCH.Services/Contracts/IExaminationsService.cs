@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HCH.Models;
 
@@ -15,5 +16,11 @@ namespace HCH.Services
         Task UpdateExaminationAsync(Examination examination);
 
         bool ExaminationExists(int id);
+
+        Task<IEnumerable<Examination>> AllExaminationsForPatientAsync(string userId);
+
+        Task<int> GetExaminationIdByTherapyIdAsync(string id);
+
+        Task<DateTime> GetExaminationDateByTherapyIdAsync(string id);
     }
 }

@@ -80,6 +80,9 @@ namespace HCH.Data.Migrations
                     b.Property<string>("PatientId")
                         .IsRequired();
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("TherapistId")
                         .IsRequired();
 

@@ -7,8 +7,8 @@
 
 
     <main class="mt-3">
-        <div class="container w-75 justify-content-center">
-            <h1 class="text-center">All Users</h1>
+        <div class="container justify-content-center">
+            <h1 class="text-center">Всички потребители</h1>
             <hr class="hr-4" />
             <div class="container-fluid">
                 <table class="table  mx-auto table-hover">
@@ -16,9 +16,9 @@
                         <tr class="row">
                             <th class="col-md-1 text-center">#</th>
                             <th class="col-md-1 text-center">Потребителско име</th>
-                            <th class="col-md-2 text-center">Роли</th>
+                            <th class="col-md-3 text-center">Роли</th>
                             <th class="col-md-2 text-center">Профил</th>
-                            <th class="col-md-6 text-center">Добави роля</th>
+                            <th class="col-md-5 text-center">Добави роля</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,34 +30,24 @@
                         <tr class="row">
                             <th class="col-md-1 text-center">@count</th>
                             <td class="col-md-1 text-center">@item.UserName</td>
-                            <td class="col-md-2 text-center">@item.Role</td>
-                            <td class="col-md-2 text-center">@item.Profile</td>
-                            <td class="col-md-6 text-center">
+                            <td class="col-md-3 text-center">@item.Role</td>
+                            <td class="col-md-2 text-center">
+                                <a asp-area="Admin" asp-controller="Therapists" asp-action="Index_Admin" asp-route-profile="@item.Profile"><h4>@item.Profile</h4></a>
+                                
+                            </td>
+                            <td class="col-md-5 text-center">
                                 <div class="container-fluid d-flex justify-content-between">
-                                    
-                                    <a asp-controller="Users" asp-action="AddAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color text-center">AdminRole</a>
-                                    <a asp-controller="Users" asp-action="RemoveAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color">RemoveAdminRole</a>
-                                   
-                                   
+                                    <form class="form-inline" asp-controller="Therapists" asp-action="Add" asp-route-id="@item.Id" method="get">
+
+                                        <a asp-controller="Users" asp-action="AddAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color text-center">Admin</a>
+                                        <a asp-controller="Users" asp-action="RemoveAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color">RemoveAdmin</a>
+                                                                               
+                                        <button type="submit" class="btn harmony-bg-color ml-2">Направи терапевт</button>
+
+                                    </form>
                                 </div>
-                                    <div class="container-fluid d-flex justify-content-between">
-                                        <form class="form-inline" asp-controller="Users" asp-action="AddTherapistRole" asp-route-id="@item.Id" method="post">
-
-                                            <button type="submit" class="btn harmony-bg-color ml-2">TherapistRole</button>
-
-                                        </form>
-                                        <form class="form-inline" asp-controller="Therapists" asp-action="Add" asp-route-id="@item.Id" method="get">
-
-                                            <button type="submit" class="btn harmony-bg-color ml-2">Добави като терапевт</button>
-
-                                        </form>
-                                        <form class="form-inline" asp-controller="Users" asp-action="RemoveTherapistRole" asp-route-id="@item.Id" method="post">
-
-                                            <button type="submit" class="btn harmony-bg-color ml-2">RemoveTherapistRole</button>
-
-                                        </form>
-                                    </div>
-</td>
+                                    
+                            </td>
                         </tr>
                     }
                     </tbody>

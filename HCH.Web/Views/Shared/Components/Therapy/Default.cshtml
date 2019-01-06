@@ -1,0 +1,34 @@
+﻿@model HCH.Web.Models.TherapyViewModel
+
+@using System.Globalization
+
+<div class="row">
+    <div class="col-md-12">
+        <hr class="mb-0 mt-0" />
+        <p class="text-bold ml-3">Терапия от @Model.StartDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture) до @Model.EndDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)</p>
+        <hr class="mb-0 mt-0" />
+    </div>
+</div>
+    <div class="row">
+        <div class="col-md-3">
+            <p class="text-bold mb-0">Предписани лечебни средства:</p>
+        </div>
+        <div class="col-md-9">
+
+            @foreach (var item in Model.Treatments)
+            {
+                <p>@item.Name - цена @item.Price лв.</p>
+            }
+
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+
+        <div class="col-md-3">
+            <p class="text-bold mb-0">Обща цена на терапията:</p>
+        </div>
+        <div class="col-md-9">
+            <p>@Model.Treatments.Sum(x => x.Price) лв.</p>
+        </div>
+    </div>
