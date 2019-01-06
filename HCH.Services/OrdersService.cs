@@ -86,5 +86,17 @@ namespace HCH.Services
         {
             return this.context.Orders.Any(e => e.Id == id);
         }
+
+        public async Task<int> GetOrderIdFromGivenDateAsync(DateTime date, string clientId)
+        {
+            var order = await this.context.Orders.FirstOrDefaultAsync(x => x.ClientId == clientId && x.OrderDate.Date == date.Date);
+
+            return order.Id;
+        }
+
+        public async Task<Order> GetOrderFromGivenDateAsync(DateTime date, string clientId)
+        {
+            return await this.context.Orders.FirstOrDefaultAsync(x => x.ClientId == clientId && x.OrderDate.Date == date.Date);
+        }
     }
 }

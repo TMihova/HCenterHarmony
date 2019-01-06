@@ -65,7 +65,11 @@ namespace HCH.Web.Controllers
 
                 await this.ordersService.AddFoodSupplementToOrderOnGivenDateAsync(date, clientId, id, productCount);
 
-                return RedirectToAction("Index", "FoodSupplements");
+                var order = await this.ordersService.GetOrderFromGivenDateAsync(date, clientId);
+
+                var orderView = this.mapper.Map<OrderViewModel>(order);
+
+                return View("Details", orderView);
             }
 
             return RedirectToAction("Index", "FoodSupplements");
@@ -75,6 +79,8 @@ namespace HCH.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
+            var h = this.HttpContext.Request;
+
             if (id == null)
             {
                 return NotFound();

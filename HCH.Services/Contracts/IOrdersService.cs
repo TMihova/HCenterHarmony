@@ -20,7 +20,13 @@ namespace HCH.Services
         Task<Order> GetOrderByIdAsync(int id);
 
         Task<IEnumerable<OrderFoodSupplement>> GetOrderProductsByOrderIdAsync(int id);
+
         Task RemoveOrderAsync(int id);
+
         bool OrderExists(int id);
+
+        Task<int> GetOrderIdFromGivenDateAsync(DateTime date, string clientId);
+
+        Task<Order> GetOrderFromGivenDateAsync(DateTime date, string clientId);
     }
 }
