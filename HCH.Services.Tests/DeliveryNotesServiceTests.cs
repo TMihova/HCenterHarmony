@@ -32,7 +32,7 @@ namespace HCH.Services.Tests
 
         //AllAsync
         [Fact]
-        public void All_ShuoldReturnAllDeliveryNotes()
+        public void All_ShouldReturnAllDeliveryNotes()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();
@@ -63,7 +63,7 @@ namespace HCH.Services.Tests
 
         //AddDeliveryNoteForOrder
         [Fact]
-        public void AddDeliveryNoteForOrder_ShuoldReturnDeliveryNoteWithGivenOrderId()
+        public void AddDeliveryNoteForOrder_ShouldReturnDeliveryNoteWithGivenOrderId()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();
@@ -96,7 +96,7 @@ namespace HCH.Services.Tests
 
         //GetDeliveryNoteForOrderAsync
         [Fact]
-        public void GetDeliveryNoteForOrder_ShuoldReturnDeliveryNoteWithOrderId()
+        public void GetDeliveryNoteForOrder_ShouldReturnDeliveryNoteWithOrderId()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();
@@ -122,7 +122,7 @@ namespace HCH.Services.Tests
 
         //GetDeliveryNoteByIdAsync
         [Fact]
-        public void GetDeliveryNoteById_ShuoldReturnDeliveryNoteWithGivenId()
+        public void GetDeliveryNoteById_ShouldReturnDeliveryNoteWithGivenId()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();
@@ -147,7 +147,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void GetDeliveryNoteById_ShuoldReturnNullForNotContainedEntity()
+        public void GetDeliveryNoteById_ShouldReturnNullForNotContainedEntity()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();
@@ -173,7 +173,7 @@ namespace HCH.Services.Tests
 
         //RemoveDeliveryNoteAsync
         [Fact]
-        public void RemoveDeliveryNote_ShuoldReturnFalseForExistCheck()
+        public void RemoveDeliveryNote_ShouldReturnFalseForExistCheck()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();
@@ -201,7 +201,7 @@ namespace HCH.Services.Tests
 
         //IsThereDeliveryNoteForOrder
         [Fact]
-        public void IsThereDeliveryNoteForOrder_ShuoldReturnTrueForProperOrderId()
+        public void IsThereDeliveryNoteForOrder_ShouldReturnTrueForProperOrderId()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();
@@ -226,7 +226,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void IsThereDeliveryNoteForOrder_ShuoldReturnFalseForWrongOrderId()
+        public void IsThereDeliveryNoteForOrder_ShouldReturnFalseForWrongOrderId()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();
@@ -252,7 +252,7 @@ namespace HCH.Services.Tests
 
         //DeliveryNoteExists
         [Fact]
-        public void DeliveryNoteExists_ShuoldReturnTrueForExistingDeliveryNote()
+        public void DeliveryNoteExists_ShouldReturnTrueForExistingDeliveryNote()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();
@@ -277,7 +277,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void DeliveryNoteExists_ShuoldReturnFalseForNonExistingDeliveryNote()
+        public void DeliveryNoteExists_ShouldReturnFalseForNonExistingDeliveryNote()
         {
             //Arrange
             var deliveryNotesService = this.serviceProvider.GetService<IDeliveryNotesService>();

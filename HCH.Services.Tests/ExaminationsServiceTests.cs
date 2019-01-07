@@ -32,7 +32,7 @@ namespace HCH.Services.Tests
 
         //AddExaminationAsync
         [Fact]
-        public void AddExamination_ShuoldReturnTrueForExistCheck()
+        public void AddExamination_ShouldReturnTrueForExistCheck()
         {
             //Arrange
             var examinationsService = this.serviceProvider.GetService<IExaminationsService>();
@@ -68,7 +68,7 @@ namespace HCH.Services.Tests
 
         //AllExaminationsForTherapist
         [Fact]
-        public void AllExaminationsForTherapist_ShuoldReturnAllExaminationsForGivenTherapist()
+        public void AllExaminationsForTherapist_ShouldReturnAllExaminationsForGivenTherapist()
         {
             //Arrange
             var examinationsService = this.serviceProvider.GetService<IExaminationsService>();
@@ -135,7 +135,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void AllExaminationsForTherapist_ShuoldReturnEmptyCollectionForNonExistingId()
+        public void AllExaminationsForTherapist_ShouldReturnEmptyCollectionForNonExistingId()
         {
             //Arrange
             var examinationsService = this.serviceProvider.GetService<IExaminationsService>();
@@ -199,7 +199,7 @@ namespace HCH.Services.Tests
 
         //GetExaminationByIdAsync
         [Fact]
-        public void GetExaminationById_ShuoldReturnExistingExaminationWithGivenId()
+        public void GetExaminationById_ShouldReturnExistingExaminationWithGivenId()
         {
             //Arrange
             var examinationsService = this.serviceProvider.GetService<IExaminationsService>();
@@ -262,7 +262,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void GetExaminationById_ShuoldReturnNullForNonExistingId()
+        public void GetExaminationById_ShouldReturnNullForNonExistingId()
         {
             //Arrange
             var examinationsService = this.serviceProvider.GetService<IExaminationsService>();
@@ -326,7 +326,7 @@ namespace HCH.Services.Tests
 
         //UpdateExaminationAsync
         [Fact]
-        public void UpdateExaminationAsync_ShuoldReturnUpdatedExaminationDb()
+        public void UpdateExaminationAsync_ShouldReturnUpdatedExaminationDb()
         {
             //Arrange
             var examinationsService = this.serviceProvider.GetService<IExaminationsService>();
@@ -358,7 +358,7 @@ namespace HCH.Services.Tests
 
         //ExaminationExists
         [Fact]
-        public void ExaminationExists_ShuoldReturnTrueForExistingExamination()
+        public void ExaminationExists_ShouldReturnTrueForExistingExamination()
         {
             //Arrange
             var examinationsService = this.serviceProvider.GetService<IExaminationsService>();
@@ -384,7 +384,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void ExaminationExists_ShuoldReturnFalseForNonExistingExamination()
+        public void ExaminationExists_ShouldReturnFalseForNonExistingExamination()
         {
             //Arrange
             var examinationsService = this.serviceProvider.GetService<IExaminationsService>();
@@ -411,7 +411,7 @@ namespace HCH.Services.Tests
 
         //AllExaminationsForPatientAsync
         [Fact]
-        public void AllExaminationsForPatient_ShuoldReturnAllExaminationsForGivenPatient()
+        public void AllExaminationsForPatient_ShouldReturnAllExaminationsForGivenPatient()
         {
             //Arrange
             var examinationsService = this.serviceProvider.GetService<IExaminationsService>();

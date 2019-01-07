@@ -31,7 +31,7 @@ namespace HCH.Services.Tests
 
 
         [Fact]
-        public void AppointmentsForTherapist_ShuoldReturnAllExistingDataForTherapist()
+        public void AppointmentsForTherapist_ShouldReturnAllExistingDataForTherapist()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -70,7 +70,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void AddAppointment_ShuoldReturnTrueForContainingAppointment()
+        public void AddAppointment_ShouldReturnTrueForContainingAppointment()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -102,7 +102,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void ExistsAppointmentById_ShuoldReturnTrueForContainingAppointment()
+        public void ExistsAppointmentById_ShouldReturnTrueForContainingAppointment()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -128,7 +128,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void ExistsAppointmentById_ShuoldReturnFalseForNotContainingAppointment()
+        public void ExistsAppointmentById_ShouldReturnFalseForNotContainingAppointment()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -154,7 +154,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void GetAppointmentById_ShuoldReturnContainedAppointment()
+        public void GetAppointmentById_ShouldReturnContainedAppointment()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -179,7 +179,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void GetAppointmentById_ShuoldReturnNullForNotContainedAppointment()
+        public void GetAppointmentById_ShouldReturnNullForNotContainedAppointment()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -205,7 +205,7 @@ namespace HCH.Services.Tests
 
         //IsThereSuchAppointment
         [Fact]
-        public void IsThereSuchAppointment_ShuoldReturnTrueContainedAppointment()
+        public void IsThereSuchAppointment_ShouldReturnTrueContainedAppointment()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -230,7 +230,7 @@ namespace HCH.Services.Tests
         }
 
         [Fact]
-        public void IsThereSuchAppointment_ShuoldReturnFalseContainedAppointment()
+        public void IsThereSuchAppointment_ShouldReturnFalseContainedAppointment()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -256,7 +256,7 @@ namespace HCH.Services.Tests
 
         //OccupiedAppointmentsForPatientAsync
         [Fact]
-        public void OccupiedAppointmentsForPatient_ShuoldReturnOccupiedAppointmentsForPatient()
+        public void OccupiedAppointmentsForPatient_ShouldReturnOccupiedAppointmentsForPatient()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -313,7 +313,7 @@ namespace HCH.Services.Tests
 
         //OccupiedAppointmentsForTherapistAsync
         [Fact]
-        public void OccupiedAppointmentsForTherapist_ShuoldReturnOccupiedAppointmentsForTherapist()
+        public void OccupiedAppointmentsForTherapist_ShouldReturnOccupiedAppointmentsForTherapist()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -370,7 +370,7 @@ namespace HCH.Services.Tests
 
         //TakeAppointmentForPatientAsync
         [Fact]
-        public void TakeAppointment_ShuoldReturnPatientIdForAppointmentPatientId()
+        public void TakeAppointment_ShouldReturnPatientIdForAppointmentPatientId()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -396,7 +396,7 @@ namespace HCH.Services.Tests
 
         //ReleaseAppointmentAsync
         [Fact]
-        public void ReleaseAppointment_ShuoldReturnNullForAppointmentPatientId()
+        public void ReleaseAppointment_ShouldReturnNullForAppointmentPatientId()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -423,7 +423,7 @@ namespace HCH.Services.Tests
 
         //RemoveAppointmentAsync
         [Fact]
-        public void RemoveAppointment_ShuoldReturnFalseForContainingAppointment()
+        public void RemoveAppointment_ShouldReturnFalseForContainingAppointment()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
@@ -451,7 +451,7 @@ namespace HCH.Services.Tests
 
         //UpdateAppointmentAsync
         [Fact]
-        public void UpdateAppointment_ShuoldReturnUpdatedAppointmentDb()
+        public void UpdateAppointment_ShouldReturnUpdatedAppointmentDb()
         {
             //Arrange
             var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
