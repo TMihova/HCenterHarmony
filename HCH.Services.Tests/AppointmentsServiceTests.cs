@@ -34,6 +34,7 @@ namespace HCH.Services.Tests
         public void AppointmentsForTherapist_ShuoldReturnAllExistingDataForTherapist()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var newAppointment = new Appointment
@@ -56,8 +57,7 @@ namespace HCH.Services.Tests
             this.context.Appointments.Add(otherAppointment);
             this.context.SaveChanges();
 
-            //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
+            //Act            
             var resultCollection = appointmentsService.AppointmentsForTherapistAsync("TherapistId").Result.ToList();
             var resultCount = resultCollection.Count;
 
@@ -73,6 +73,7 @@ namespace HCH.Services.Tests
         public void AddAppointment_ShuoldReturnTrueForContainingAppointment()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var newAppointment = new Appointment
@@ -84,8 +85,6 @@ namespace HCH.Services.Tests
             };
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             var countBefore = this.context.Appointments.Count();
 
             appointmentsService.AddAppointmentAsync(newAppointment).Wait();
@@ -106,6 +105,7 @@ namespace HCH.Services.Tests
         public void ExistsAppointmentById_ShuoldReturnTrueForContainingAppointment()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var newAppointment = new Appointment
@@ -120,8 +120,6 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             bool appointmentsExists = appointmentsService.ExistsAppointmentById("appointmentId");
 
             //Assert
@@ -133,6 +131,7 @@ namespace HCH.Services.Tests
         public void ExistsAppointmentById_ShuoldReturnFalseForNotContainingAppointment()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var newAppointment = new Appointment
@@ -147,8 +146,6 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             bool appointmentsExists = appointmentsService.ExistsAppointmentById("otherId");
 
             //Assert
@@ -160,6 +157,7 @@ namespace HCH.Services.Tests
         public void GetAppointmentById_ShuoldReturnContainedAppointment()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var newAppointment = new Appointment
@@ -174,12 +172,9 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             Appointment appointmentDb = appointmentsService.GetAppointmentByIdAsync("appointmentId").Result;
 
             //Assert
-
             appointmentDb.ShouldBeSameAs(newAppointment);
         }
 
@@ -187,6 +182,7 @@ namespace HCH.Services.Tests
         public void GetAppointmentById_ShuoldReturnNullForNotContainedAppointment()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var newAppointment = new Appointment
@@ -201,12 +197,9 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             Appointment appointmentDb = appointmentsService.GetAppointmentByIdAsync("otherId").Result;
 
             //Assert
-
             appointmentDb.ShouldBeNull();
         }
 
@@ -215,6 +208,7 @@ namespace HCH.Services.Tests
         public void IsThereSuchAppointment_ShuoldReturnTrueContainedAppointment()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var newAppointment = new Appointment
@@ -229,12 +223,9 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             bool testResult = appointmentsService.IsThereSuchAppointment("TherapistId", Models.Enums.DayOfWeekBg.Вторник, "10:30");
 
             //Assert
-
             testResult.ShouldBe(true);
         }
 
@@ -242,6 +233,7 @@ namespace HCH.Services.Tests
         public void IsThereSuchAppointment_ShuoldReturnFalseContainedAppointment()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var newAppointment = new Appointment
@@ -256,12 +248,9 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             bool testResult = appointmentsService.IsThereSuchAppointment("OtherId", Models.Enums.DayOfWeekBg.Вторник, "10:30");
 
             //Assert
-
             testResult.ShouldBe(false);
         }
 
@@ -270,6 +259,7 @@ namespace HCH.Services.Tests
         public void OccupiedAppointmentsForPatient_ShuoldReturnOccupiedAppointmentsForPatient()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var firstAppointment = new Appointment
@@ -309,8 +299,6 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             var resultCollection = appointmentsService.OccupiedAppointmentsForPatientAsync("PatientId").Result;
 
             //Assert
@@ -328,6 +316,7 @@ namespace HCH.Services.Tests
         public void OccupiedAppointmentsForTherapist_ShuoldReturnOccupiedAppointmentsForTherapist()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var firstAppointment = new Appointment
@@ -367,8 +356,6 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             var resultCollection = appointmentsService.OccupiedAppointmentsForTherapistAsync("TherapistId").Result;
 
             //Assert
@@ -386,6 +373,7 @@ namespace HCH.Services.Tests
         public void TakeAppointment_ShuoldReturnPatientIdForAppointmentPatientId()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var appointment = new Appointment
@@ -400,8 +388,6 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             appointmentsService.TakeAppointmentForPatientAsync("AppointmentId", "PatientId").Wait();
 
             //Assert
@@ -413,6 +399,7 @@ namespace HCH.Services.Tests
         public void ReleaseAppointment_ShuoldReturnNullForAppointmentPatientId()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var appointment = new Appointment
@@ -428,8 +415,6 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             appointmentsService.ReleaseAppointmentAsync("AppointmentId").Wait();
 
             //Assert
@@ -441,6 +426,7 @@ namespace HCH.Services.Tests
         public void RemoveAppointment_ShuoldReturnFalseForContainingAppointment()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var appointment = new Appointment
@@ -455,8 +441,6 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
             appointmentsService.RemoveAppointmentAsync(appointment).Wait();
 
             //Assert
@@ -470,6 +454,7 @@ namespace HCH.Services.Tests
         public void UpdateAppointment_ShuoldReturnUpdatedAppointmentDb()
         {
             //Arrange
+            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
 
             //seed data
             var appointment = new Appointment
@@ -484,9 +469,6 @@ namespace HCH.Services.Tests
             this.context.SaveChanges();
 
             //Act
-            var appointmentsService = this.serviceProvider.GetService<IAppointmentsService>();
-
-            
             appointmentsService.UpdateAppointmentAsync("AppointmentId", Models.Enums.DayOfWeekBg.Понеделник, "11:30").Wait();
 
             //Assert
