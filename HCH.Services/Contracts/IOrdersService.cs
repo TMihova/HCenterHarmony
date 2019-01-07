@@ -11,7 +11,7 @@ namespace HCH.Services
 
         bool IsThereAnyOrdersForClientOnGivenDate(DateTime date, string clientId);
 
-        void AddOrderOnGivenDateToClient(DateTime date, string clientId, int id);
+        void AddOrderOnGivenDateToClient(DateTime date, string clientId);
 
         Task<IEnumerable<Order>> AllClientOrdersAsync(string clientId);
 
@@ -24,8 +24,6 @@ namespace HCH.Services
         Task RemoveOrderAsync(int id);
 
         bool OrderExists(int id);
-
-        Task<int> GetOrderIdFromGivenDateAsync(DateTime date, string clientId);
 
         Task<Order> GetOrderFromGivenDateAsync(DateTime date, string clientId);
     }

@@ -37,7 +37,7 @@ namespace HCH.Services
             this.context.SaveChanges();
         }
         
-        public void AddOrderOnGivenDateToClient(DateTime date, string clientId, int id)
+        public void AddOrderOnGivenDateToClient(DateTime date, string clientId)
         {
             var order = new Order
             {
@@ -78,20 +78,17 @@ namespace HCH.Services
         public async Task RemoveOrderAsync(int id)
         {
             var order = await this.context.Orders.FirstOrDefaultAsync(x => x.Id == id);
-           this.context.Orders.Remove(order);
+            if (order != null)
+            {
+                this.context.Orders.Remove(order);
+            }
+           
             await this.context.SaveChangesAsync();
         }
 
         public bool OrderExists(int id)
         {
             return this.context.Orders.Any(e => e.Id == id);
-        }
-
-        public async Task<int> GetOrderIdFromGivenDateAsync(DateTime date, string clientId)
-        {
-            var order = await this.context.Orders.FirstOrDefaultAsync(x => x.ClientId == clientId && x.OrderDate.Date == date.Date);
-
-            return order.Id;
         }
 
         public async Task<Order> GetOrderFromGivenDateAsync(DateTime date, string clientId)

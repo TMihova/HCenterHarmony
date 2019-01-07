@@ -60,7 +60,7 @@ namespace HCH.Web.Controllers
 
                 if (!this.ordersService.IsThereAnyOrdersForClientOnGivenDate(date, clientId))
                 {
-                    this.ordersService.AddOrderOnGivenDateToClient(date, clientId, id);
+                    this.ordersService.AddOrderOnGivenDateToClient(date, clientId);
                 }
 
                 await this.ordersService.AddFoodSupplementToOrderOnGivenDateAsync(date, clientId, id, productCount);
