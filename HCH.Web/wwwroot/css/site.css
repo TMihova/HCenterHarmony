@@ -124,4 +124,17 @@ tr.spaceUnder > td {
     background-color: black; /* Modern Browsers */
 }
 
+.panel-default > .panel-heading-custom {
+    background-color: snow !important;
+    color: black !important;
+    border:none !important;
+}
+
+.panel-default > .panel-body-custom {
+    background-color: snow !important;
+    color: black !important;
+    border-color: olivedrab !important;
+    border-left-color: olivedrab !important;
+}
+
 

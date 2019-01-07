@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCH.Data", "HCH.Data\HCH.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCH.Models", "HCH.Models\HCH.Models.csproj", "{3F2346BB-9E8B-4611-B2AE-A783B6BB2F72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCH.Services", "HCH.Services\HCH.Services.csproj", "{08CFD144-FACF-4922-9F9E-3FE28FB3595F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HCH.Services", "HCH.Services\HCH.Services.csproj", "{08CFD144-FACF-4922-9F9E-3FE28FB3595F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCH.Services.Tests", "HCH.Services.Tests\HCH.Services.Tests.csproj", "{E3FDE0DD-DC6C-4664-98E2-B254FB4800CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{08CFD144-FACF-4922-9F9E-3FE28FB3595F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08CFD144-FACF-4922-9F9E-3FE28FB3595F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08CFD144-FACF-4922-9F9E-3FE28FB3595F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3FDE0DD-DC6C-4664-98E2-B254FB4800CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3FDE0DD-DC6C-4664-98E2-B254FB4800CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3FDE0DD-DC6C-4664-98E2-B254FB4800CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3FDE0DD-DC6C-4664-98E2-B254FB4800CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
