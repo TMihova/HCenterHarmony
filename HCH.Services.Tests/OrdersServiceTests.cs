@@ -35,7 +35,7 @@ namespace HCH.Services.Tests
         public void AddFoodSupplementToOrderOnGivenDate_ShouldReturnTrueForExistCheck()
         {
             //Arrange
-            var foodSupplementsService = this.serviceProvider.GetService<IOrdersService>();
+            var ordersService = this.serviceProvider.GetService<IOrdersService>();
 
             //seed data
             var order = new Order
@@ -67,7 +67,7 @@ namespace HCH.Services.Tests
 
             //Act
             var date = order.OrderDate;
-            foodSupplementsService.AddFoodSupplementToOrderOnGivenDateAsync(date, "ClientId", 11, 1).Wait();
+            ordersService.AddFoodSupplementToOrderOnGivenDateAsync(date, "ClientId", 11, 1).Wait();
 
             //Assert
             var productsFromOrderDb = this.context.Orders.FirstOrDefault(x => x.Id == 1)

@@ -42,7 +42,10 @@ namespace HCH.Services
         public async Task RemoveProfileAsync(string id)
         {
             var profile = await this.context.Profiles.FindAsync(id);
-            this.context.Profiles.Remove(profile);
+            if (profile != null)
+            {
+                this.context.Profiles.Remove(profile);
+            }            
             await this.context.SaveChangesAsync();
         }        
 
