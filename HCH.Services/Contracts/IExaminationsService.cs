@@ -18,9 +18,5 @@ namespace HCH.Services
         bool ExaminationExists(int id);
 
         Task<IEnumerable<Examination>> AllExaminationsForPatientAsync(string userId);
-
-        Task<int> GetExaminationIdByTherapyIdAsync(string id);
-
-        Task<DateTime> GetExaminationDateByTherapyIdAsync(string id);
     }
 }

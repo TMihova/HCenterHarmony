@@ -49,21 +49,5 @@ namespace HCH.Services
         {
             return await this.context.Examinations.Where(x => x.PatientId == userId).ToListAsync();
         }
-
-        public async Task<int> GetExaminationIdByTherapyIdAsync(string id)
-        {
-            var examination = await this.context.Examinations.FirstOrDefaultAsync(x => x.TherapyId == id);
-
-            return examination.Id;
-        }
-
-        public async Task<DateTime> GetExaminationDateByTherapyIdAsync(string id)
-        {
-            var examination = await this.context.Examinations.FirstOrDefaultAsync(x => x.TherapyId == id);
-
-            return examination.ExaminationDate;
-        }
-
-        
     }
 }

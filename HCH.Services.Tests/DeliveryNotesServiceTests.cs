@@ -10,13 +10,13 @@ using Xunit;
 
 namespace HCH.Services.Tests
 {
-    public class DeliveryNotesTests
+    public class DeliveryNotesServiceTests
     {
         private readonly ServiceCollection service;
         private readonly IServiceProvider serviceProvider;
         private readonly HCHWebContext context;
 
-        public DeliveryNotesTests()
+        public DeliveryNotesServiceTests()
         {
             this.service = new ServiceCollection();
 
