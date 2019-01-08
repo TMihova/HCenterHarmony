@@ -39,8 +39,11 @@ namespace HCH.Services
 
         public async Task RemoveTreatmentAsync(Treatment treatment)
         {
-            this.context.Treatments.Remove(treatment);
-            await this.context.SaveChangesAsync();
+            if (this.context.Treatments.Contains(treatment))
+            {
+                this.context.Treatments.Remove(treatment);
+                await this.context.SaveChangesAsync();
+            }
         }
 
         public bool TreatementExists(string id)
@@ -50,8 +53,11 @@ namespace HCH.Services
 
         public async Task UpdateTreatmentAsync(Treatment treatment)
         {
-            this.context.Update(treatment);
-            await this.context.SaveChangesAsync();
+            if (this.context.Treatments.Contains(treatment))
+            {
+                this.context.Update(treatment);
+                await this.context.SaveChangesAsync();
+            }
         }
     }
 }
