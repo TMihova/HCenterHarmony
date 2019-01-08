@@ -14,8 +14,6 @@ namespace HCH.Services
 
         Task<HCHWebUser> GetUserByIdAsync(string id);
 
-        HCHWebUser GetUserByFullName(string fullName);
-
         void AddProfileToUser(HCHWebUser user, string profile);                
 
         string GetProfileNameByProfileId(string profileId);

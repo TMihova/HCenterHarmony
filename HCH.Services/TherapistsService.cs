@@ -23,7 +23,7 @@ namespace HCH.Services
         public async Task<IEnumerable<HCHWebUser>> GetTherapistsByProfile(string profile)
         {
             return await this.context.Users
-                .Where(x => x.Profile.Name == profile)
+                .Where(x => x.Profile != null && x.Profile.Name == profile)
                 .ToListAsync();
         }
 
@@ -50,11 +50,6 @@ namespace HCH.Services
                 this.context.Update(user);
                 this.context.SaveChanges();
             }
-        }
-                
-        public HCHWebUser GetUserByFullName(string fullName)
-        {
-            return this.context.Users.FirstOrDefault(x => (x.FirstName + " " + x.LastName) == fullName);
         }
 
         public async Task<IEnumerable<HCHWebUser>> GetTherapistsByProfileId(string profileId)
