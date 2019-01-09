@@ -1,4 +1,4 @@
-﻿using HCH.Web.Models.Common;
+﻿using HCH.Models.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace HCH.Web.Models

@@ -39,8 +39,8 @@
                                 <div class="container-fluid d-flex justify-content-between">
                                     <form class="form-inline" asp-controller="Therapists" asp-action="Add" asp-route-id="@item.Id" method="get">
 
-                                        <a asp-controller="Users" asp-action="AddAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color text-center">Admin</a>
-                                        <a asp-controller="Users" asp-action="RemoveAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color">RemoveAdmin</a>
+                                        <a asp-area="Admin" asp-controller="Users" asp-action="AddAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color text-center">Admin</a>
+                                        <a asp-area="Admin" asp-controller="Users" asp-action="RemoveAdminRole" asp-route-id="@item.Id" class="btn harmony-bg-color">RemoveAdmin</a>
                                                                                
                                         <button type="submit" class="btn harmony-bg-color ml-2">Направи терапевт</button>
 

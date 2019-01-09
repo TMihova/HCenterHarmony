@@ -28,14 +28,14 @@
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Създай" class="btn btn-default" />
+                    <input type="submit" value="Създай" class="btn harmony-bg-color" />
                 </div>
             </form>
         </div>
     </div>
 
     <div>
-        <a asp-action="Index_Admin">Към списъка с продукти</a>
+        <a asp-area="Admin" asp-controller="FoodSupplements" asp-action="Index_Admin">Към списъка с продукти</a>
     </div>
 </div>
 

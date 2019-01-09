@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Web.Models;
 using AutoMapper;
+using X.PagedList;
 
 namespace HCH.Web.Areas.Therapist.Controllers
 {
@@ -33,7 +34,7 @@ namespace HCH.Web.Areas.Therapist.Controllers
         }
 
         // GET: Therapist/Appointments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var therapistId = this.signInManager.UserManager.GetUserId(User);
 
@@ -47,11 +48,21 @@ namespace HCH.Web.Areas.Therapist.Controllers
                 .Select(x => this.mapper.Map<AppointmentViewModel>(x))            
             .ToList();
 
+            var numberOfItems = 6;
+
+            var pageNumber = page ?? 1;
+
+            var onePageOfAppointments = appointmentsView.ToPagedList(pageNumber, numberOfItems);
+
+            ViewBag.PageNumber = pageNumber;
+
+            ViewBag.NumberOfItems = numberOfItems;
+
             ViewData["TherapistId"] = therapist.Id;
             ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
             ViewData["ProfileName"] = therapist.Profile.Name;
 
-            return View(appointmentsView);
+            return View(onePageOfAppointments);
         }
 
         // GET: Therapist/Appointments/Index_Occupied
@@ -124,7 +135,7 @@ namespace HCH.Web.Areas.Therapist.Controllers
         {
             await this.appointmentsService.ReleaseAppointmentAsync(id);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index_Occupied));
         }
 
         // POST: Therapist/Appointments/Release/5

@@ -4,14 +4,16 @@ using HCH.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HCH.Data.Migrations
 {
     [DbContext(typeof(HCHWebContext))]
-    partial class HCHWebContextModelSnapshot : ModelSnapshot
+    [Migration("20190109114313_SomeValidations")]
+    partial class SomeValidations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,8 +30,7 @@ namespace HCH.Data.Migrations
 
                     b.Property<string>("PatientId");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<decimal>("Price");
 
                     b.Property<string>("TherapistId")
                         .IsRequired();
@@ -52,8 +53,7 @@ namespace HCH.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18, 2)");
+                    b.Property<decimal>("Cost");
 
                     b.Property<decimal>("Discount");
 

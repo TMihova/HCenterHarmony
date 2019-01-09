@@ -58,7 +58,12 @@ namespace HCH.Web
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //services.AddMvc()
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.Configure<AdminSettings>(Configuration.GetSection("AdminSettings"));
             services.Configure<UserRoles>(Configuration.GetSection("UserRoles"));
@@ -99,6 +104,7 @@ namespace HCH.Web
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            
 
             app.UseMvc(routes =>
             {

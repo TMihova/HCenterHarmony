@@ -161,7 +161,7 @@ namespace HCH.Web.Controllers
                 ordersView.Add(orderView);
             }
 
-            var numberOfItems = 10;
+            var numberOfItems = 6;
 
             var pageNumber = page ?? 1;
 

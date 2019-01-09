@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<HCH.Web.Models.TreatmentViewModel>
 
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+
 @{
     ViewData["Title"] = "Index_Therapist";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,21 +11,20 @@
 
 <main class="mt-3">
     <div class="container w-75 justify-content-center">
-        <h3 class="text-center">Лечебни средства</h3>
-        <h3 class="text-center">Профил @ViewData["ProfileName"]</h3>
-        <hr class="hr-4" />
+        <h3 class="text-center">Лечебни средства (Профил @ViewData["ProfileName"])</h3>
+        
         <div class="container-fluid">
-
-            <div><a asp-area="Therapist" asp-controller="Treatments" asp-action="Create">Добави ново средство</a></div>
-
+            <hr class="hr-4" />
+            <div><a asp-area="Therapist" asp-controller="Treatments" asp-action="Create" class="btn harmony-bg-color">Добави ново средство</a></div>
+            <hr class="hr-4" />
             <table class="table  mx-auto table-hover">
                 <thead>
                     <tr class="row">
                         <th class="col-md-1">#</th>
                         <th class="col-md-2">Наименование</th>
-                        <th class="col-md-5">Описание</th>
+                        <th class="col-md-3">Описание</th>
                         <th class="col-md-2">Цена</th>
-                        <th class="col-md-2"></th>
+                        <th class="col-md-5"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,17 +39,13 @@
                                 @item.Name
 
                             </td>
-                            <td class="col-md-5">@item.Description</td>
+                            <td class="col-md-3">@item.Description</td>
                             <td class="col-md-2">@item.Price лв</td>
-                            <td class="col-md-2">
-
-                                <form class="form-inline" asp-area="Therapist" asp-controller="Treatments" asp-action="Edit" asp-route-id="@item.Id" method="get">
-
-                                    <button type="submit" class="btn harmony-bg-color ml-2">Редактирай</button>
-
-                                </form>
+                            <td class="col-md-5">
 
                                 <form class="form-inline" asp-area="Therapist" asp-controller="Treatments" asp-action="Delete" asp-route-id="@item.Id" method="get">
+
+                                    <a asp-area="Therapist" asp-controller="Treatments" asp-action="Edit" asp-route-id="@item.Id" class="btn harmony-bg-color">Промени</a>
 
                                     <button type="submit" class="btn harmony-bg-color ml-2">Премахни</button>
 
@@ -57,6 +56,7 @@
                     }
                 </tbody>
             </table>
+            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index_Therapist", new { page }))
         </div>
         <hr class="hr-4 mb-0" />
     </div>

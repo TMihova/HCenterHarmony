@@ -7,9 +7,8 @@
 
 <main class="mt-3">
     <div class="container w-75 justify-content-center">
-        <h2 class="text-center">Предстоящи прегледи</h2>
-        <h3 class="text-center">Терапевт: @ViewData["TherapistFullName"]</h3>
-        <h3 class="text-center">Профил: @ViewData["ProfileName"]</h3>
+        <h4 class="text-center">Предстоящи прегледи</h4>
+        <h4 class="text-center">Терапевт: @ViewData["TherapistFullName"] (Профил: @ViewData["ProfileName"])</h4>
         <hr class="hr-4" />
         <div class="container-fluid">
             <table class="table  mx-auto table-hover">
@@ -39,14 +38,14 @@
                             <td class="col-md-3">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <form class="form-inline" asp-controller="Appointments" asp-action="Release" asp-route-id="@item.Id" method="post">
+                                        <form class="form-inline" asp-area="Therapist"  asp-controller="Appointments" asp-action="Release" asp-route-id="@item.Id" method="post">
 
                                             <button type="submit" class="btn harmony-bg-color mr-2">Освободи</button>
 
                                         </form>
                                     </div>
                                     <div class="col-md-6">
-                                        <form class="form-inline" asp-controller="Examinations" asp-action="Create" asp-route-id="@item.PatientId" method="get">
+                                        <form class="form-inline" asp-area="Therapist" asp-controller="Examinations" asp-action="Create" asp-route-id="@item.PatientId" method="get">
 
                                             <input type="hidden" name="AppointmentId" value="@item.Id" />
 

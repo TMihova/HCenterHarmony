@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HCH.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -29,6 +30,7 @@ namespace HCH.Web.Models
         public string Therapist { get; set; }
 
         [Display(Name = "Анамнеза")]
+        [MinLength(CommonConstants.AnamnesisMinLength, ErrorMessage ="Анамнезата трябва да е повече от {1} символа.")]
         public string Anamnesis { get; set; }
 
         [Display(Name = "Начална дата")]

@@ -19,27 +19,30 @@
             <div class="col-md-4">
                 <form asp-controller="Therapists" asp-action="Add" asp-route-profile="@ViewData["Profile"]">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    
-                        <div class="form-group">
-                            <input asp-for="Id" type="hidden" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="UserName" class="control-label"></label>
-                            <input asp-for="UserName" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="FullName" class="control-label"></label>
-                            <input asp-for="FullName" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Profile" class="control-label"></label>
-                            <select asp-for="Profile" class="form-control" asp-items="ViewBag.Profile"></select>
-                        </div>
 
-                        <div class="form-group">
-                            <input type="submit" value="Добави" class="btn btn-default" />
-                        </div>
-                   </form>
+                    <div class="form-group">
+                        <input asp-for="Id" type="hidden" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label"></label>
+                        <input asp-for="FullName" class="form-control" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Profile" class="control-label"></label>
+                        <select asp-for="Profile" class="form-control" asp-items="ViewBag.Profile"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Добави" class="btn harmony-bg-color" />
+                    </div>
+                </form>
+                <div>
+                    <a asp-area="Admin" asp-controller="Users" asp-action="Index" asp-route-profile="@Model.Profile">Към списък потребители</a>
+                </div>
             </div>
         </div>
     </div>

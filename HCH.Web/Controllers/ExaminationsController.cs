@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Services;
 using AutoMapper;
+using X.PagedList;
 
 namespace HCH.Web.Controllers
 {
@@ -31,7 +32,7 @@ namespace HCH.Web.Controllers
 
         // GET: Examinations
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var userId = this.signInManager.UserManager.GetUserId(User);
 
@@ -41,9 +42,19 @@ namespace HCH.Web.Controllers
 
             var examinationsView = examinations.Select(x => this.mapper.Map<ExaminationViewModel>(x));
 
+            var numberOfItems = 6;
+
+            var pageNumber = page ?? 1;
+
+            var onePageOfExaminations = examinationsView.ToPagedList(pageNumber, numberOfItems);
+
+            ViewBag.PageNumber = pageNumber;
+
+            ViewBag.NumberOfItems = numberOfItems;
+
             ViewData["PatientFullName"] = user.FirstName + " " + user.LastName;
 
-            return View(examinationsView);
+            return View(onePageOfExaminations);
         }
 
         // GET: Examinations/Details/5

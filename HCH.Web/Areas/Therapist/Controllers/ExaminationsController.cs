@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Services;
 using AutoMapper;
+using X.PagedList;
 
 namespace HCH.Web.Areas.Therapist.Controllers
 {
@@ -43,7 +44,7 @@ namespace HCH.Web.Areas.Therapist.Controllers
         }
 
         // GET: Therapist/Examinations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var therapistId = this.signInManager.UserManager.GetUserId(User);
 
@@ -51,12 +52,24 @@ namespace HCH.Web.Areas.Therapist.Controllers
 
             var examinations = await this.examinationsService.AllExaminationsForTherapist(therapistId);
 
-            var examinationsView = examinations.Select(x => this.mapper.Map<ExaminationViewModel>(x));
+            var examinationsView = examinations
+                .OrderByDescending(x => x.ExaminationDate)
+                .Select(x => this.mapper.Map<ExaminationViewModel>(x));
+
+            var numberOfItems = 8;
+
+            var pageNumber = page ?? 1;
+
+            var onePageOfExaminations = examinationsView.ToPagedList(pageNumber, numberOfItems);
+
+            ViewBag.PageNumber = pageNumber;
+
+            ViewBag.NumberOfItems = numberOfItems;
 
             ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
             ViewData["ProfileName"] = therapist.Profile.Name;
 
-            return View(examinationsView);
+            return View(onePageOfExaminations);
         }
 
         // GET: Therapist/Examinations/Details/5

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HCH.Models
@@ -20,6 +21,8 @@ namespace HCH.Models
 
         public virtual FoodSupplement FoodSupplement { get; set; }
 
+        [Required]
+        [Range(0, Double.MaxValue)]
         public int ProductCount { get; set; }
     }
 }

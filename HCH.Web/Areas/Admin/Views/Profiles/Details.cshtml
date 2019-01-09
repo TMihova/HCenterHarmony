@@ -7,10 +7,9 @@
 
 <div class="container">
 
-
-    <h4>Име: @Model.Name</h4>
+    <h4>@Model.Name</h4>
     <hr />
-    <h4>Описание: @Model.Description</h4>
+    <p>@Model.Description</p>
     <hr />
     <a asp-area="Admin" asp-controller="Profiles" asp-action="Edit" asp-route-id="@Model.Id">Редактарай</a> |
     <a asp-area="Admin" asp-controller="Profiles" asp-action="Index_Admin">Към Списъка</a>

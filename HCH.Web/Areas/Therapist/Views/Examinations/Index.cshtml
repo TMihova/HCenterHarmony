@@ -1,6 +1,9 @@
 ﻿@model IEnumerable<HCH.Web.Models.ExaminationViewModel>
 
 @using System.Globalization
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
 
 @{
     ViewData["Title"] = "Index";
@@ -8,10 +11,9 @@
 }
 
 <div class="container">
-    <h3>Профил: @ViewData["ProfileName"]</h3>
-    <h3>Терапевт: @ViewData["TherapistFullName"]</h3>
+    <h4>Терапевт: @ViewData["TherapistFullName"] (Профил: @ViewData["ProfileName"])</h4>
     <div class="">
-        <h3>Извършени прегледи</h3>
+        <h4>Извършени прегледи</h4>
         <hr />
         <div class="container-fluid">
             <table class="table  mx-auto table-hover">
@@ -38,6 +40,7 @@
                     }
                 </tbody>
             </table>
+            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))
         </div>
     </div>
 </div>

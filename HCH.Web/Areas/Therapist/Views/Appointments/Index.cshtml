@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<HCH.Web.Models.AppointmentViewModel>
 
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,9 +12,10 @@
 
 <main class="mt-3">
     <div class="container w-75 justify-content-center">
-        <h2 class="text-center">График на приемните часове</h2>
-        <h3 class="text-center">Терапевт: @ViewData["TherapistFullName"]</h3>
-        <h3 class="text-center">Профил: @ViewData["ProfileName"]</h3>
+        <h4 class="text-center">График на приемните часове</h4>
+        <h4 class="text-center">Терапевт: @ViewData["TherapistFullName"] (Профил: @ViewData["ProfileName"])</h4>
+        <hr class="hr-4" />
+        <div><a asp-area="Therapist" asp-controller="Appointments" asp-action="Create" asp-route-therapistId="@ViewData["TherapistId"]" class="btn harmony-bg-color">Добави нов час</a></div>
         <hr class="hr-4" />
         <div class="container-fluid">
             <table class="table  mx-auto table-hover">
@@ -42,16 +47,17 @@
                             <td class="col-md-3">
                                 <div class="container-fluid justify-content-between">
 
-                                  <a asp-area="" asp-controller="Appointments" asp-action="Edit" asp-route-id="@item.Id" class="btn harmony-bg-color">Промени</a>
-                                  <a asp-area="" asp-controller="Appointments" asp-action="Delete" asp-route-id="@item.Id" class="btn harmony-bg-color">Изтрий</a>
+                                    <a asp-area="Therapist" asp-controller="Appointments" asp-action="Edit" asp-route-id="@item.Id" class="btn harmony-bg-color">Промени</a>
+                                    <a asp-area="Therapist" asp-controller="Appointments" asp-action="Delete" asp-route-id="@item.Id" class="btn harmony-bg-color">Изтрий</a>
 
                                 </div>
-                               
+
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+            @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))
         </div>
         <hr class="hr-4 mb-0" />
         <a asp-controller="Appointments" asp-action="Create" asp-route-therapistId="@ViewData["TherapistId"]">Добави</a>

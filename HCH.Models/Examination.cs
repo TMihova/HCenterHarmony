@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HCH.Models.Common;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,6 +25,7 @@ namespace HCH.Models
         public virtual HCHWebUser Patient { get; set; }
 
         [Required]
+        [MinLength(CommonConstants.AnamnesisMinLength)]
         public string Anamnesis { get; set; }
 
         [ForeignKey("Therapy")]

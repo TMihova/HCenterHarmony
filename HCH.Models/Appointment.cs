@@ -16,6 +16,9 @@ namespace HCH.Models
         public string VisitingHour { get; set; }
 
         [Required]
+        [Range(0, Double.MaxValue)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
 
         [NotMapped]

@@ -32,13 +32,13 @@
                         <p class="card-text">@item.Description</p>
                     </div>
                     <div class="card-footer">
-                        <a asp-controller="Profiles" asp-action="Details" asp-route-id="@item.Id" class="card-link">Вижте повече</a>
+                        <a asp-area="Admin" asp-controller="Profiles" asp-action="Details" asp-route-id="@item.Id" class="card-link">Вижте повече</a>
                     </div>
                     <div class="card-footer">
-                        <a asp-controller="Profiles" asp-action="Edit" asp-route-id="@item.Id" class="card-link">Редактирай</a>
+                        <a asp-area="Admin" asp-controller="Profiles" asp-action="Edit" asp-route-id="@item.Id" class="card-link">Редактирай</a>
                     </div>
                     <div class="card-footer">
-                        <a asp-controller="Profiles" asp-action="Delete" asp-route-id="@item.Id" class="card-link">Изтрий</a>
+                        <a asp-area="Admin" asp-controller="Profiles" asp-action="Delete" asp-route-id="@item.Id" class="card-link">Изтрий</a>
                     </div>
                 </div>
                 <hr class="hr-4" />
