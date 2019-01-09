@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace HCH.Web.Models
 {
@@ -12,14 +13,18 @@ namespace HCH.Web.Models
 
         public string TherapyId { get; set; }
 
+        [Required]
         public DateTime StartDate { get; set; }
 
+        [Required]
         public DateTime EndDate { get; set; }
 
+        [Required]
         public string PatientId { get; set; }
 
         public string Patient { get; set; }
 
+        [Required]
         public string TherapistId { get; set; }
 
         public string Therapist { get; set; }

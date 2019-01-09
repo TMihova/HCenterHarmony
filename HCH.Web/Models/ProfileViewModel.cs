@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HCH.Web.Models.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace HCH.Web.Models
 {
@@ -8,12 +9,12 @@ namespace HCH.Web.Models
 
         [Required]
         [Display(Name = "Наименование")]
-        [MinLength(3, ErrorMessage = "Наименованието трябва да е поне 3 символа.")]
+        [MinLength(CommonConstants.NameMinLength, ErrorMessage = "Наименованието трябва да е поне {1} символа.")]
         public string Name { get; set; }
 
         [Required]
         [Display(Name = "Описание")]
-        [MinLength(100, ErrorMessage = "Описанието трябва да е поне 100 символа.")]
+        [MinLength(CommonConstants.ProfileDescriptionMinLength, ErrorMessage = "Описанието трябва да е поне {1} символа.")]
         public string Description { get; set; }
     }
 }

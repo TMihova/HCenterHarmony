@@ -92,7 +92,7 @@ namespace HCH.Web.Areas.Therapist.Controllers
 
             if (ModelState.IsValid)
             {
-                if (therapyView.Treatments.Count == 0)
+                if (therapyView.Treatments.All(x => x.Selected == false ))
                 {
                     return View(therapyView);
                 }
@@ -143,13 +143,6 @@ namespace HCH.Web.Areas.Therapist.Controllers
             HCHWebUser therapist = this.usersService.GetUserById(therapistId);
 
             var therapyModel = this.mapper.Map<TherapyViewModel>(examination);
-            //    new TherapyViewModel
-            //{
-            //    PatientId = examination.PatientId,
-            //    Patient = examination.Patient.FirstName + " " + examination.Patient.LastName,
-            //    TherapistId = examination.TherapistId,
-            //    Therapist = examination.Therapist.FirstName + " " + examination.Therapist.LastName
-            //};
 
             var treatmentsFromProfile = await this.treatmentsService.AllFromProfileAsync(therapist.ProfileId);
 
