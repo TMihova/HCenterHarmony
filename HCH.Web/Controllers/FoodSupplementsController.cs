@@ -5,6 +5,7 @@ using HCH.Web.Models;
 using HCH.Services;
 using HCH.Models;
 using AutoMapper;
+using X.PagedList;
 
 namespace HCH.Web.Controllers
 {
@@ -22,13 +23,23 @@ namespace HCH.Web.Controllers
         }
 
         // GET: FoodSupplements
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var products = await this.foodSupplementsService.AllAsync();
 
             var productsView = products.Select(x => mapper.Map<FoodSupplementViewModel>(x)).ToList();
 
-            return View(productsView);
+            var numberOfItems = 4;
+
+            var pageNumber = page ?? 1;
+
+            var onePageOfProducts = productsView.ToPagedList(pageNumber, numberOfItems);
+
+            ViewBag.PageNumber = pageNumber;
+
+            ViewBag.NumberOfItems = numberOfItems;
+
+            return View(onePageOfProducts);
         }
 
         // GET: FoodSupplements/Details/5

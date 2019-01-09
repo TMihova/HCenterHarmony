@@ -34,6 +34,15 @@ namespace HCH.Web.Controllers
 
             var viewProfiles = profiles.Select(x => this.mapper.Map<ProfileViewModel>(x));
 
+            foreach (var item in viewProfiles)
+            {
+                if (item.Description.Length > 100)
+                {
+                    item.Description = item.Description.Substring(0, 100);
+                }
+                
+            }
+
             return View(viewProfiles);
         }
 
@@ -52,7 +61,7 @@ namespace HCH.Web.Controllers
                 return NotFound();
             }
 
-            var profileView = this.mapper.Map<ProfileViewModel>(profile);
+            var profileView = this.mapper.Map<ProfileDetailsViewModel>(profile);
 
             return View(profileView);
         }

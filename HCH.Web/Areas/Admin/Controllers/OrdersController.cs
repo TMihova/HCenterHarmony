@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using HCH.Services;
 using System.Globalization;
 using AutoMapper;
+using X.PagedList;
 
 namespace HCH.Web.Areas.Admin.Controllers
 {
@@ -35,7 +36,7 @@ namespace HCH.Web.Areas.Admin.Controllers
 
         // GET: Admin/Orders/AllOrders
         [HttpGet]
-        public async Task<IActionResult> AllOrders()
+        public async Task<IActionResult> AllOrders(int? page)
         {
             var orders = await this.ordersService.AllOrdersAsync();
 
@@ -56,7 +57,17 @@ namespace HCH.Web.Areas.Admin.Controllers
                 ordersView.Add(orderView);
             }
 
-            return View(ordersView);
+            var numberOfItems = 10;
+
+            var pageNumber = page ?? 1;
+
+            var onePageOfOrders = ordersView.ToPagedList(pageNumber, numberOfItems);
+
+            ViewBag.PageNumber = pageNumber;
+
+            ViewBag.NumberOfItems = numberOfItems;
+
+            return View(onePageOfOrders);
         }
 
         

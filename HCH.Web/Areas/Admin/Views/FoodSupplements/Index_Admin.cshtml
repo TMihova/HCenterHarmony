@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<HCH.Web.Models.FoodSupplementViewModel>
 
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+
 @{
     ViewData["Title"] = "Index_Admin";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,8 +11,7 @@
 
 <main class="mt-3">
     <div class="container w-75 justify-content-center">
-        <h1 class="text-center">Здраве от природата</h1>
-        <h1 class="text-center">Хранителни добавки</h1>        
+        <h3 class="text-center">Хранителни добавки</h3>
         <div class="container-fluid">
             <hr />
             <div><a asp-controller="FoodSupplements" asp-action="Create" class="btn harmony-bg-color">Добави</a></div>
@@ -24,7 +27,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @{ int count = 0;}
+                    @{
+                        int count = (ViewBag.PageNumber - 1) * ViewBag.NumberOfItems;
+                    }
                     @foreach (var item in Model)
                     {
                         count++;
@@ -54,6 +59,7 @@
             </table>
         </div>
         <hr class="mb-0" />
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index_Admin", new { page }))
     </div>
 </main>
 @section Scripts {

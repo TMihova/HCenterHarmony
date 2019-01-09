@@ -14,7 +14,11 @@ namespace HCH.Web
 
             CreateMap<FoodSupplement, FoodSupplementViewModel>().ReverseMap();
 
-            CreateMap<Profile, ProfileViewModel>().ReverseMap();
+            CreateMap<Profile, ProfileDetailsViewModel>().ReverseMap();
+
+            CreateMap<Profile, ProfileViewModel>()
+            .ForMember(dest => dest.Description,
+                           opt => opt.MapFrom(src => src.Description.Substring(0, 100)));
 
             CreateMap<Appointment, AppointmentViewModel>()
                 .ForMember(dest => dest.PatientFullName,

@@ -56,7 +56,7 @@ namespace HCH.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var profileView = this.mapper.Map<ProfileViewModel>(profile);
+            var profileView = this.mapper.Map<ProfileDetailsViewModel>(profile);
 
             return View(profileView);
         }
@@ -70,7 +70,7 @@ namespace HCH.Web.Areas.Admin.Controllers
         // POST: Profiles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProfileViewModel profileViewModel)
+        public async Task<IActionResult> Create(ProfileDetailsViewModel profileViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace HCH.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var profileView = this.mapper.Map<ProfileViewModel>(profile);
+            var profileView = this.mapper.Map<ProfileDetailsViewModel>(profile);
 
             return View(profileView);
         }
@@ -105,7 +105,7 @@ namespace HCH.Web.Areas.Admin.Controllers
         // POST: Admin/Profiles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, ProfileViewModel profile)
+        public async Task<IActionResult> Edit(string id, ProfileDetailsViewModel profile)
         {
             if (id != profile.Id)
             {
@@ -148,7 +148,7 @@ namespace HCH.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var profileView = this.mapper.Map<ProfileViewModel>(profile);
+            var profileView = this.mapper.Map<ProfileDetailsViewModel>(profile);
 
             return View(profileView);
         }

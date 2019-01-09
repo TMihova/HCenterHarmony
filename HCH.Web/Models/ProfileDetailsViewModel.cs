@@ -2,7 +2,7 @@
 
 namespace HCH.Web.Models
 {
-    public class ProfileViewModel
+    public class ProfileDetailsViewModel
     {
         public string Id { get; set; }
 

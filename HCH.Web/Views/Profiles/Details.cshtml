@@ -1,4 +1,4 @@
-﻿@model HCH.Web.Models.ProfileViewModel
+﻿@model HCH.Web.Models.ProfileDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -9,7 +9,12 @@
 <div class="container">
     <h4>@Model.Name</h4>
     <hr />
-    <h4>@Model.Description</h4>
+    <p>@Model.Description</p>
+    <hr />
 
-    <a asp-action="Index">Към списъка</a>
+    <div class="container mt-2">
+        <a asp-area="" asp-controller="Therapists" asp-action="Index" asp-route-profile="@Model.Name"><h5>Изберете терапевт</h5></a>
+        <a asp-area="" asp-controller="Profiles" asp-action="Index"><h5>Към списъка</h5></a>
+    </div>
+    
 </div>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HCH.Web.Models;
 using AutoMapper;
+using X.PagedList;
 
 namespace HCH.Web.Controllers
 {
@@ -31,7 +32,7 @@ namespace HCH.Web.Controllers
 
         // GET: Appointments/Index_Patient
         [Authorize]
-        public async Task<IActionResult> Index_Patient(string id)
+        public async Task<IActionResult> Index_Patient(string id, int? page)
         {
             var patientId = this.signInManager.UserManager.GetUserId(User);
 
@@ -45,12 +46,22 @@ namespace HCH.Web.Controllers
 
             HCHWebUser therapist = this.usersService.GetUserById(id);
 
+            var numberOfItems = 6;
+
+            var pageNumber = page ?? 1;
+
+            var onePageOfAppointments = appointmentsTherapistView.ToPagedList(pageNumber, numberOfItems);
+
+            ViewBag.PageNumber = pageNumber;
+
+            ViewBag.NumberOfItems = numberOfItems;
+
             ViewData["PatientId"] = patientId;
             ViewData["TherapistId"] = therapist.Id;
             ViewData["TherapistFullName"] = therapist.FirstName + " " + therapist.LastName;
             ViewData["ProfileName"] = therapist.Profile.Name;
 
-            return View(appointmentsTherapistView);
+            return View(onePageOfAppointments);
         }
 
         // GET: Appointments/Index_Occupied

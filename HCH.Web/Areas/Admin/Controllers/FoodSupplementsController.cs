@@ -7,6 +7,7 @@ using HCH.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using HCH.Services;
 using AutoMapper;
+using X.PagedList;
 
 namespace HCH.Web.Areas.Admin.Controllers
 {
@@ -26,13 +27,23 @@ namespace HCH.Web.Areas.Admin.Controllers
         }
 
         // GET: Admin/FoodSupplements/Index_Admin
-        public async Task<IActionResult> Index_Admin()
+        public async Task<IActionResult> Index_Admin(int? page)
         {
             var products = await this.foodSupplementsService.AllAsync();
 
             var productsView = products.Select(x => mapper.Map<FoodSupplementViewModel>(x)).ToList();
 
-            return View(productsView);
+            var numberOfItems = 4;
+
+            var pageNumber = page ?? 1;
+
+            var onePageOfProducts = productsView.ToPagedList(pageNumber, numberOfItems);
+
+            ViewBag.PageNumber = pageNumber;
+
+            ViewBag.NumberOfItems = numberOfItems;
+
+            return View(onePageOfProducts);
         }
 
         // GET: Admin/FoodSupplements/Create

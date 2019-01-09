@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using HCH.Services;
 using System.Globalization;
 using AutoMapper;
+using X.PagedList;
 
 namespace HCH.Web.Controllers
 {
@@ -135,7 +136,7 @@ namespace HCH.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> MyOrders()
+        public async Task<IActionResult> MyOrders(int? page)
         {
             var clientId = this.signInManager.UserManager.GetUserId(User);
 
@@ -160,9 +161,19 @@ namespace HCH.Web.Controllers
                 ordersView.Add(orderView);
             }
 
+            var numberOfItems = 10;
+
+            var pageNumber = page ?? 1;
+
+            var onePageOfOrders = ordersView.ToPagedList(pageNumber, numberOfItems);
+
+            ViewBag.PageNumber = pageNumber;
+
+            ViewBag.NumberOfItems = numberOfItems;
+
             ViewData["ClientFullName"] = client.FirstName + " " + client.LastName;
 
-            return View(ordersView);
+            return View(onePageOfOrders);
         }
         
     }
