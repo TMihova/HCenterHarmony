@@ -80,6 +80,11 @@ namespace HCH.Web.Areas.Identity.Pages.Account
 
         public void OnGet(string returnUrl = null)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                LocalRedirect("/").ExecuteResult(this.PageContext);
+            }
+
             ReturnUrl = returnUrl;
         }
 
